@@ -1,0 +1,257 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private user profile with role, progress counters, and offline module selections.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 160 },
+        "role": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "xp": { "type": "integer" },
+        "streakDays": { "type": "integer" },
+        "studyMinutes": { "type": "integer" },
+        "participationScore": { "type": "integer" },
+        "downloadedModules": { "type": "array", "description": "Up to 20 module IDs cached for offline use." },
+        "favoriteBooks": { "type": "array", "description": "Up to 50 favorite health book IDs." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "email", "role", "xp", "streakDays", "studyMinutes", "participationScore", "downloadedModules", "createdAt", "updatedAt"]
+    },
+    "TaskItem": {
+      "title": "TaskItem",
+      "description": "Personal academic or clinical task with deadline and alert preference.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "subject": { "type": "string", "enum": ["Pharmacology", "Anatomy & Physiology", "Microbiology", "Biochemistry", "Clinical OPD", "Personal"] },
+        "priority": { "type": "string", "enum": ["high", "medium", "low"] },
+        "dueDate": { "type": "string", "maxLength": 40 },
+        "completed": { "type": "boolean" },
+        "notifyEnabled": { "type": "boolean" },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "subject", "priority", "dueDate", "completed", "notifyEnabled", "notes", "createdAt", "updatedAt"]
+    },
+    "StudyLog": {
+      "title": "StudyLog",
+      "description": "Reading time tracker, quiz score, and participation record per academic subject.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "subject": { "type": "string", "enum": ["Pharmacology", "Anatomy & Physiology", "Microbiology", "Biochemistry", "Clinical OPD"] },
+        "moduleTitle": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "minutesSpent": { "type": "integer" },
+        "quizScore": { "type": "integer" },
+        "participationType": { "type": "string", "enum": ["reading", "quiz", "flashcards", "case_study", "group_share"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "subject", "moduleTitle", "minutesSpent", "quizScore", "participationType", "createdAt"]
+    },
+    "ReaderAnnotation": {
+      "title": "ReaderAnnotation",
+      "description": "Highlight and margin note saved inside the online textbook/health book reader.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "bookId": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "pageTitle": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "highlightText": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "note": { "type": "string", "maxLength": 1000 },
+        "color": { "type": "string", "enum": ["amber", "emerald", "sky", "rose"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "bookId", "pageTitle", "highlightText", "note", "color", "createdAt", "updatedAt"]
+    },
+    "FlashcardItem": {
+      "title": "FlashcardItem",
+      "description": "Spaced repetition flashcard item with SM-2 scheduling fields.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "subject": { "type": "string", "enum": ["Pharmacology", "Anatomy & Physiology", "Microbiology", "Biochemistry"] },
+        "front": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "back": { "type": "string", "minLength": 1, "maxLength": 800 },
+        "intervalDays": { "type": "integer" },
+        "easeFactor": { "type": "number" },
+        "repetitions": { "type": "integer" },
+        "nextReviewAt": { "type": "string", "maxLength": 40 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "subject", "front", "back", "intervalDays", "easeFactor", "repetitions", "nextReviewAt", "updatedAt"]
+    },
+    "StudyGroup": {
+      "title": "StudyGroup",
+      "description": "Collaborative peer study group for subject discussions and material sharing.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "subject": { "type": "string", "enum": ["Pharmacology", "Anatomy & Physiology", "Microbiology", "Biochemistry", "Clinical OPD", "General"] },
+        "description": { "type": "string", "minLength": 1, "maxLength": 400 },
+        "createdByUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "createdByName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "memberCount": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "subject", "description", "createdByUid", "createdByName", "memberCount", "createdAt"]
+    },
+    "StudyGroupPost": {
+      "title": "StudyGroupPost",
+      "description": "Message or shared study note inside a social study group.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "groupId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "authorRole": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "content": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "attachmentTitle": { "type": "string", "maxLength": 160 },
+        "attachmentSnippet": { "type": "string", "maxLength": 600 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "groupId", "authorUid", "authorName", "authorRole", "content", "attachmentTitle", "attachmentSnippet", "createdAt"]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Public non-PII learner progress entry for the global leaderboard.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "role": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "xp": { "type": "integer" },
+        "studyMinutes": { "type": "integer" },
+        "streakDays": { "type": "integer" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "role", "xp", "studyMinutes", "streakDays", "updatedAt"]
+    },
+    "CloudBackup": {
+      "title": "CloudBackup",
+      "description": "User-owned cloud backup snapshot of tasks, logs, annotations, and flashcards.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "itemCount": { "type": "integer" },
+        "snapshotJson": { "type": "string", "minLength": 1, "maxLength": 200000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "label", "itemCount", "snapshotJson", "createdAt"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Teacher or admin notice and reading deadline assignment.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "subject": { "type": "string", "enum": ["Pharmacology", "Anatomy & Physiology", "Microbiology", "Biochemistry", "Clinical OPD", "All"] },
+        "dueDate": { "type": "string", "maxLength": 40 },
+        "body": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "authorUid", "authorName", "title", "subject", "dueDate", "body", "createdAt"]
+    },
+    "HealthBook": {
+      "title": "HealthBook",
+      "description": "Medical or clinical textbook added by teachers or admins for student reading.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "author": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "subject": { "type": "string", "enum": ["Pharmacology", "Anatomy & Physiology", "Microbiology", "Biochemistry", "Clinical OPD"] },
+        "edition": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "readMinutes": { "type": "integer" },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "coverColor": { "type": "string", "enum": ["navy", "emerald", "burgundy", "indigo", "teal"] },
+        "chapters": { "type": "array", "description": "Structured textbook chapters with title and paragraph list." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "authorUid", "title", "author", "subject", "edition", "readMinutes", "summary", "coverColor", "chapters", "createdAt"]
+    },
+    "RegistrationAlert": {
+      "title": "RegistrationAlert",
+      "description": "Notification sent to admin whenever a new user creates an account.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "email": { "type": "string", "minLength": 3, "maxLength": 160 },
+        "role": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "source": { "type": "string", "enum": ["google", "device"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userUid", "displayName", "email", "role", "source", "read", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile and role settings"
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": { "$ref": "#/entities/TaskItem" },
+      "description": "User personal and academic tasks"
+    },
+    "/users/{userId}/studyLogs/{logId}": {
+      "schema": { "$ref": "#/entities/StudyLog" },
+      "description": "User study time and participation logs"
+    },
+    "/users/{userId}/annotations/{annotationId}": {
+      "schema": { "$ref": "#/entities/ReaderAnnotation" },
+      "description": "User textbook highlights and annotations"
+    },
+    "/users/{userId}/flashcards/{cardId}": {
+      "schema": { "$ref": "#/entities/FlashcardItem" },
+      "description": "User spaced-repetition flashcards"
+    },
+    "/users/{userId}/backups/{backupId}": {
+      "schema": { "$ref": "#/entities/CloudBackup" },
+      "description": "User cloud backup snapshots"
+    },
+    "/studyGroups/{groupId}": {
+      "schema": { "$ref": "#/entities/StudyGroup" },
+      "description": "Collaborative peer study groups"
+    },
+    "/studyGroups/{groupId}/posts/{postId}": {
+      "schema": { "$ref": "#/entities/StudyGroupPost" },
+      "description": "Peer messages and shared notes in a study group"
+    },
+    "/leaderboard/{userId}": {
+      "schema": { "$ref": "#/entities/LeaderboardEntry" },
+      "description": "Global leaderboard without PII"
+    },
+    "/announcements/{announcementId}": {
+      "schema": { "$ref": "#/entities/Announcement" },
+      "description": "Teacher and admin assignments and notices"
+    },
+    "/books/{bookId}": {
+      "schema": { "$ref": "#/entities/HealthBook" },
+      "description": "Faculty and admin published health textbooks"
+    },
+    "/registrationAlerts/{alertId}": {
+      "schema": { "$ref": "#/entities/RegistrationAlert" },
+      "description": "Admin-only notifications when new users register"
+    }
+  }
+}

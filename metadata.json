@@ -1,0 +1,8 @@
+{
+  "name": "Hilaac Health Center — Clinical Study & Task Suite",
+  "description": "Clean personal task tracker and clinical medical learning suite featuring Pharmacology, Anatomy & Physiology, Microbiology, Biochemistry, spaced-repetition flashcards, online annotated reader, AI study tutor, offline access, and real-time cloud sync.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,440 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'aadamali989@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isTeacherOrAdmin() {
+      return isAdmin() || (
+        isSignedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'teacher'
+      );
+    }
+
+    function isValidUserProfile(data, userId) {
+      return data.keys().hasAll([
+        'uid', 'displayName', 'email', 'role', 'xp', 'streakDays',
+        'studyMinutes', 'participationScore', 'downloadedModules', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'uid', 'displayName', 'email', 'role', 'xp', 'streakDays',
+        'studyMinutes', 'participationScore', 'downloadedModules', 'favoriteBooks', 'createdAt', 'updatedAt'
+      ]) &&
+      data.uid == userId &&
+      data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+      data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+      data.role in ['student', 'teacher', 'admin'] &&
+      data.xp is int && data.xp >= 0 && data.xp <= 10000000 &&
+      data.streakDays is int && data.streakDays >= 0 && data.streakDays <= 36500 &&
+      data.studyMinutes is int && data.studyMinutes >= 0 && data.studyMinutes <= 10000000 &&
+      data.participationScore is int && data.participationScore >= 0 && data.participationScore <= 10000000 &&
+      data.downloadedModules is list && data.downloadedModules.size() <= 20 &&
+      (data.downloadedModules.size() == 0 || data.downloadedModules[0] is string) &&
+      (!('favoriteBooks' in data) || (
+        data.favoriteBooks is list &&
+        data.favoriteBooks.size() <= 50 &&
+        (data.favoriteBooks.size() == 0 || (data.favoriteBooks[0] is string && data.favoriteBooks[0].size() >= 1 && data.favoriteBooks[0].size() <= 128))
+      )) &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidTask(data, taskId, userId) {
+      return data.keys().hasAll([
+        'id', 'userId', 'title', 'subject', 'priority', 'dueDate',
+        'completed', 'notifyEnabled', 'notes', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'userId', 'title', 'subject', 'priority', 'dueDate',
+        'completed', 'notifyEnabled', 'notes', 'createdAt', 'updatedAt'
+      ]) &&
+      data.id == taskId &&
+      data.userId == userId &&
+      data.title is string && data.title.size() >= 1 && data.title.size() <= 200 &&
+      data.subject in ['Pharmacology', 'Anatomy & Physiology', 'Microbiology', 'Biochemistry', 'Clinical OPD', 'Personal'] &&
+      data.priority in ['high', 'medium', 'low'] &&
+      data.dueDate is string && data.dueDate.size() <= 40 &&
+      data.completed is bool &&
+      data.notifyEnabled is bool &&
+      data.notes is string && data.notes.size() <= 1000 &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidStudyLog(data, logId, userId) {
+      return data.keys().hasAll([
+        'id', 'userId', 'subject', 'moduleTitle', 'minutesSpent', 'quizScore', 'participationType', 'createdAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'userId', 'subject', 'moduleTitle', 'minutesSpent', 'quizScore', 'participationType', 'createdAt'
+      ]) &&
+      data.id == logId &&
+      data.userId == userId &&
+      data.subject in ['Pharmacology', 'Anatomy & Physiology', 'Microbiology', 'Biochemistry', 'Clinical OPD'] &&
+      data.moduleTitle is string && data.moduleTitle.size() >= 1 && data.moduleTitle.size() <= 160 &&
+      data.minutesSpent is int && data.minutesSpent >= 0 && data.minutesSpent <= 1440 &&
+      data.quizScore is int && data.quizScore >= 0 && data.quizScore <= 100 &&
+      data.participationType in ['reading', 'quiz', 'flashcards', 'case_study', 'group_share'] &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidAnnotation(data, annotationId, userId) {
+      return data.keys().hasAll([
+        'id', 'userId', 'bookId', 'pageTitle', 'highlightText', 'note', 'color', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'userId', 'bookId', 'pageTitle', 'highlightText', 'note', 'color', 'createdAt', 'updatedAt'
+      ]) &&
+      data.id == annotationId &&
+      data.userId == userId &&
+      data.bookId is string && data.bookId.size() >= 1 && data.bookId.size() <= 128 &&
+      data.pageTitle is string && data.pageTitle.size() >= 1 && data.pageTitle.size() <= 160 &&
+      data.highlightText is string && data.highlightText.size() >= 1 && data.highlightText.size() <= 500 &&
+      data.note is string && data.note.size() <= 1000 &&
+      data.color in ['amber', 'emerald', 'sky', 'rose'] &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidFlashcard(data, cardId, userId) {
+      return data.keys().hasAll([
+        'id', 'userId', 'subject', 'front', 'back', 'intervalDays', 'easeFactor', 'repetitions', 'nextReviewAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'userId', 'subject', 'front', 'back', 'intervalDays', 'easeFactor', 'repetitions', 'nextReviewAt', 'updatedAt'
+      ]) &&
+      data.id == cardId &&
+      data.userId == userId &&
+      data.subject in ['Pharmacology', 'Anatomy & Physiology', 'Microbiology', 'Biochemistry'] &&
+      data.front is string && data.front.size() >= 1 && data.front.size() <= 300 &&
+      data.back is string && data.back.size() >= 1 && data.back.size() <= 800 &&
+      data.intervalDays is int && data.intervalDays >= 0 && data.intervalDays <= 36500 &&
+      data.easeFactor is number && data.easeFactor >= 1.3 && data.easeFactor <= 5.0 &&
+      data.repetitions is int && data.repetitions >= 0 && data.repetitions <= 10000 &&
+      data.nextReviewAt is string && data.nextReviewAt.size() <= 40 &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidBackup(data, backupId, userId) {
+      return data.keys().hasAll(['id', 'userId', 'label', 'itemCount', 'snapshotJson', 'createdAt']) &&
+      data.keys().hasOnly(['id', 'userId', 'label', 'itemCount', 'snapshotJson', 'createdAt']) &&
+      data.id == backupId &&
+      data.userId == userId &&
+      data.label is string && data.label.size() >= 1 && data.label.size() <= 120 &&
+      data.itemCount is int && data.itemCount >= 0 && data.itemCount <= 100000 &&
+      data.snapshotJson is string && data.snapshotJson.size() >= 1 && data.snapshotJson.size() <= 200000 &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidStudyGroup(data, groupId) {
+      return data.keys().hasAll(['id', 'name', 'subject', 'description', 'createdByUid', 'createdByName', 'memberCount', 'createdAt']) &&
+      data.keys().hasOnly(['id', 'name', 'subject', 'description', 'createdByUid', 'createdByName', 'memberCount', 'createdAt']) &&
+      data.id == groupId &&
+      data.name is string && data.name.size() >= 1 && data.name.size() <= 120 &&
+      data.subject in ['Pharmacology', 'Anatomy & Physiology', 'Microbiology', 'Biochemistry', 'Clinical OPD', 'General'] &&
+      data.description is string && data.description.size() >= 1 && data.description.size() <= 400 &&
+      data.createdByUid is string && data.createdByUid.size() >= 1 && data.createdByUid.size() <= 128 &&
+      data.createdByName is string && data.createdByName.size() >= 1 && data.createdByName.size() <= 100 &&
+      data.memberCount is int && data.memberCount >= 1 && data.memberCount <= 10000 &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidGroupPost(data, postId, groupId) {
+      return data.keys().hasAll(['id', 'groupId', 'authorUid', 'authorName', 'authorRole', 'content', 'attachmentTitle', 'attachmentSnippet', 'createdAt']) &&
+      data.keys().hasOnly(['id', 'groupId', 'authorUid', 'authorName', 'authorRole', 'content', 'attachmentTitle', 'attachmentSnippet', 'createdAt']) &&
+      data.id == postId &&
+      data.groupId == groupId &&
+      data.authorUid == request.auth.uid &&
+      data.authorName is string && data.authorName.size() >= 1 && data.authorName.size() <= 100 &&
+      data.authorRole in ['student', 'teacher', 'admin'] &&
+      data.content is string && data.content.size() >= 1 && data.content.size() <= 1500 &&
+      data.attachmentTitle is string && data.attachmentTitle.size() <= 160 &&
+      data.attachmentSnippet is string && data.attachmentSnippet.size() <= 600 &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidLeaderboard(data, userId) {
+      return data.keys().hasAll(['uid', 'displayName', 'role', 'xp', 'studyMinutes', 'streakDays', 'updatedAt']) &&
+      data.keys().hasOnly(['uid', 'displayName', 'role', 'xp', 'studyMinutes', 'streakDays', 'updatedAt']) &&
+      data.uid == userId &&
+      data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+      data.role in ['student', 'teacher', 'admin'] &&
+      data.xp is int && data.xp >= 0 && data.xp <= 10000000 &&
+      data.studyMinutes is int && data.studyMinutes >= 0 && data.studyMinutes <= 10000000 &&
+      data.streakDays is int && data.streakDays >= 0 && data.streakDays <= 36500 &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidAnnouncement(data, announcementId) {
+      return data.keys().hasAll(['id', 'authorUid', 'authorName', 'title', 'subject', 'dueDate', 'body', 'createdAt']) &&
+      data.keys().hasOnly(['id', 'authorUid', 'authorName', 'title', 'subject', 'dueDate', 'body', 'createdAt']) &&
+      data.id == announcementId &&
+      data.authorUid == request.auth.uid &&
+      data.authorName is string && data.authorName.size() >= 1 && data.authorName.size() <= 100 &&
+      data.title is string && data.title.size() >= 1 && data.title.size() <= 160 &&
+      data.subject in ['Pharmacology', 'Anatomy & Physiology', 'Microbiology', 'Biochemistry', 'Clinical OPD', 'All'] &&
+      data.dueDate is string && data.dueDate.size() <= 40 &&
+      data.body is string && data.body.size() >= 1 && data.body.size() <= 1500 &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidBook(data, bookId) {
+      return data.keys().hasAll([
+        'id', 'authorUid', 'title', 'author', 'subject', 'edition', 'readMinutes', 'summary', 'coverColor', 'chapters', 'createdAt'
+      ]) &&
+      data.keys().hasOnly([
+        'id', 'authorUid', 'title', 'author', 'subject', 'edition', 'readMinutes', 'summary', 'coverColor', 'chapters', 'createdAt'
+      ]) &&
+      data.id == bookId &&
+      data.authorUid == request.auth.uid &&
+      data.title is string && data.title.size() >= 1 && data.title.size() <= 160 &&
+      data.author is string && data.author.size() >= 1 && data.author.size() <= 120 &&
+      data.subject in ['Pharmacology', 'Anatomy & Physiology', 'Microbiology', 'Biochemistry', 'Clinical OPD'] &&
+      data.edition is string && data.edition.size() >= 1 && data.edition.size() <= 60 &&
+      data.readMinutes is int && data.readMinutes >= 1 && data.readMinutes <= 1000 &&
+      data.summary is string && data.summary.size() >= 1 && data.summary.size() <= 500 &&
+      data.coverColor in ['navy', 'emerald', 'burgundy', 'indigo', 'teal'] &&
+      data.chapters is list && data.chapters.size() >= 1 && data.chapters.size() <= 20 &&
+      data.chapters[0] is map &&
+      data.chapters[0].keys().hasAll(['id', 'title', 'paragraphs']) &&
+      data.chapters[0].keys().hasOnly(['id', 'title', 'paragraphs']) &&
+      data.chapters[0].id is string && data.chapters[0].id.size() >= 1 && data.chapters[0].id.size() <= 128 &&
+      data.chapters[0].title is string && data.chapters[0].title.size() >= 1 && data.chapters[0].title.size() <= 160 &&
+      data.chapters[0].paragraphs is list && data.chapters[0].paragraphs.size() >= 1 && data.chapters[0].paragraphs.size() <= 30 &&
+      data.chapters[0].paragraphs[0] is string && data.chapters[0].paragraphs[0].size() >= 1 && data.chapters[0].paragraphs[0].size() <= 4000 &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidRegistrationAlert(data, alertId) {
+      return data.keys().hasAll(['id', 'userUid', 'displayName', 'email', 'role', 'source', 'read', 'createdAt']) &&
+      data.keys().hasOnly(['id', 'userUid', 'displayName', 'email', 'role', 'source', 'read', 'createdAt']) &&
+      data.id == alertId &&
+      data.userUid is string && data.userUid.size() >= 1 && data.userUid.size() <= 128 &&
+      data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+      data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+      data.role in ['student', 'teacher', 'admin'] &&
+      data.source in ['google', 'device'] &&
+      data.read is bool &&
+      data.createdAt is timestamp;
+    }
+
+    // Health check document for connection verification
+    match /test/connection {
+      allow get: if true;
+    }
+
+    match /admins/{adminUid} {
+      allow get: if isValidId(adminUid) && (isOwner(adminUid) || isAdmin());
+      allow write: if false;
+    }
+
+    match /users/{userId} {
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list: if isSignedIn() && (resource.data.uid == request.auth.uid || request.auth.token.email == 'aadamali989@gmail.com');
+      allow create: if isValidId(userId) && isOwner(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time &&
+        (incoming().role in ['student', 'teacher'] || isAdmin());
+      allow update: if isValidId(userId) && (isOwner(userId) || isAdmin()) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        (
+          isAdmin() ||
+          (
+            incoming().diff(existing()).affectedKeys().hasOnly([
+              'displayName', 'role', 'xp', 'streakDays',
+              'studyMinutes', 'participationScore', 'downloadedModules', 'favoriteBooks', 'updatedAt'
+            ]) &&
+            (incoming().role == existing().role || incoming().role in ['student', 'teacher'])
+          )
+        );
+      allow delete: if isValidId(userId) && isAdmin();
+
+      match /tasks/{taskId} {
+        allow get: if isValidId(userId) && isValidId(taskId) && (isOwner(userId) || isAdmin());
+        allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+        allow create: if isValidId(userId) && isValidId(taskId) && isOwner(userId) &&
+          isValidTask(incoming(), taskId, userId) &&
+          incoming().createdAt == request.time &&
+          incoming().updatedAt == request.time;
+        allow update: if isValidId(userId) && isValidId(taskId) && isOwner(userId) &&
+          isValidTask(incoming(), taskId, userId) &&
+          incoming().createdAt == existing().createdAt &&
+          incoming().updatedAt == request.time &&
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'title', 'subject', 'priority', 'dueDate', 'completed', 'notifyEnabled', 'notes', 'updatedAt'
+          ]);
+        allow delete: if isValidId(userId) && isValidId(taskId) && (isOwner(userId) || isAdmin());
+      }
+
+      match /studyLogs/{logId} {
+        allow get: if isValidId(userId) && isValidId(logId) && (isOwner(userId) || isAdmin());
+        allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+        allow create: if isValidId(userId) && isValidId(logId) && isOwner(userId) &&
+          isValidStudyLog(incoming(), logId, userId) &&
+          incoming().createdAt == request.time;
+        allow update: if false;
+        allow delete: if isValidId(userId) && isValidId(logId) && (isOwner(userId) || isAdmin());
+      }
+
+      match /annotations/{annotationId} {
+        allow get: if isValidId(userId) && isValidId(annotationId) && (isOwner(userId) || isAdmin());
+        allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+        allow create: if isValidId(userId) && isValidId(annotationId) && isOwner(userId) &&
+          isValidAnnotation(incoming(), annotationId, userId) &&
+          incoming().createdAt == request.time &&
+          incoming().updatedAt == request.time;
+        allow update: if isValidId(userId) && isValidId(annotationId) && isOwner(userId) &&
+          isValidAnnotation(incoming(), annotationId, userId) &&
+          incoming().createdAt == existing().createdAt &&
+          incoming().updatedAt == request.time &&
+          incoming().diff(existing()).affectedKeys().hasOnly(['note', 'color', 'updatedAt']);
+        allow delete: if isValidId(userId) && isValidId(annotationId) && (isOwner(userId) || isAdmin());
+      }
+
+      match /flashcards/{cardId} {
+        allow get: if isValidId(userId) && isValidId(cardId) && (isOwner(userId) || isAdmin());
+        allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+        allow create: if isValidId(userId) && isValidId(cardId) && isOwner(userId) &&
+          isValidFlashcard(incoming(), cardId, userId) &&
+          incoming().updatedAt == request.time;
+        allow update: if isValidId(userId) && isValidId(cardId) && isOwner(userId) &&
+          isValidFlashcard(incoming(), cardId, userId) &&
+          incoming().updatedAt == request.time &&
+          incoming().diff(existing()).affectedKeys().hasOnly(['intervalDays', 'easeFactor', 'repetitions', 'nextReviewAt', 'updatedAt']);
+        allow delete: if isValidId(userId) && isValidId(cardId) && (isOwner(userId) || isAdmin());
+      }
+
+      match /backups/{backupId} {
+        allow get: if isValidId(userId) && isValidId(backupId) && (isOwner(userId) || isAdmin());
+        allow list: if isOwner(userId) && resource.data.userId == request.auth.uid;
+        allow create: if isValidId(userId) && isValidId(backupId) && isOwner(userId) &&
+          isValidBackup(incoming(), backupId, userId) &&
+          incoming().createdAt == request.time;
+        allow update: if false;
+        allow delete: if isValidId(userId) && isValidId(backupId) && (isOwner(userId) || isAdmin());
+      }
+    }
+
+    match /studyGroups/{groupId} {
+      allow get: if isValidId(groupId) && isSignedIn();
+      allow list: if isSignedIn() && resource.data.memberCount >= 1;
+      allow create: if isValidId(groupId) && isSignedIn() &&
+        isValidStudyGroup(incoming(), groupId) &&
+        incoming().createdByUid == request.auth.uid &&
+        incoming().createdAt == request.time;
+      allow update: if isValidId(groupId) && isSignedIn() &&
+        isValidStudyGroup(incoming(), groupId) &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().createdByUid == existing().createdByUid &&
+        (
+          isAdmin() ||
+          incoming().diff(existing()).affectedKeys().hasOnly(['memberCount'])
+        );
+      allow delete: if isValidId(groupId) && isSignedIn() && (existing().createdByUid == request.auth.uid || isAdmin());
+
+      match /posts/{postId} {
+        allow get: if isValidId(groupId) && isValidId(postId) && isSignedIn();
+        allow list: if isSignedIn() && resource.data.groupId == groupId;
+        allow create: if isValidId(groupId) && isValidId(postId) && isSignedIn() &&
+          exists(/databases/$(database)/documents/studyGroups/$(groupId)) &&
+          isValidGroupPost(incoming(), postId, groupId) &&
+          incoming().createdAt == request.time;
+        allow update: if false;
+        allow delete: if isValidId(groupId) && isValidId(postId) && isSignedIn() && (existing().authorUid == request.auth.uid || isAdmin());
+      }
+    }
+
+    match /leaderboard/{userId} {
+      allow get: if isValidId(userId) && isSignedIn();
+      allow list: if isSignedIn() && resource.data.xp >= 0;
+      allow create: if isValidId(userId) && isOwner(userId) &&
+        isValidLeaderboard(incoming(), userId) &&
+        incoming().updatedAt == request.time &&
+        (incoming().role in ['student', 'teacher'] || isAdmin());
+      allow update: if isValidId(userId) && (isOwner(userId) || isAdmin()) &&
+        isValidLeaderboard(incoming(), userId) &&
+        incoming().updatedAt == request.time &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'role', 'xp', 'studyMinutes', 'streakDays', 'updatedAt']);
+      allow delete: if isValidId(userId) && isAdmin();
+    }
+
+    match /announcements/{announcementId} {
+      allow get: if isValidId(announcementId) && isSignedIn();
+      allow list: if isSignedIn() && resource.data.authorUid >= '';
+      allow create: if isValidId(announcementId) && isTeacherOrAdmin() &&
+        isValidAnnouncement(incoming(), announcementId) &&
+        incoming().createdAt == request.time;
+      allow update: if isValidId(announcementId) && isTeacherOrAdmin() &&
+        isValidAnnouncement(incoming(), announcementId) &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().authorUid == existing().authorUid &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['title', 'subject', 'dueDate', 'body']);
+      allow delete: if isValidId(announcementId) && (isAdmin() || (isSignedIn() && existing().authorUid == request.auth.uid));
+    }
+
+    match /books/{bookId} {
+      allow get: if isValidId(bookId) && isSignedIn();
+      allow list: if isSignedIn() && resource.data.authorUid >= '';
+      allow create: if isValidId(bookId) && isTeacherOrAdmin() &&
+        isValidBook(incoming(), bookId) &&
+        incoming().createdAt == request.time;
+      allow update: if isValidId(bookId) && isTeacherOrAdmin() &&
+        isValidBook(incoming(), bookId) &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().authorUid == existing().authorUid &&
+        incoming().diff(existing()).affectedKeys().hasOnly([
+          'title', 'author', 'subject', 'edition', 'readMinutes', 'summary', 'coverColor', 'chapters'
+        ]);
+      allow delete: if isValidId(bookId) && (isAdmin() || (isSignedIn() && existing().authorUid == request.auth.uid));
+    }
+
+    match /registrationAlerts/{alertId} {
+      allow get: if isValidId(alertId) && isAdmin();
+      allow list: if isSignedIn() && (resource.data.userUid == request.auth.uid || request.auth.token.email == 'aadamali989@gmail.com');
+      allow create: if isValidId(alertId) && isSignedIn() &&
+        isValidRegistrationAlert(incoming(), alertId) &&
+        incoming().userUid == request.auth.uid &&
+        incoming().read == false &&
+        incoming().createdAt == request.time;
+      allow update: if isValidId(alertId) && isAdmin() &&
+        isValidRegistrationAlert(incoming(), alertId) &&
+        incoming().userUid == existing().userUid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['read']);
+      allow delete: if isValidId(alertId) && isAdmin();
+    }
+  }
+}

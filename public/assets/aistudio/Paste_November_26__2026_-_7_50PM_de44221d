@@ -1,0 +1,2836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HILAAC HEALTH CENTER™ — Clinical Reference &amp; Study Suite</title>
+  <style>
+    /* =========================================================================
+       HILAAC HEALTH CENTER DESIGN SYSTEM (PLAIN VANILLA CSS, ZERO EXTERNAL DEPS)
+       ========================================================================= */
+    :root {
+      --navy: #0B1E46;
+      --navy-dark: #06122B;
+      --navy-soft: #E8EEF8;
+      --green: #059669;
+      --green-dark: #047857;
+      --green-soft: #ECFDF5;
+      --red: #B91C1C;
+      --red-soft: #FEF2F2;
+      --blue: #1D4ED8;
+      --blue-soft: #EFF6FF;
+      --purple: #6D28D9;
+      --purple-soft: #F5F3FF;
+      --amber: #B45309;
+      --amber-soft: #FFFBEB;
+      --bg: #F4F7FB;
+      --surface: #FFFFFF;
+      --surface-2: #F8FAFC;
+      --border: #D6E0EE;
+      --text: #0F172A;
+      --muted: #475569;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 7px;
+      --shadow: 0 2px 10px rgba(11, 30, 70, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* =========================================================================
+       TOP HEADER, BRAND LOGO & CLINICIAN LOGIN BAR
+       ========================================================================= */
+    .site-header {
+      background-color: var(--surface);
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: var(--shadow);
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .brand-title {
+      font-size: 19px;
+      font-weight: 900;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+
+    .brand-tagline {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .auth-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+    }
+
+    .auth-badge {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background-color: var(--navy-soft);
+      color: var(--navy);
+    }
+
+    .auth-badge.clinician {
+      background-color: var(--green-soft);
+      color: var(--green-dark);
+    }
+
+    .auth-input {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--text);
+      background-color: #FFFFFF;
+      width: 155px;
+    }
+
+    .btn {
+      border: 1px solid var(--navy);
+      background-color: #FFFFFF;
+      color: var(--navy);
+      border-radius: var(--radius-sm);
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--navy-soft);
+    }
+
+    .btn-navy {
+      background-color: var(--navy);
+      color: #FFFFFF;
+    }
+
+    .btn-navy:hover {
+      background-color: var(--navy-dark);
+    }
+
+    .btn-green {
+      background-color: var(--green);
+      border-color: var(--green);
+      color: #FFFFFF;
+    }
+
+    .btn-green:hover {
+      background-color: var(--green-dark);
+    }
+
+    .btn-red-outline {
+      border-color: var(--red);
+      color: var(--red);
+      background-color: #FFFFFF;
+    }
+
+    .btn-red-outline:hover {
+      background-color: var(--red-soft);
+    }
+
+    /* =========================================================================
+       STRICT SECTION NAVIGATION TABS
+       ========================================================================= */
+    .nav-strip {
+      background-color: var(--navy);
+      border-bottom: 3px solid var(--green);
+    }
+
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 8px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .nav-tab {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #F8FAFC;
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .nav-tab:hover {
+      background-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .nav-tab.active {
+      background-color: var(--green);
+      border-color: var(--green);
+      color: #FFFFFF;
+    }
+
+    /* =========================================================================
+       MAIN CONTAINER & SECTION VISIBILITY
+       ========================================================================= */
+    .main-wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 18px 40px;
+    }
+
+    .section-view {
+      display: none;
+    }
+
+    .section-view.active {
+      display: block;
+    }
+
+    .section-banner {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--navy);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-banner.green-border {
+      border-left-color: var(--green);
+    }
+
+    .section-banner h1,
+    .section-banner h2 {
+      margin: 0 0 6px 0;
+      font-size: 21px;
+      font-weight: 900;
+      color: var(--navy);
+    }
+
+    .section-banner p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* =========================================================================
+       FILTER & SEARCH CONTROLS
+       ========================================================================= */
+    .controls-panel {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1 1 260px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      font-size: 13px;
+      color: var(--text);
+      background-color: var(--surface-2);
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pill-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-right: 4px;
+    }
+
+    .pill-btn {
+      border: 1px solid var(--border);
+      background-color: var(--surface-2);
+      color: var(--navy);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pill-btn:hover {
+      border-color: var(--navy);
+      background-color: var(--navy-soft);
+    }
+
+    .pill-btn.active {
+      background-color: var(--navy);
+      border-color: var(--navy);
+      color: #FFFFFF;
+    }
+
+    .pill-btn.green-active {
+      background-color: var(--green);
+      border-color: var(--green);
+      color: #FFFFFF;
+    }
+
+    /* =========================================================================
+       VISUAL PHARMACOLOGY CARDS & ORGAN/MOA FLOW
+       ========================================================================= */
+    .sub-heading {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--navy);
+      margin: 22px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 16px;
+    }
+
+    .pharm-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pharm-card-header {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      text-align: center;
+    }
+
+    .pharm-card-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.01em;
+    }
+
+    .pharm-card-subtitle {
+      font-size: 11px;
+      font-weight: 700;
+      color: #A7F3D0;
+      margin-top: 2px;
+    }
+
+    .heart-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .heart-line {
+      height: 2px;
+      width: 65px;
+      background-color: #EF4444;
+    }
+
+    .pharm-visual-strip {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background-color: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .visual-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+    }
+
+    .visual-caption {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+    }
+
+    .moa-flow {
+      background-color: var(--navy-soft);
+      border: 1px solid #C7D7EE;
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin: 10px 14px 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .pharm-body {
+      padding: 10px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .band-box {
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .band-purple {
+      background-color: var(--purple-soft);
+      border-color: #DDD6FE;
+    }
+
+    .band-green {
+      background-color: var(--green-soft);
+      border-color: #A7F3D0;
+    }
+
+    .band-blue {
+      background-color: var(--blue-soft);
+      border-color: #BFDBFE;
+    }
+
+    .band-red {
+      background-color: var(--red-soft);
+      border-color: #FECACA;
+    }
+
+    .band-amber {
+      background-color: var(--amber-soft);
+      border-color: #FDE68A;
+    }
+
+    .band-title {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .band-purple .band-title { color: var(--purple); }
+    .band-green .band-title { color: var(--green-dark); }
+    .band-blue .band-title { color: var(--blue); }
+    .band-red .band-title { color: var(--red); }
+    .band-amber .band-title { color: var(--amber); }
+
+    .pharm-body ul {
+      margin: 0;
+      padding-left: 16px;
+    }
+
+    .pharm-body li {
+      margin-bottom: 3px;
+    }
+
+    /* =========================================================================
+       TOP 209 MEDICATIONS GRID (#1 - #209)
+       ========================================================================= */
+    .meds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 10px;
+    }
+
+    .med-item {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--green);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      box-shadow: 0 1px 4px rgba(11, 30, 70, 0.04);
+    }
+
+    .med-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    .med-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 2px 0;
+    }
+
+    .med-cond {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      background-color: var(--navy-soft);
+      color: var(--navy);
+      padding: 2px 7px;
+      border-radius: 999px;
+      margin-bottom: 4px;
+    }
+
+    .med-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* =========================================================================
+       TREATMENT PROTOCOLS, SYMPTOMS SYSTEMS & OPD GUIDE (#01 - #100)
+       ========================================================================= */
+    .protocol-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .protocol-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+    }
+
+    .protocol-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--navy);
+    }
+
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .data-table th,
+    .data-table td {
+      border: 1px solid var(--border);
+      padding: 7px 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .data-table th {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      font-weight: 800;
+    }
+
+    .data-table tr:nth-child(even) td {
+      background-color: var(--surface-2);
+    }
+
+    .red-flag-box {
+      margin-top: 12px;
+      background-color: var(--red-soft);
+      border: 1px solid #FCA5A5;
+      border-left: 5px solid var(--red);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #7F1D1D;
+    }
+
+    .system-block {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .system-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .system-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--navy);
+    }
+
+    .symptom-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 10px;
+    }
+
+    .symptom-row {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      background-color: var(--surface-2);
+    }
+
+    .symptom-disease {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .symptom-line {
+      font-size: 12px;
+      color: var(--text);
+      margin-top: 3px;
+    }
+
+    .opd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 10px;
+    }
+
+    .opd-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      box-shadow: 0 1px 4px rgba(11, 30, 70, 0.04);
+    }
+
+    .opd-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .opd-num {
+      font-size: 11px;
+      font-weight: 900;
+      background-color: var(--navy);
+      color: #FFFFFF;
+      padding: 2px 7px;
+      border-radius: 6px;
+    }
+
+    .opd-cat {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    .opd-clues {
+      font-size: 12px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .opd-answer {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--navy);
+      background-color: var(--green-soft);
+      border: 1px solid #A7F3D0;
+      border-radius: 6px;
+      padding: 5px 8px;
+    }
+
+    .opd-answer.masked {
+      background-color: var(--amber-soft);
+      border-color: #FDE68A;
+      color: var(--amber);
+    }
+
+    /* =========================================================================
+       QUIZ & CASE STUDIES
+       ========================================================================= */
+    .quiz-box,
+    .case-box {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .choice-btn {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--border);
+      background-color: var(--surface-2);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .choice-btn:hover {
+      border-color: var(--navy);
+      background-color: var(--navy-soft);
+    }
+
+    .choice-btn.correct {
+      background-color: var(--green-soft);
+      border-color: var(--green);
+      color: var(--green-dark);
+    }
+
+    .choice-btn.wrong {
+      background-color: var(--red-soft);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .feedback-banner {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      background-color: var(--navy-soft);
+      border: 1px solid #BFDBFE;
+      color: var(--navy);
+      font-size: 13px;
+    }
+
+    .site-footer {
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      .cards-grid,
+      .meds-grid,
+      .symptom-list,
+      .opd-grid {
+        grid-template-columns: 1fr;
+      }
+      .auth-input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =======================================================================
+       1. BRAND LOGO HEADER & 2. CLINICIAN LOGIN / GUEST ACCESS BAR
+       ======================================================================= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-lockup">
+        <!-- Custom HILAAC HEALTH CENTER™ Logo SVG (#0B1E46 Navy + #059669 Green + Tm) -->
+        <svg width="64" height="64" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="Hilaac Health Center Logo">
+          <rect x="2" y="2" width="116" height="116" rx="16" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" />
+          <text x="82" y="22" fill="#0B1E46" font-family="Arial, sans-serif" font-weight="900" font-size="13">Tm</text>
+          <rect x="25" y="26" width="20" height="60" rx="2" fill="#0B1E46" />
+          <rect x="75" y="26" width="20" height="60" rx="2" fill="#059669" />
+          <rect x="25" y="48" width="70" height="16" rx="2" fill="#059669" />
+          <text x="60" y="105" text-anchor="middle" fill="#0B1E46" font-family="Arial, sans-serif" font-weight="900" font-size="9.2">HILAAC HEALTH CENTER</text>
+        </svg>
+        <div>
+          <div class="brand-name-row">
+            <span class="brand-title">HILAAC HEALTH CENTER™</span>
+            <span class="brand-tagline">Clinical Reference &amp; Study Suite</span>
+          </div>
+          <div style="font-size: 11px; color: var(--muted);">
+            Visual Pharmacology • Clinical Protocols • 49 Symptoms • 100 OPD Guides • Quiz &amp; Cases
+          </div>
+        </div>
+      </div>
+
+      <!-- Clinician Sign-In / Guest Toggle, Role Display & Logout -->
+      <div class="auth-bar" id="authBar">
+        <span id="roleBadge" class="auth-badge">Role: Guest Learner</span>
+        <input id="clinicianNameInput" type="text" class="auth-input" placeholder="Clinician / Student Name" aria-label="Clinician Name" />
+        <button type="button" class="btn btn-green" onclick="loginClinician()">Clinician Sign-In</button>
+        <button type="button" class="btn btn-navy" onclick="switchToGuest()">Guest Mode</button>
+        <button type="button" class="btn btn-red-outline" onclick="logoutSession()">Logout</button>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         3. STRICT SECTION NAVIGATION TABS
+         ===================================================================== -->
+    <nav class="nav-strip" aria-label="Clinical Sections">
+      <div class="nav-inner">
+        <button id="nav-pharmacology" type="button" class="nav-tab active" onclick="openSection('pharmacology')">Pharmacology</button>
+        <button id="nav-treatment" type="button" class="nav-tab" onclick="openSection('treatment')">Clinical Treatment</button>
+        <button id="nav-symptoms" type="button" class="nav-tab" onclick="openSection('symptoms')">Clinical Symptoms</button>
+        <button id="nav-opd" type="button" class="nav-tab" onclick="openSection('opd')">OPD Diagnosis</button>
+        <button id="nav-quiz" type="button" class="nav-tab" onclick="openSection('quiz')">Quiz</button>
+        <button id="nav-cases" type="button" class="nav-tab" onclick="openSection('cases')">Case Studies</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-wrap">
+
+    <!-- =====================================================================
+         SECTION A: PHARMACOLOGY (STRICTLY MEDICATIONS & DRUG CLASSES + #1-#209)
+         ===================================================================== -->
+    <section id="sec-pharmacology" class="section-view active">
+      <div class="section-banner">
+        <h1>Pharmacology — Medications &amp; Drug Classes</h1>
+        <p>Dedicated strictly to medications, drug classes, mechanisms of action, target organs, safety/antidotes, and the complete #1–#209 formulary.</p>
+      </div>
+
+      <div class="controls-panel">
+        <div class="search-row">
+          <input id="pharmSearchInput" type="text" class="search-input" placeholder="Search medication, class, suffix (-olol, -pril, -sartan, -dipine), antidote, or #1-#209..." oninput="renderPharmacology()" />
+          <button type="button" class="btn" onclick="resetPharmacologyFilters()">Reset Filters</button>
+        </div>
+
+        <div class="filter-pills" id="drugClassFilterPills">
+          <span class="pill-label">Drug Class:</span>
+        </div>
+
+        <div class="filter-pills" id="safetyFilterPills" style="margin-top: 8px;">
+          <span class="pill-label">Safety / Antidote:</span>
+          <button type="button" class="pill-btn green-active" data-safety="ALL" onclick="setSafetyFilter('ALL', this)">All Medications</button>
+          <button type="button" class="pill-btn" data-safety="ANTIDOTE" onclick="setSafetyFilter('ANTIDOTE', this)">Has Specific Antidote</button>
+          <button type="button" class="pill-btn" data-safety="HIGH_ALERT" onclick="setSafetyFilter('HIGH_ALERT', this)">High-Alert / Boxed / Pregnancy Risk</button>
+          <button type="button" class="pill-btn" data-safety="MONITORING" onclick="setSafetyFilter('MONITORING', this)">Lab / Vital / ECG / Organ Monitoring</button>
+        </div>
+      </div>
+
+      <div class="sub-heading">
+        <span>Visual Pharmacology Reference Modules</span>
+        <span id="visualCardsCount" style="font-size: 12px; color: var(--green-dark);"></span>
+      </div>
+      <div id="visualPharmacologyGrid" class="cards-grid"></div>
+
+      <div class="sub-heading">
+        <span>Complete Top 209 Medications Directory (#1 – #209)</span>
+        <span id="top209Count" style="font-size: 12px; color: var(--green-dark);"></span>
+      </div>
+      <div id="top209Grid" class="meds-grid"></div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION B: CLINICAL TREATMENT (8 PROTOCOLS)
+         ===================================================================== -->
+    <section id="sec-treatment" class="section-view">
+      <div class="section-banner green-border">
+        <h2>Clinical Treatment Protocols</h2>
+        <p>Structured clinical management for Appendicitis, Sepsis (1-Hour Bundle), Gastroenteritis (WHO Plan A/B/C &amp; ORS), Tuberculosis (2HRZE/4HR), Typhoid/Enteric Fever, UTI/Pyelonephritis, Malaria, and Pneumonia.</p>
+      </div>
+      <div id="treatmentProtocolsContainer"></div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION C: CLINICAL SYMPTOMS (7 SYSTEMS / 49 DISEASES)
+         ===================================================================== -->
+    <section id="sec-symptoms" class="section-view">
+      <div class="section-banner">
+        <h2>Clinical Symptoms — 7 Organ Systems (49 Diseases)</h2>
+        <p>One-line clinical symptoms across Musculoskeletal &amp; Dermatological, Neurological, Endocrine &amp; Metabolic, Infectious &amp; Febrile, Gastrointestinal, Respiratory, and Cardiovascular systems.</p>
+      </div>
+      <div id="symptomsSystemsContainer"></div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION D: OPD DIAGNOSIS (#01 - #100 WITH INTERACTIVE SELF-TEST)
+         ===================================================================== -->
+    <section id="sec-opd" class="section-view">
+      <div class="section-banner green-border">
+        <h2>OPD Diagnosis Guide (#01 – #100)</h2>
+        <p>Outpatient symptom patterns paired with differential diagnoses, plus an interactive self-test mode to practice rapid clinical recognition.</p>
+      </div>
+
+      <div class="controls-panel">
+        <div class="search-row" style="margin-bottom: 0;">
+          <input id="opdSearchInput" type="text" class="search-input" placeholder="Search #01-#100, symptoms, or diagnosis (e.g. Malaria, Stroke, PCOS, Testicular torsion)..." oninput="renderOPD()" />
+          <button id="opdSelfTestBtn" type="button" class="btn btn-navy" onclick="toggleOPDSelfTest()">Self-Test Mode: OFF</button>
+          <button type="button" class="btn btn-green" onclick="revealAllOPD()">Reveal All Answers</button>
+        </div>
+      </div>
+
+      <div id="opdGuideGrid" class="opd-grid"></div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION E: INTERACTIVE QUIZ
+         ===================================================================== -->
+    <section id="sec-quiz" class="section-view">
+      <div class="section-banner">
+        <h2>Clinical Knowledge Quiz</h2>
+        <p>Test your mastery of pharmacology mechanisms, antidotes, drug safety, treatment protocols, symptom clusters, and OPD diagnoses.</p>
+      </div>
+      <div id="quizContainer"></div>
+    </section>
+
+    <!-- =====================================================================
+         SECTION F: INTERACTIVE CASE STUDIES
+         ===================================================================== -->
+    <section id="sec-cases" class="section-view">
+      <div class="section-banner green-border">
+        <h2>Interactive Clinical Case Studies</h2>
+        <p>Evaluate patient presentations, choose the best clinical diagnosis and management step, and review evidence-based clinical rationales.</p>
+      </div>
+      <div id="casesContainer"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <strong>HILAAC HEALTH CENTER™</strong> • Clinical Learning &amp; Reference Platform • Built for structured clinical understanding.
+  </footer>
+
+  <script>
+    /* =========================================================================
+       INLINE SVG VISUAL GENERATORS (MEDICATIONS & TARGET ORGANS)
+       ========================================================================= */
+    function svgMedVisual(type) {
+      if (type === 'inhaler') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M18 10h14v24H18z" fill="#1D4ED8" rx="3"/><path d="M18 34h28v7H18z" fill="#1E40AF" rx="2"/><rect x="21" y="4" width="8" height="6" fill="#CBD5E1"/></svg>';
+      }
+      if (type === 'vial') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><rect x="23" y="4" width="14" height="5" rx="1" fill="#6D28D9"/><rect x="21" y="9" width="18" height="4" fill="#94A3B8"/><rect x="19" y="13" width="22" height="30" rx="4" fill="#FFFFFF" stroke="#0B1E46" stroke-width="2"/><rect x="19" y="21" width="22" height="11" fill="#DDD6FE"/></svg>';
+      }
+      if (type === 'insulin') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="16" width="34" height="14" rx="5" fill="#0B1E46"/><rect x="42" y="19" width="12" height="8" rx="1" fill="#059669"/><line x1="54" y1="23" x2="61" y2="23" stroke="#334155" stroke-width="2"/></svg>';
+      }
+      if (type === 'tablets') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="28" rx="10" ry="6" fill="#3B82F6" stroke="#1E3A8A" stroke-width="1.5"/><ellipse cx="42" cy="24" rx="10" ry="6" fill="#F59E0B" stroke="#92400E" stroke-width="1.5"/></svg>';
+      }
+      return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="12" width="24" height="31" rx="4" fill="#FFFFFF" stroke="#0B1E46" stroke-width="2"/><rect x="20" y="6" width="20" height="6" rx="2" fill="#059669"/><rect x="18" y="21" width="24" height="10" fill="#DBEAFE"/></svg>';
+    }
+
+    function svgOrganVisual(organ) {
+      if (organ === 'heart') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><rect x="27" y="3" width="5" height="10" fill="#1D4ED8"/><rect x="33" y="3" width="5" height="10" fill="#DC2626"/><path d="M32 43 C14 31 12 16 22 12 C27 10 30 13 32 16 C34 13 37 10 42 12 C52 16 50 31 32 43 Z" fill="#EF4444" stroke="#991B1B" stroke-width="1.5"/></svg>';
+      }
+      if (organ === 'vessel') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="14" width="48" height="20" rx="10" fill="#FCA5A5" stroke="#B91C1C" stroke-width="2"/><rect x="12" y="18" width="40" height="12" rx="6" fill="#EF4444"/></svg>';
+      }
+      if (organ === 'lungs') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M30 5h4v13h-4z" fill="#64748B"/><path d="M30 18 L16 25 C12 28 12 41 20 42 C26 42 29 37 30 31 Z" fill="#F472B6" stroke="#9D174D" stroke-width="1.5"/><path d="M34 18 L48 25 C52 28 52 41 44 42 C38 42 35 37 34 31 Z" fill="#F472B6" stroke="#9D174D" stroke-width="1.5"/></svg>';
+      }
+      if (organ === 'brain') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M32 10 C20 10 13 17 15 26 C12 31 17 38 25 38 L32 38 Z" fill="#FBCFE8" stroke="#9D174D" stroke-width="1.5"/><path d="M32 10 C44 10 51 17 49 26 C52 31 47 38 39 38 L32 38 Z" fill="#F9A8D4" stroke="#9D174D" stroke-width="1.5"/></svg>';
+      }
+      if (organ === 'gi') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M26 7 C17 7 14 16 20 22 C25 27 36 25 41 20 C45 15 39 9 32 11" fill="#FDBA74" stroke="#9A3412" stroke-width="1.5"/><rect x="18" y="28" width="28" height="12" rx="6" fill="#FED7AA" stroke="#9A3412" stroke-width="1.5"/></svg>';
+      }
+      if (organ === 'kidney') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M23 11 C15 11 12 20 15 29 C17 35 23 37 26 32 C24 27 24 21 26 16 C25 13 24 11 23 11 Z" fill="#DC2626" stroke="#7F1D1D" stroke-width="1.5"/><path d="M41 11 C49 11 52 20 49 29 C47 35 41 37 38 32 C40 27 40 21 38 16 C39 13 40 11 41 11 Z" fill="#DC2626" stroke="#7F1D1D" stroke-width="1.5"/></svg>';
+      }
+      if (organ === 'liver') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M12 22 C14 13 34 12 52 19 C54 25 44 34 27 35 C16 35 11 29 12 22 Z" fill="#B91C1C" stroke="#7F1D1D" stroke-width="1.5"/><ellipse cx="36" cy="34" rx="5" ry="3" fill="#16A34A"/></svg>';
+      }
+      if (organ === 'thyroid') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><rect x="29" y="5" width="6" height="38" fill="#E2E8F0" stroke="#64748B" stroke-width="1.2"/><path d="M29 18 C20 14 14 21 17 30 C19 36 26 35 29 29 Z" fill="#FB7185" stroke="#9F1239" stroke-width="1.3"/><path d="M35 18 C44 14 50 21 47 30 C45 36 38 35 35 29 Z" fill="#FB7185" stroke="#9F1239" stroke-width="1.3"/></svg>';
+      }
+      if (organ === 'eye') {
+        return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><path d="M8 24 C16 12 48 12 56 24 C48 36 16 36 8 24 Z" fill="#FFFFFF" stroke="#0B1E46" stroke-width="2"/><circle cx="32" cy="24" r="7" fill="#2563EB"/><circle cx="32" cy="24" r="3" fill="#0F172A"/></svg>';
+      }
+      return '<svg width="56" height="44" viewBox="0 0 64 48" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="12" width="44" height="24" rx="6" fill="#FDE68A" stroke="#B45309" stroke-width="1.5"/><line x1="18" y1="20" x2="46" y2="20" stroke="#D97706" stroke-width="1.5"/><line x1="18" y1="28" x2="46" y2="28" stroke="#D97706" stroke-width="1.5"/></svg>';
+    }
+
+    /* =========================================================================
+       COMPLETE VISUAL PHARMACOLOGY MODULES (ALL IMAGES FROM USER SOURCES)
+       ========================================================================= */
+    var visualPharmacologyModules = [
+      // 1. Nitrates
+      {
+        id: 'nitrates',
+        title: 'Nitrates',
+        subtitle: 'Vasodilators • Sublingual Nitroglycerin 0.4 mg',
+        drugClass: 'Cardiovascular',
+        medSvg: 'bottle',
+        organSvg: 'vessel',
+        organLabel: 'Blood Vessel & Heart',
+        moaFlow: 'Nitric Oxide → Venodilation → ↓ Preload → ↓ Myocardial Oxygen Demand & Cardiac Workload',
+        examples: ['Nitroglycerin 0.4 mg sublingual tablets', 'Isosorbide dinitrate / mononitrate'],
+        effects: ['Relieves angina/ischemia via venodilation and reduced preload'],
+        monitoring: ['Headache, hypotension, dizziness, flushing', 'Monitor BP before and after administration'],
+        safety: ['CRITICAL: Nitrates + PDE-5 inhibitors (sildenafil, tadalafil) → Severe hypotension. Never combine.'],
+        tags: ['ANTIDOTE', 'HIGH_ALERT', 'MONITORING']
+      },
+      // 2. Beta Blockers (-olol)
+      {
+        id: 'beta-blockers',
+        title: 'Beta Blockers',
+        subtitle: 'Suffix: -olol • Adrenergic Antagonists',
+        drugClass: 'Cardiovascular',
+        medSvg: 'tablets',
+        organSvg: 'heart',
+        organLabel: 'Heart & Airways',
+        moaFlow: 'Blocks β-receptors → ↓ Heart Rate & ↓ Contractility → ↓ BP & ↓ Cardiac Workload',
+        examples: ['Metoprolol (50 mg)', 'Atenolol', 'Propranolol', 'Bisoprolol'],
+        effects: ['↓ Heart rate', '↓ Blood pressure', '↓ Cardiac workload / force of contraction'],
+        monitoring: ['Watch for bradycardia, hypotension, fatigue, dizziness, bronchospasm'],
+        safety: ['Caution with bronchospasm (especially non-selective agents); avoid abrupt withdrawal.'],
+        tags: ['MONITORING']
+      },
+      // 3. Anticoagulants vs Antiplatelets
+      {
+        id: 'anticoag-vs-antiplat',
+        title: 'Anticoagulants vs Antiplatelets',
+        subtitle: 'Clotting Cascade vs Platelet Aggregation',
+        drugClass: 'Cardiovascular',
+        medSvg: 'vial',
+        organSvg: 'vessel',
+        organLabel: 'Coagulation & Platelets',
+        moaFlow: 'Anticoagulants: XII → XI → IX → X → II (Thrombin) → Fibrin | Antiplatelets: ↓ Platelet Aggregation',
+        examples: [
+          'Anticoagulants: Heparin (5,000 units/mL), Warfarin (2 mg), Apixaban (5 mg)',
+          'Antiplatelets: Aspirin (81 mg), Clopidogrel (75 mg)'
+        ],
+        effects: ['Anticoagulants prevent/treat thrombus', 'Antiplatelets prevent platelet clots'],
+        monitoring: ['Monitor bleeding, bruising, Hemoglobin (Hgb), and Hematocrit (Hct)'],
+        safety: ['MAIN DANGER: Bleeding. Assess mucosal/GI/urinary bleeding and fall risk.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 4. Cardiac Glycoside: Digoxin
+      {
+        id: 'digoxin',
+        title: 'Cardiac Glycoside: Digoxin',
+        subtitle: '0.125 mg Tablets • Positive Inotrope & AV Conduction',
+        drugClass: 'Cardiovascular',
+        medSvg: 'bottle',
+        organSvg: 'heart',
+        organLabel: 'Myocardium & Eye',
+        moaFlow: 'Inhibits Na+/K+-ATPase → ↑ Intracellular Ca2+ → ↑ Contractility & ↓ Heart Rate (AV node)',
+        examples: ['Digoxin 0.125 mg tablets'],
+        effects: ['↑ Contractility (positive inotropy)', '↓ Heart rate'],
+        monitoring: ['Check apical pulse before administration', 'Hypokalemia (↓ K+) increases toxicity risk'],
+        safety: ['Toxicity signs: Nausea/vomiting, bradycardia, confusion, visual changes, yellow/green vision. Antidote: Digoxin immune Fab.'],
+        tags: ['ANTIDOTE', 'HIGH_ALERT', 'MONITORING']
+      },
+      // 5. Anticoagulant Monitoring
+      {
+        id: 'anticoag-monitoring',
+        title: 'Anticoagulant Monitoring',
+        subtitle: 'Heparin • Warfarin • DOACs Labs & Antidotes',
+        drugClass: 'Cardiovascular',
+        medSvg: 'vial',
+        organSvg: 'vessel',
+        organLabel: 'Hemostasis & Reversal',
+        moaFlow: 'Heparin → Monitor aPTT (Antidote: Protamine sulfate) | Warfarin → Monitor PT/INR (Antidote: Vitamin K) | DOACs → No routine INR',
+        examples: [
+          'Heparin (5,000 units/mL): Monitor aPTT; Antidote = Protamine sulfate',
+          'Warfarin (2 mg): Monitor PT/INR; Antidote = Vitamin K (Phytonadione 10 mg/mL)',
+          'DOACs: Apixaban (5 mg), Rivaroxaban (20 mg), Dabigatran (150 mg)'
+        ],
+        effects: ['Targeted anticoagulation across parenteral, vitamin K antagonist, and direct oral agents'],
+        monitoring: ['aPTT for Heparin; PT/INR for Warfarin; routine INR generally NOT required for DOACs'],
+        safety: ['Watch for bleeding; specific antidotes: Protamine sulfate (Heparin) and Vitamin K (Warfarin).'],
+        tags: ['ANTIDOTE', 'MONITORING']
+      },
+      // 6. Antiarrhythmic High-Yield Facts
+      {
+        id: 'antiarrhythmics',
+        title: 'Antiarrhythmic High-Yield Facts',
+        subtitle: 'Amiodarone • Lidocaine • Adenosine • Sotalol • Procainamide',
+        drugClass: 'Cardiovascular',
+        medSvg: 'vial',
+        organSvg: 'lungs',
+        organLabel: 'Lungs, Liver, Thyroid, Brain, ECG',
+        moaFlow: 'Rhythm & Conduction Modulation → Organ-Specific Toxicity & ECG Surveillance',
+        examples: [
+          'Amiodarone (200 mg): Pulmonary + thyroid + liver toxicity',
+          'Lidocaine (2% Injection): CNS toxicity',
+          'Adenosine (6 mg/2 mL Injection): Very short acting',
+          'Sotalol (80 mg): QT prolongation',
+          'Procainamide (100 mg/mL Injection): Lupus-like syndrome'
+        ],
+        effects: ['Suppresses or terminates cardiac arrhythmias depending on agent'],
+        monitoring: ['Amiodarone monitoring: Lungs, Liver, Thyroid, ECG'],
+        safety: ['Watch QT prolongation (Sotalol), CNS toxicity (Lidocaine), lupus-like syndrome (Procainamide), rapid IV push (Adenosine).'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 7. Inhaler Order
+      {
+        id: 'inhaler-order',
+        title: 'Inhaler Order',
+        subtitle: 'Bronchodilator First → Corticosteroid Second',
+        drugClass: 'Respiratory',
+        medSvg: 'inhaler',
+        organSvg: 'lungs',
+        organLabel: 'Bronchi & Alveoli',
+        moaFlow: '1. Bronchodilator opens airways → 2. Corticosteroid reaches deeper into lungs → 3. Rinse mouth afterward',
+        examples: ['Step 1: Bronchodilator inhaler', 'Step 2: Inhaled corticosteroid inhaler'],
+        effects: ['Opens narrowed airways first so anti-inflammatory steroid penetrates deeper'],
+        monitoring: ['Verify inhaler sequence and post-steroid mouth rinsing'],
+        safety: ['Steroid inhaler → Rinse mouth afterward to reduce oral thrush/candidiasis.'],
+        tags: ['MONITORING']
+      },
+      // 8. Respiratory Medications
+      {
+        id: 'respiratory-meds',
+        title: 'Respiratory Medications',
+        subtitle: 'Rescue (Albuterol) vs Controller (Inhaled Corticosteroids)',
+        drugClass: 'Respiratory',
+        medSvg: 'inhaler',
+        organSvg: 'lungs',
+        organLabel: 'Airways & Oropharynx',
+        moaFlow: 'Rescue: Rapid bronchodilation | Controller ICS: Suppresses chronic airway inflammation',
+        examples: ['Rescue: Albuterol', 'Controller (Inhaled corticosteroids): Fluticasone, Budesonide'],
+        effects: ['Albuterol: Rapid bronchodilation | ICS: Long-term airway control'],
+        monitoring: ['Albuterol effects: Tremor, tachycardia, nervousness'],
+        safety: ['Controller ICS: Rinse mouth after use → Prevent oral candidiasis.'],
+        tags: ['MONITORING']
+      },
+      // 9. Antibiotic Classes (Visual Table)
+      {
+        id: 'antibiotic-classes-table',
+        title: 'Antibiotic Classes (High-Yield)',
+        subtitle: '7 Major Classes & Key Clinical Concerns',
+        drugClass: 'Antibiotics',
+        medSvg: 'vial',
+        organSvg: 'kidney',
+        organLabel: 'Skin, ECG, Tendons, Kidney, Ear',
+        moaFlow: 'Targeted Antibacterial Activity → Class-Specific Hypersensitivity & Organ Toxicities',
+        examples: [
+          'Penicillin (amoxicillin) • Cephalosporin (ceftriaxone) • Macrolide (azithromycin)',
+          'Tetracycline (doxycycline) • Fluoroquinolone (ciprofloxacin)',
+          'Aminoglycoside (gentamicin) • Vancomycin'
+        ],
+        effects: ['Treats susceptible bacterial infections across respiratory, GI, GU, and systemic sites'],
+        monitoring: ['Allergy (Penicillin/Cephalosporin), QT prolongation (Macrolide), Photosensitivity (Tetracycline)'],
+        safety: ['Tendon injury (Fluoroquinolone), Nephro/ototoxicity (Aminoglycoside), Nephrotoxicity (Vancomycin).'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 10. Benzodiazepines
+      {
+        id: 'benzodiazepines',
+        title: 'Benzodiazepines',
+        subtitle: 'GABA-A Potentiators • Antidote: Flumazenil',
+        drugClass: 'CNS & Psychiatric',
+        medSvg: 'tablets',
+        organSvg: 'brain',
+        organLabel: 'Central Nervous System & Lungs',
+        moaFlow: 'Potentiates GABA-A receptors (↑ Cl- opening frequency) → Hyperpolarization → Anxiolysis, Sedation, Muscle Relaxation, Anticonvulsant',
+        examples: ['Lorazepam', 'Diazepam (2 mg)', 'Alprazolam', 'Midazolam'],
+        effects: ['Anxiolysis', 'Sedation', 'Muscle relaxation', 'Anticonvulsant effects'],
+        monitoring: ['Monitor level of consciousness, gait/falls, and respiratory rate'],
+        safety: ['MAJOR RISKS: CNS depression, Falls, Respiratory depression. Antidote: Flumazenil (0.5 mg/5 mL).'],
+        tags: ['ANTIDOTE', 'HIGH_ALERT', 'MONITORING']
+      },
+      // 11. GI Medications (Visual Class Table)
+      {
+        id: 'gi-medications',
+        title: 'GI Medications',
+        subtitle: 'Acid Suppression, Antiemetics, Laxatives & Antidiarrheals',
+        drugClass: 'GI & Analgesics',
+        medSvg: 'bottle',
+        organSvg: 'gi',
+        organLabel: 'Stomach & Intestines',
+        moaFlow: 'PPI/H2 Blocker (↓ Acid) • Antacid (Neutralizes acid) • Antiemetic (↓ Nausea/vomiting) • Laxative (Constipation) • Antidiarrheal (Diarrhea)',
+        examples: [
+          'PPI: omeprazole • H2 blocker: famotidine • Antacid: calcium carbonate',
+          'Antiemetic: ondansetron • Laxative: polyethylene glycol • Antidiarrheal: loperamide'
+        ],
+        effects: ['Reduces acid, neutralizes gastric acid, controls nausea/vomiting, relieves constipation or diarrhea'],
+        monitoring: ['Assess symptom response, hydration, and bowel pattern'],
+        safety: ['Avoid antidiarrheals in invasive/febrile dysentery or young children where contraindicated.'],
+        tags: []
+      },
+      // 12. Psychiatric Medications (SSRIs & SNRIs)
+      {
+        id: 'psychiatric-meds',
+        title: 'Psychiatric Medications (SSRIs & SNRIs)',
+        subtitle: '-oxetine / -opram & Serotonin-Norepinephrine Agents',
+        drugClass: 'CNS & Psychiatric',
+        medSvg: 'tablets',
+        organSvg: 'brain',
+        organLabel: 'Brain Synapses (5-HT & NE)',
+        moaFlow: 'SSRIs: Inhibit 5-HT reuptake | SNRIs: Increase Serotonin (5-HT) & Norepinephrine (NE) activity',
+        examples: ['SSRIs (-oxetine / -opram): fluoxetine, sertraline, escitalopram', 'SNRIs: venlafaxine, duloxetine'],
+        effects: ['Improves mood, anxiety, and affective symptoms over time'],
+        monitoring: ['KEY POINT: Antidepressants generally take weeks, not hours, for full therapeutic benefit'],
+        safety: ['MAIN CONCERN: Serotonin syndrome. Avoid abrupt discontinuation or unsafe serotonergic combinations.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 13. Thyroid Medications
+      {
+        id: 'thyroid-meds',
+        title: 'Thyroid Medications',
+        subtitle: 'Hypothyroidism (Levothyroxine) & Hyperthyroidism',
+        drugClass: 'Endocrine & Metabolic',
+        medSvg: 'bottle',
+        organSvg: 'thyroid',
+        organLabel: 'Thyroid Gland & Heart',
+        moaFlow: 'Hypothyroid: Replaces T4 hormone (Levothyroxine) | Hyperthyroid: Suppresses thyroid hormone synthesis (Methimazole / PTU)',
+        examples: ['Hypothyroidism: Levothyroxine (50 mcg)', 'Hyperthyroidism: Methimazole (10 mg), Propylthiouracil (50 mg)'],
+        effects: ['Restores euthyroid metabolic balance'],
+        monitoring: ['Take consistently: usually Morning + empty stomach (Levothyroxine); monitor thyroid function & adverse effects'],
+        safety: ['Signs of excessive replacement: Tachycardia, tremor, insomnia, heat intolerance.'],
+        tags: ['MONITORING']
+      },
+      // 14. Corticosteroids
+      {
+        id: 'corticosteroids',
+        title: 'Corticosteroids',
+        subtitle: 'Prednisone • Dexamethasone • Hydrocortisone',
+        drugClass: 'Endocrine & Metabolic',
+        medSvg: 'bottle',
+        organSvg: 'thyroid',
+        organLabel: 'Adrenal, Bone, Glucose, Immune',
+        moaFlow: '↓ Inflammation & ↓ Immune response → ↑ Blood glucose & Long-term HPA/Adrenal suppression',
+        examples: ['Prednisone', 'Dexamethasone', 'Hydrocortisone (10 mg)'],
+        effects: ['↑ Blood glucose', '↓ Inflammation', '↓ Immune response'],
+        monitoring: ['Monitor blood glucose, blood pressure, bone health, and infection signs'],
+        safety: ['Long-term risks: Infection, Osteoporosis, Hyperglycemia, Hypertension, Adrenal suppression. NEVER abruptly discontinue prolonged systemic therapy.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 15. Metformin
+      {
+        id: 'metformin',
+        title: 'Metformin',
+        subtitle: '500 mg Tablets • First-Line Type 2 Diabetes',
+        drugClass: 'Endocrine & Metabolic',
+        medSvg: 'bottle',
+        organSvg: 'kidney',
+        organLabel: 'Kidneys, GI Tract & Glucose',
+        moaFlow: 'Reduces hepatic glucose output & improves insulin sensitivity → Lowers blood glucose',
+        examples: ['Metformin 500 mg tablets'],
+        effects: ['First-line oral agent for many patients with Type 2 diabetes'],
+        monitoring: ['Monitor: Renal function, Glucose, GI tolerance'],
+        safety: ['Common effects: GI upset, diarrhea, nausea. MAJOR CONCERN: Lactic acidosis (rare but serious).'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 16. Insulin Timing
+      {
+        id: 'insulin-timing',
+        title: 'Insulin Timing',
+        subtitle: 'Rapid • Short • Intermediate • Long-Acting',
+        drugClass: 'Endocrine & Metabolic',
+        medSvg: 'insulin',
+        organSvg: 'heart',
+        organLabel: 'Glycemic Control Timing',
+        moaFlow: 'Rapid/Short → Mealtime coverage | Intermediate (NPH) → Intermediate duration | Long-acting → Basal coverage',
+        examples: [
+          'Rapid-acting: Lispro / Aspart / Glulisine (Mealtime)',
+          'Short-acting: Regular (Mealtime; IV possible)',
+          'Intermediate: NPH (Intermediate duration)',
+          'Long-acting: Glargine / Detemir / Degludec (Basal coverage)'
+        ],
+        effects: ['Matches prandial and basal insulin requirements'],
+        monitoring: ['Coordinate meal timing with rapid/short-acting insulin and monitor blood glucose'],
+        safety: ['Watch for hypoglycemia; verify insulin type and route (Regular insulin IV possible).'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 17. NSAIDs (Risks & Caution)
+      {
+        id: 'nsaids-card',
+        title: 'NSAIDs (Risks & Precautions)',
+        subtitle: 'Ibuprofen • Naproxen • Ketorolac',
+        drugClass: 'GI & Analgesics',
+        medSvg: 'vial',
+        organSvg: 'gi',
+        organLabel: 'GI Mucosa, Kidneys, Heart',
+        moaFlow: 'Inhibits cyclooxygenase (COX) → ↓ Prostaglandins → Analgesia/anti-inflammation with GI, renal & CV risks',
+        examples: ['Ibuprofen (200 mg)', 'Naproxen (250 mg)', 'Ketorolac (30 mg/mL)'],
+        effects: ['Reduces pain, fever, and inflammation'],
+        monitoring: ['Monitor GI symptoms, renal function, fluid status, and blood pressure'],
+        safety: ['MAIN RISKS: GI bleeding, Kidney injury, Fluid retention, Cardiovascular events. Ketorolac = short-term use only.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 18. Acetaminophen
+      {
+        id: 'acetaminophen',
+        title: 'Acetaminophen',
+        subtitle: '500 mg • Antidote: N-acetylcysteine (NAC)',
+        drugClass: 'GI & Analgesics',
+        medSvg: 'bottle',
+        organSvg: 'liver',
+        organLabel: 'Liver (Hepatotoxicity Risk)',
+        moaFlow: 'Central analgesic & antipyretic action → Excess/overdose depletes glutathione → Liver injury',
+        examples: ['Acetaminophen 500 mg tablets / combination products'],
+        effects: ['Relieves pain and reduces fever'],
+        monitoring: ['Assess: Liver function, Alcohol use, Other acetaminophen-containing medications'],
+        safety: ['MAIN TOXICITY: LIVER INJURY. Watch total daily dose from all combination products. Overdose antidote: N-acetylcysteine (NAC).'],
+        tags: ['ANTIDOTE', 'HIGH_ALERT', 'MONITORING']
+      },
+      // 19. Diabetes Medications (Summary Table)
+      {
+        id: 'diabetes-meds-table',
+        title: 'Diabetes Medications Overview',
+        subtitle: 'Insulins • Metformin • Sulfonylurea • SGLT2 • GLP-1',
+        drugClass: 'Endocrine & Metabolic',
+        medSvg: 'insulin',
+        organSvg: 'kidney',
+        organLabel: 'Pancreas, GI, Kidneys & GU Tract',
+        moaFlow: 'Insulin & Secretagogues (↑ Insulin) • Metformin (↓ Hepatic glucose) • SGLT2 (↑ Glucosuria) • GLP-1 (↑ Glucose-dependent insulin / satiety)',
+        examples: [
+          'Rapid: lispro (Mealtime) • Short: regular (IV use possible)',
+          'Intermediate: NPH (Cloudy) • Long acting: glargine (Basal)',
+          'Metformin: metformin (GI effects) • Sulfonylurea: glipizide (Hypoglycemia)',
+          'SGLT2 inhibitor: empagliflozin (Genital/urinary infections) • GLP-1 agonist: semaglutide (GI effects)'
+        ],
+        effects: ['Lowers blood glucose across distinct glycemic pathways'],
+        monitoring: ['Monitor glucose, hypoglycemia risk, GI effects, and genital/urinary symptoms'],
+        safety: ['Hypoglycemia risk with insulin/sulfonylureas; genital/urinary infections with SGLT2 inhibitors; GI effects with Metformin/GLP-1.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 20. Antihypertensives ABCD & PRIL/SARTAN/LOL/DIPINE/PEE
+      {
+        id: 'antihypertensives-abcd',
+        title: 'Antihypertensives: ABCD & BP Squad',
+        subtitle: 'PRIL • SARTAN • LOL • DIPINE • PEE',
+        drugClass: 'Cardiovascular',
+        medSvg: 'tablets',
+        organSvg: 'vessel',
+        organLabel: 'Arteries, Kidneys & Heart',
+        moaFlow: 'PRIL (ACEi) & SARTAN (ARB) → ↓ Angiotensin II action | LOL (Beta blocker) → ↓ HR/contractility | DIPINE (CCB) → Vasodilation | PEE (Diuretic) → ↓ Na+/Water',
+        examples: [
+          'PRIL (ACE inhibitors): Enalapril, Lisinopril, Captopril, Ramipril',
+          'SARTAN (ARBs): Losartan, Valsartan, Candesartan, Telmisartan',
+          'LOL (Beta blockers): Propranolol, Atenolol, Metoprolol, Bisoprolol',
+          'DIPINE (CCBs): Amlodipine, Nifedipine, Felodipine',
+          'PEE (Diuretics): HCTZ (Thiazide), Furosemide (Loop), Spironolactone (K+-sparing)'
+        ],
+        effects: ['Lowers blood pressure via vasodilation, reduced cardiac output, or volume reduction'],
+        monitoring: ['Monitor BP, electrolytes, renal function, dry cough/angioedema (ACEi), and ankle edema (Amlodipine)'],
+        safety: ['ACE inhibitors & ARBs in pregnancy = HUGE RED FLAG. Always think electrolytes with diuretics.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 21. Antibiotics Classification (7 Classes)
+      {
+        id: 'antibiotics-7-classes',
+        title: 'Antibiotics — 7 Major Classes',
+        subtitle: 'β-Lactams to Rifamycins & Oxazolidinones',
+        drugClass: 'Antibiotics',
+        medSvg: 'vial',
+        organSvg: 'kidney',
+        organLabel: 'Bacteria & Host Organs',
+        moaFlow: 'Cell Wall (β-Lactams, Glycopeptides) • Protein Synthesis (Aminoglycosides, Tetracyclines, Macrolides, Linezolid, Clindamycin) • DNA Gyrase/RNA (Fluoroquinolones, Rifamycins)',
+        examples: [
+          '1. β-Lactams: Penicillins, Cephalosporins, Carbapenems, Monobactams',
+          '2. Aminoglycosides: Streptomycin, Gentamicin, Amikacin, Neomycin',
+          '3. Tetracyclines: Tetracycline, Doxycycline, Minocycline',
+          '4. Macrolides: Erythromycin, Azithromycin, Clarithromycin',
+          '5. Glycopeptides: Vancomycin, Teicoplanin',
+          '6. Fluoroquinolones: Ciprofloxacin, Levofloxacin, Moxifloxacin',
+          '7. Others: Chloramphenicol, Linezolid, Clindamycin, Oxazolidinones, Rifamycins'
+        ],
+        effects: ['Bactericidal or bacteriostatic suppression of targeted bacterial pathogens'],
+        monitoring: ['Select based on spectrum, resistance, allergies, and organ function'],
+        safety: ['Review class-specific toxicities including renal, auditory, tendon, and QT risks.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 22. Antiulcer Drugs (4 Classes)
+      {
+        id: 'antiulcer-4-classes',
+        title: 'Antiulcer Drugs — 4 Classes',
+        subtitle: 'H2 Blockers • PPIs • Antacids • Mucosal Protectants',
+        drugClass: 'GI & Analgesics',
+        medSvg: 'bottle',
+        organSvg: 'gi',
+        organLabel: 'Gastric Parietal Cell & Mucosa',
+        moaFlow: 'H2 Blockers & PPIs → ↓ Gastric acid | Antacids → Neutralize acid | Mucosal Protectants → Coat & shield ulcerated mucosa',
+        examples: [
+          '1. H2-Receptor Antagonists: Cimetidine, Ranitidine, Famotidine, Nizatidine',
+          '2. Proton Pump Inhibitors (PPIs): Omeprazole, Esomeprazole, Pantoprazole, Lansoprazole, Rabeprazole',
+          '3. Antacids: Aluminium Hydroxide, Magnesium Hydroxide, Magnesium Trisilicate, Calcium Carbonate',
+          '4. Mucosal Protective Agents: Sucralfate, Bismuth Subsalicylate, Colloidal Bismuth Pectin'
+        ],
+        effects: ['Reduces acid damage and protects gastric/duodenal mucosal lining'],
+        monitoring: ['Assess ulcer/GERD symptoms and spacing of antacids/sucralfate from other oral drugs'],
+        safety: ['Bismuth can darken stools; aluminum/magnesium can cause constipation or loose stools.'],
+        tags: []
+      },
+      // 23. Antiasthmatic Drugs (4 Classes)
+      {
+        id: 'antiasthmatic-4-classes',
+        title: 'Antiasthmatic Drugs — 4 Classes',
+        subtitle: 'Bronchodilators • Anti-Inflammatory • Mast Cell Stabilizers • LTs',
+        drugClass: 'Respiratory',
+        medSvg: 'inhaler',
+        organSvg: 'lungs',
+        organLabel: 'Bronchial Smooth Muscle & Mast Cells',
+        moaFlow: 'β2-Agonists & Methylxanthines → Bronchodilation | Corticosteroids → ↓ Inflammation | Mast Cell Stabilizers → ↓ Degranulation | LT Modifiers → Block leukotrienes',
+        examples: [
+          '1. Bronchodilators: (a) β2-Agonists (Salbutamol, Terbutaline, Salmeterol, Formoterol), (b) Methylxanthines (Theophylline, Aminophylline)',
+          '2. Anti-inflammatory Drugs: Corticosteroids (Beclomethasone, Budesonide, Fluticasone, Prednisolone, Hydrocortisone)',
+          '3. Mast Cell Stabilizers: Sodium Cromoglycate, Nedocromil Sodium',
+          '4. Leukotriene Modifiers: Montelukast, Zafirlukast'
+        ],
+        effects: ['Relieves bronchospasm and suppresses airway inflammation'],
+        monitoring: ['Monitor peak flow/symptoms, inhaler technique, and systemic/inhaled steroid effects'],
+        safety: ['Follow asthma controller vs reliever principles; monitor neuropsychiatric/hepatic effects as indicated.'],
+        tags: ['MONITORING']
+      },
+      // 24. Antihypertensive Drugs (5 Classes)
+      {
+        id: 'antihypertensives-5-classes',
+        title: 'Antihypertensive Drugs — 5 Classes',
+        subtitle: 'Diuretics • ACEi • ARBs • Beta Blockers • CCBs',
+        drugClass: 'Cardiovascular',
+        medSvg: 'tablets',
+        organSvg: 'heart',
+        organLabel: 'Vasculature, Kidneys & Heart',
+        moaFlow: 'Diuretics (↓ Volume) • ACEi & ARBs (↓ RAAS vasoconstriction) • Beta Blockers (↓ HR/CO) • CCBs (↓ Ca2+ vascular tone)',
+        examples: [
+          '1. Diuretics: Hydrochlorothiazide, Furosemide, Spironolactone',
+          '2. ACE Inhibitors: Enalapril, Lisinopril, Ramipril',
+          '3. Angiotensin II Receptor Blockers (ARBs): Losartan, Valsartan, Telmisartan',
+          '4. Beta Blockers: Atenolol, Metoprolol, Propranolol',
+          '5. Calcium Channel Blockers (CCBs): Amlodipine, Verapamil, Diltiazem'
+        ],
+        effects: ['Reduces arterial blood pressure across complementary hemodynamic targets'],
+        monitoring: ['Check BP, heart rate, electrolytes, and renal function'],
+        safety: ['Avoid combining ACEi + ARB; avoid ACEi/ARB in pregnancy.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 25. NSAIDs COX-1 vs COX-2
+      {
+        id: 'nsaids-cox-classes',
+        title: 'NSAIDs — COX-1 vs COX-2 Pathways',
+        subtitle: 'Non-Selective • Preferential COX-2 • Selective Coxibs',
+        drugClass: 'GI & Analgesics',
+        medSvg: 'tablets',
+        organSvg: 'gi',
+        organLabel: 'COX-1 (GIT/Platelets) vs COX-2 (Inflammation)',
+        moaFlow: 'COX-1 → Protective (GIT, Platelets) | COX-2 → Inflammation, Pain, Fever',
+        examples: [
+          '1. Non-Selective COX Inhibitors: Salicylates (Aspirin, Diflunisal), Propionic Acid (Ibuprofen, Naproxen, Ketoprofen), Acetic Acid (Diclofenac, Indomethacin, Sulindac), Enolic Acid (Piroxicam, Meloxicam), Fenamates (Mefenamic Acid, Meclofenamate), Oxicams (Piroxicam, Lornoxicam)',
+          '2. Preferential COX-2 Inhibitors: Nimesulide, Etoricoxib',
+          '3. Selective COX-2 Inhibitors (Coxibs): Celecoxib, Etoricoxib, Parecoxib'
+        ],
+        effects: ['Analgesic, anti-inflammatory, and antipyretic actions via prostaglandin inhibition'],
+        monitoring: ['Assess GI bleed risk, renal function, platelet effects (Aspirin), and CV risk'],
+        safety: ['COX-1 inhibition affects gastric protection and platelets; selective COX-2 carries CV event considerations.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 26. General Pharmacology — One Page Notes
+      {
+        id: 'general-pharmacology',
+        title: 'General Pharmacology — Core Principles',
+        subtitle: 'PD • PK (ADME) • TI • Dose-Response • Rational Therapy',
+        drugClass: 'General Pharmacology',
+        medSvg: 'bottle',
+        organSvg: 'liver',
+        organLabel: 'ADME & Receptor Targets',
+        moaFlow: 'Drug → ADME (Absorption, Distribution, Metabolism, Excretion) + Target Interaction (Receptors, Enzymes, Ion Channels, Transporters, Nucleic Acids)',
+        examples: [
+          'Branches: Pharmacodynamics (PD), Pharmacokinetics (PK/ADME), Pharmacotherapeutics, Toxicology',
+          'Sources: Natural, Semi-synthetic, Synthetic, Biotechnology',
+          'Key Concepts: Efficacy (Emax), Potency (EC50 — lower EC50 = higher potency), Therapeutic Index (TI = TD50 / ED50)'
+        ],
+        effects: ['Defines how drugs act on the body and how the body processes drugs'],
+        monitoring: ['Apply rational therapy: right drug, dose, route, monitoring, and patient education'],
+        safety: ['Narrow therapeutic index drugs require careful dosing and monitoring; watch tolerance, dependence, and interactions.'],
+        tags: ['MONITORING']
+      },
+      // 27. ANS Master Note
+      {
+        id: 'ans-master-note',
+        title: 'ANS Master Note (Sympathetic vs Parasympathetic)',
+        subtitle: 'Receptors (α1, α2, β1, β2, M1, M2, M3) • SLUDGE vs DRY AS BONE',
+        drugClass: 'CNS & Psychiatric',
+        medSvg: 'vial',
+        organSvg: 'eye',
+        organLabel: 'Eye, Heart, Lungs, GI, Bladder, Glands',
+        moaFlow: 'Sympathetic (Fight/Flight: ACh → NA) vs Parasympathetic (Rest/Digest: ACh → ACh) → Agonists & Antagonists',
+        examples: [
+          'Adrenergic: α1 (vasoconstriction, mydriasis), α2 (↓ NA release), β1 (↑ HR/contractility), β2 (bronchodilation)',
+          'Cholinergic (Muscarinic): M1 (CNS/glands), M2 (↓ HR/AV conduction), M3 (smooth muscle/glands)',
+          'Drugs: Pilocarpine, Neostigmine, Atropine, Adrenaline, Salbutamol, Propranolol, Tamsulosin'
+        ],
+        effects: ['Regulates involuntary organ functions and homeostasis'],
+        monitoring: ['Cholinergic excess = SLUDGE (Salivation, Lacrimation, Urination, Defecation, GI cramps, Emesis)'],
+        safety: ['Anticholinergic excess = DRY AS BONE (Dry mouth, Red/flushed, Hot, Absent sweating, Blurred/mydriasis, Confusion, Urinary retention, Constipation).'],
+        tags: ['ANTIDOTE', 'HIGH_ALERT', 'MONITORING']
+      },
+      // 28. Histamine, Serotonin, PGs, LTs & NSAIDs
+      {
+        id: 'autacoids-mediators',
+        title: 'Histamine, Serotonin, PGs, LTs & NSAIDs',
+        subtitle: 'Autacoids & Inflammatory Mediators',
+        drugClass: 'GI & Analgesics',
+        medSvg: 'tablets',
+        organSvg: 'gi',
+        organLabel: 'Allergy, GI, Airways & Vessels',
+        moaFlow: 'Histamine (H1/H2) • Serotonin (5-HT3 antagonists / 5-HT4 agonist) • PGs (Misoprostol, Dinoprostone, Epoprostenol) • LTs (Montelukast, Zafirlukast)',
+        examples: [
+          'H1: Chlorpheniramine, Promethazine, Cetirizine | H2: Ranitidine, Famotidine',
+          '5-HT3 Antagonists: Ondansetron, Granisetron, Tropisetron | 5-HT4: Cisapride',
+          'PGs: Misoprostol, Dinoprostone, Epoprostenol | LTs: Montelukast, Zafirlukast, Zileuton'
+        ],
+        effects: ['Manages allergies, acid/ulcer, nausea/vomiting, asthma/rhinitis, and prostaglandin indications'],
+        monitoring: ['Monitor sedation/anticholinergic effects (H1), LFTs (Zileuton/Montelukast), and QT/GI effects'],
+        safety: ['Prostaglandin analogues cause uterine contractions/bleeding—strictly follow clinical/pregnancy precautions.'],
+        tags: ['HIGH_ALERT', 'MONITORING']
+      },
+      // 29. Respiratory & COPD Pharmacology
+      {
+        id: 'respiratory-copd-pharm',
+        title: 'Respiratory & COPD Pharmacology',
+        subtitle: 'Bronchodilators • Anti-Inflammatory • Mucolytics • Antitussives',
+        drugClass: 'Respiratory',
+        medSvg: 'inhaler',
+        organSvg: 'lungs',
+        organLabel: 'Bronchi, Mucus & Cough Center',
+        moaFlow: 'β2-Agonists (↑ cAMP) & Anticholinergics (Block M3) → Bronchodilation | Mucolytics → Break mucus bonds | Antitussives → Suppress cough',
+        examples: [
+          'Bronchodilators: Salbutamol, Formoterol, Ipratropium, Tiotropium, Theophylline',
+          'Expectorants: Guaifenesin | Mucolytics: N-Acetylcysteine, Bromhexine, Ambroxol, Dornase alfa',
+          'Antitussives: Codeine, Dextromethorphan, Benzonate | COPD: Roflumilast, ICS'
+        ],
+        effects: ['Relieves bronchospasm, clears thick secretions, reduces exacerbations, and improves exercise tolerance'],
+        monitoring: ['Monitor dyspnea, oxygen saturation, mucus clearance, and exacerbation frequency'],
+        safety: ['Anticholinergics are drug-of-choice bronchodilators in COPD; avoid inappropriate sedative cough suppressants when clearance is needed.'],
+        tags: ['MONITORING']
+      },
+      // 30. CNS, Psychiatric & Analgesic Complete Revision
+      {
+        id: 'cns-psych-analgesic-rev',
+        title: 'CNS, Psychiatric & Analgesic Revision',
+        subtitle: 'BZDs • Antiepileptics • Parkinson • AD • Antipsychotics • Antidepressants • Lithium • Opioids • NSAIDs',
+        drugClass: 'CNS & Psychiatric',
+        medSvg: 'vial',
+        organSvg: 'brain',
+        organLabel: 'Brain, Spinal Cord & Pain Pathways',
+        moaFlow: 'GABA (BZDs/Valproate) • Na+/Ca2+ Channels (Phenytoin/CBZ/Valproate) • Dopamine/ACh (Parkinson/Antipsychotics) • 5-HT/NA (Antidepressants) • μ-Opioid (Opioids)',
+        examples: [
+          'BZDs: Diazepam, Lorazepam, Alprazolam | Antiepileptics: Phenytoin, Carbamazepine, Valproate, Ethosuximide',
+          'Parkinson: Levodopa + Carbidopa, Bromocriptine, Trihexyphenidyl | AD: Donepezil, Memantine',
+          'Antipsychotics: Haloperidol, Risperidone, Olanzapine, Clozapine | Antidepressants: Fluoxetine, Amitriptyline, Phenelzine',
+          'Antimania: Lithium carbonate | Opioids: Morphine, Pethidine, Fentanyl (Antidote: Naloxone)'
+        ],
+        effects: ['Treats anxiety, seizures, parkinsonism, dementia, psychosis, depression, mania, and severe pain'],
+        monitoring: ['Monitor EPS/tardive dyskinesia, lithium levels/thyroid/renal, sedation, and respiratory depression'],
+        safety: ['Opioid overdose antidote = Naloxone. Lithium requires careful level & toxicity monitoring; MAOIs carry hypertensive crisis risk.'],
+        tags: ['ANTIDOTE', 'HIGH_ALERT', 'MONITORING']
+      }
+    ];
+
+    /* =========================================================================
+       COMPLETE TOP 209 MEDICATIONS (#1 - #209) FROM USER SOURCES
+       ========================================================================= */
+    var top209Medications = [
+      // ANEMIA (#1-#5)
+      { num: 1, name: 'Folic Acid', cond: 'Anemia', note: 'Essential B-vitamin for DNA synthesis and megaloblastic anemia.' },
+      { num: 2, name: 'Ferrous Sulfate', cond: 'Anemia', note: 'Oral iron salt for iron-deficiency anemia; causes dark stools/GI upset.' },
+      { num: 3, name: 'Vitamin B12', cond: 'Anemia', note: 'Treats B12 deficiency megaloblastic anemia and neurological symptoms.' },
+      { num: 4, name: 'Ferrous Fumarate', cond: 'Anemia', note: 'Oral elemental iron preparation for iron-deficiency anemia.' },
+      { num: 5, name: 'Iron Sucrose', cond: 'Anemia', note: 'Intravenous iron formulation when oral iron is ineffective or not tolerated.' },
+      // VOMITING (#6-#10)
+      { num: 6, name: 'Metoclopramide', cond: 'Vomiting', note: 'Dopamine antagonist & prokinetic; watch for EPS/dystonia.' },
+      { num: 7, name: 'Domperidone', cond: 'Vomiting', note: 'Peripheral dopamine receptor antagonist antiemetic.' },
+      { num: 8, name: 'Promethazine', cond: 'Vomiting', note: 'Phenothiazine antihistamine antiemetic; causes sedation.' },
+      { num: 9, name: 'Dimenhydrinate', cond: 'Vomiting', note: 'Antihistamine antiemetic for motion sickness and nausea/vomiting.' },
+      { num: 10, name: 'Ondansetron', cond: 'Vomiting', note: '5-HT3 receptor antagonist antiemetic; monitor QT interval in at-risk patients.' },
+      // HYPOTHYROID (#11-#14)
+      { num: 11, name: 'Levothyroxine', cond: 'Hypothyroid', note: 'Synthetic T4 replacement; take consistently on an empty stomach.' },
+      { num: 12, name: 'Selenium', cond: 'Hypothyroid', note: 'Trace element involved in selenoprotein/deiodinase thyroid metabolism.' },
+      { num: 13, name: 'Liothyronine', cond: 'Hypothyroid', note: 'Synthetic T3 thyroid hormone replacement.' },
+      { num: 14, name: 'Vitamin D', cond: 'Hypothyroid', note: 'Supports bone and mineral health alongside endocrine care.' },
+      // HYPERTHYROID (#15-#20)
+      { num: 15, name: 'Iodine', cond: 'Hyperthyroid', note: 'High-dose iodine inhibits thyroid hormone release in acute settings.' },
+      { num: 16, name: 'Propranolol', cond: 'Hyperthyroid', note: 'Beta blocker for rapid symptom control of tremor, palpitations, and tachycardia.' },
+      { num: 17, name: 'Carbimazole', cond: 'Hyperthyroid', note: 'Thionamide antithyroid agent converted to methimazole.' },
+      { num: 18, name: 'Propylthiouracil', cond: 'Hyperthyroid', note: 'Thionamide antithyroid agent; hepatotoxicity monitoring required.' },
+      { num: 19, name: 'Methimazole', cond: 'Hyperthyroid', note: 'First-line thionamide antithyroid drug for hyperthyroidism.' },
+      { num: 20, name: 'Iodine (Adjunct)', cond: 'Hyperthyroid', note: 'Listed #20 under Hyperthyroid in reference list.' },
+      // EPILEPSY (#21-#25)
+      { num: 21, name: 'Carbamazepine', cond: 'Epilepsy', note: 'Blocks voltage-gated Na+ channels; enzyme inducer, watch rash/cytopenia.' },
+      { num: 22, name: 'Valproate', cond: 'Epilepsy', note: 'Broad-spectrum antiepileptic; hepatotoxicity & teratogenicity precautions.' },
+      { num: 23, name: 'Levetiracetam', cond: 'Epilepsy', note: 'Broad-spectrum antiepileptic; monitor mood/irritability and renal dosing.' },
+      { num: 24, name: 'Phenytoin', cond: 'Epilepsy', note: 'Na+ channel blocker; watch nystagmus, ataxia, gingival hyperplasia.' },
+      { num: 25, name: 'Lamotrigine', cond: 'Epilepsy', note: 'Antiepileptic/mood stabilizer; slow titration to reduce rash risk.' },
+      // PARKINSON (#26-#30)
+      { num: 26, name: 'Ropinirole', cond: 'Parkinson', note: 'Non-ergot dopamine agonist; watch orthostatic hypotension & somnolence.' },
+      { num: 27, name: 'Carbidopa', cond: 'Parkinson', note: 'Peripheral DOPA decarboxylase inhibitor; increases CNS levodopa delivery.' },
+      { num: 28, name: 'Pramipexole', cond: 'Parkinson', note: 'Dopamine agonist used in Parkinson disease symptoms.' },
+      { num: 29, name: 'Levodopa', cond: 'Parkinson', note: 'Dopamine precursor; combined with carbidopa to reduce peripheral conversion.' },
+      { num: 30, name: 'Selegiline', cond: 'Parkinson', note: 'MAO-B inhibitor supporting dopamine levels in Parkinson disease.' },
+      // OSTEOARTHRITIS (#31-#35)
+      { num: 31, name: 'Diclofenac', cond: 'Osteoarthritis', note: 'NSAID for joint pain/inflammation; monitor GI, renal & CV risk.' },
+      { num: 32, name: 'Paracetamol', cond: 'Osteoarthritis', note: 'Analgesic option for mild-to-moderate pain; watch total daily dose.' },
+      { num: 33, name: 'Ibuprofen', cond: 'Osteoarthritis', note: 'Propionic acid NSAID for osteoarthritis pain and inflammation.' },
+      { num: 34, name: 'Glucosamine', cond: 'Osteoarthritis', note: 'Supplement used by some patients with osteoarthritis.' },
+      { num: 35, name: 'Tramadol', cond: 'Osteoarthritis', note: 'Opioid-like analgesic; watch sedation, nausea, and seizure/serotonin risk.' },
+      // ARTHRITIS (#36-#40)
+      { num: 36, name: 'Methotrexate', cond: 'Arthritis', note: 'DMARD for inflammatory arthritis; requires folic acid & CBC/LFT monitoring.' },
+      { num: 37, name: 'Sulfasalazine', cond: 'Arthritis', note: 'Conventional synthetic DMARD for rheumatoid/inflammatory arthritis.' },
+      { num: 38, name: 'Leflunomide', cond: 'Arthritis', note: 'DMARD inhibiting pyrimidine synthesis; monitor LFTs & pregnancy status.' },
+      { num: 39, name: 'Hydroxychloroquine', cond: 'Arthritis', note: 'Immunomodulatory DMARD; periodic retinal screening advised on long-term use.' },
+      { num: 40, name: 'Prednisolone', cond: 'Arthritis', note: 'Corticosteroid for acute inflammatory flares; taper if prolonged.' },
+      // BACK PAIN (#41-#44)
+      { num: 41, name: 'Paracetamol', cond: 'Back Pain', note: 'First-line simple analgesic for acute back pain when NSAIDs are unsuitable.' },
+      { num: 42, name: 'Diclofenac', cond: 'Back Pain', note: 'NSAID for acute musculoskeletal back pain; short duration preferred.' },
+      { num: 43, name: 'Ibuprofen', cond: 'Back Pain', note: 'NSAID for acute back pain; monitor GI and renal tolerance.' },
+      { num: 44, name: 'Tramadol', cond: 'Back Pain', note: 'Reserved when non-opioid measures are insufficient; monitor dependence/side effects.' },
+      // MUSCLE SPASM (#45-#50)
+      { num: 45, name: 'Tizanidine', cond: 'Muscle Spasm', note: 'Central alpha-2 adrenergic agonist muscle relaxant; causes sedation/hypotension.' },
+      { num: 46, name: 'Baclofen', cond: 'Muscle Spasm', note: 'GABA-B receptor agonist for spasticity/muscle spasm; avoid abrupt stop.' },
+      { num: 47, name: 'Thiocolchicoside', cond: 'Muscle Spasm', note: 'Muscle relaxant used for painful muscle spasms.' },
+      { num: 48, name: 'Tizanidine (Spasm)', cond: 'Muscle Spasm', note: 'Listed #48 under Muscle Spasm in reference list.' },
+      { num: 49, name: 'Chlorzoxazone', cond: 'Muscle Spasm', note: 'Centrally acting skeletal muscle relaxant for acute musculoskeletal spasm.' },
+      { num: 50, name: 'Methocarbamol', cond: 'Muscle Spasm', note: 'Centrally acting muscle relaxant; may cause drowsiness or dizziness.' },
+      // GOUT (#51-#55)
+      { num: 51, name: 'Allopurinol', cond: 'Gout', note: 'Xanthine oxidase inhibitor for urate lowering; do not start abruptly in acute flare without cover.' },
+      { num: 52, name: 'Indomethacin', cond: 'Gout', note: 'Potent NSAID for acute gout flares; monitor GI and renal function.' },
+      { num: 53, name: 'Febuxostat', cond: 'Gout', note: 'Selective xanthine oxidase inhibitor for chronic hyperuricemia/gout.' },
+      { num: 54, name: 'Naproxen', cond: 'Gout', note: 'NSAID option for acute gouty arthritis.' },
+      { num: 55, name: 'Colchicine', cond: 'Gout', note: 'Microtubule inhibitor for acute gout & flare prophylaxis; watch GI toxicity.' },
+      // SKIN ALLERGY (#56-#59)
+      { num: 56, name: 'Cetirizine', cond: 'Skin Allergy', note: 'Second-generation H1 antihistamine for urticaria/pruritus; mild sedation possible.' },
+      { num: 57, name: 'Loratadine', cond: 'Skin Allergy', note: 'Non-sedating/low-sedating second-generation H1 antihistamine.' },
+      { num: 58, name: 'Fexofenadine', cond: 'Skin Allergy', note: 'Non-sedating H1 antihistamine for allergic skin symptoms.' },
+      { num: 59, name: 'Hydrocortisone', cond: 'Skin Allergy', note: 'Topical/systemic corticosteroid for inflammatory/allergic skin lesions.' },
+      // FUNGAL INF (#60-#65)
+      { num: 60, name: 'Calamine', cond: 'Fungal Inf', note: 'Soothing topical lotion (#60 in list) for skin irritation/itching.' },
+      { num: 61, name: 'Fluconazole', cond: 'Fungal Inf', note: 'Triazole antifungal inhibiting ergosterol synthesis.' },
+      { num: 62, name: 'Ketoconazole', cond: 'Fungal Inf', note: 'Azole antifungal; topical preferred over systemic due to hepatotoxicity risk.' },
+      { num: 63, name: 'Clotrimazole', cond: 'Fungal Inf', note: 'Topical imidazole antifungal for superficial dermatophyte/candidal infections.' },
+      { num: 64, name: 'Itraconazole', cond: 'Fungal Inf', note: 'Triazole antifungal for systemic and stubborn superficial fungal infections.' },
+      { num: 65, name: 'Terbinafine', cond: 'Fungal Inf', note: 'Allylamine antifungal inhibiting squalene epoxidase; effective for dermatophytes.' },
+      // BACTERIAL INF (#66-#70)
+      { num: 66, name: 'Amoxicillin', cond: 'Bacterial Inf', note: 'Aminopenicillin beta-lactam antibiotic; check penicillin allergy.' },
+      { num: 67, name: 'Doxycycline', cond: 'Bacterial Inf', note: 'Tetracycline antibiotic; photosensitivity & pill esophagitis precautions.' },
+      { num: 68, name: 'Cefixime', cond: 'Bacterial Inf', note: 'Oral third-generation cephalosporin antibiotic.' },
+      { num: 69, name: 'Ciprofloxacin', cond: 'Bacterial Inf', note: 'Fluoroquinolone antibiotic; watch tendon, neuropathy & CNS warnings.' },
+      { num: 70, name: 'Azithromycin', cond: 'Bacterial Inf', note: 'Macrolide antibiotic; monitor QT prolongation risk.' },
+      // VIRAL FEVER (#71-#74)
+      { num: 71, name: 'Ibuprofen', cond: 'Viral Fever', note: 'NSAID antipyretic/analgesic; avoid if dengue or bleeding risk is suspected.' },
+      { num: 72, name: 'Paracetamol', cond: 'Viral Fever', note: 'Preferred antipyretic/analgesic in febrile illnesses including dengue.' },
+      { num: 73, name: 'Acyclovir', cond: 'Viral Fever', note: 'Nucleoside analogue antiviral active against HSV and VZV.' },
+      { num: 74, name: 'Oseltamivir', cond: 'Viral Fever', note: 'Neuraminidase inhibitor antiviral for influenza when indicated.' },
+      // DENGUE (#75-#80)
+      { num: 75, name: 'Zinc', cond: 'Dengue', note: 'Listed #75 in reference sequence.' },
+      { num: 76, name: 'Paracetamol', cond: 'Dengue', note: 'First-choice antipyretic/analgesic in dengue; avoid NSAIDs/aspirin.' },
+      { num: 77, name: 'ORS', cond: 'Dengue', note: 'Oral hydration support alongside careful fluid monitoring in dengue.' },
+      { num: 78, name: 'Pantoprazole', cond: 'Dengue', note: 'PPI for gastric acid protection when clinically indicated.' },
+      { num: 79, name: 'Ondansetron', cond: 'Dengue', note: 'Antiemetic for persistent nausea/vomiting.' },
+      { num: 80, name: 'Tranexamic Acid', cond: 'Dengue', note: 'Antifibrinolytic agent used in select hemorrhagic settings per protocol.' },
+      // MALARIA (#81-#85)
+      { num: 81, name: 'Chloroquine', cond: 'Malaria', note: 'Used for chloroquine-sensitive non-falciparum malaria.' },
+      { num: 82, name: 'Artemether', cond: 'Malaria', note: 'Artemisinin derivative combined with lumefantrine (ACT) for uncomplicated malaria.' },
+      { num: 83, name: 'Lumefantrine', cond: 'Malaria', note: 'Long-acting partner drug in Coartem (artemether-lumefantrine); take with food/fat.' },
+      { num: 84, name: 'Primaquine', cond: 'Malaria', note: 'Radical cure for P. vivax/ovale hypnozoites; check G6PD status first.' },
+      { num: 85, name: 'Quinine', cond: 'Malaria', note: 'Antimalarial agent; monitor cinchonism, hypoglycemia, and QT interval.' },
+      // TYPHOID (#86-#90)
+      { num: 86, name: 'Cefixime', cond: 'Typhoid', note: 'Oral third-generation cephalosporin option for uncomplicated enteric fever.' },
+      { num: 87, name: 'Ceftriaxone', cond: 'Typhoid', note: 'IV third-generation cephalosporin for uncomplicated or severe typhoid fever.' },
+      { num: 88, name: 'Ciprofloxacin', cond: 'Typhoid', note: 'Fluoroquinolone option when local susceptibility supports its use.' },
+      { num: 89, name: 'Azithromycin', cond: 'Typhoid', note: 'Oral macrolide option for uncomplicated enteric fever.' },
+      { num: 90, name: 'Ofloxacin', cond: 'Typhoid', note: 'Fluoroquinolone agent used based on local sensitivity patterns.' },
+      // TUBERCULOSIS (#91-#95)
+      { num: 91, name: 'Isoniazid', cond: 'Tuberculosis', note: 'First-line TB drug (H); monitor hepatotoxicity & peripheral neuropathy (give B6).' },
+      { num: 92, name: 'Streptomycin', cond: 'Tuberculosis', note: 'Aminoglycoside TB agent; monitor renal & vestibular/auditory toxicity.' },
+      { num: 93, name: 'Rifampicin', cond: 'Tuberculosis', note: 'First-line TB drug (R); potent CYP450 inducer, orange body fluids, hepatotoxicity.' },
+      { num: 94, name: 'Pyrazinamide', cond: 'Tuberculosis', note: 'First-line intensive-phase TB drug (Z); monitor hepatotoxicity & uric acid.' },
+      { num: 95, name: 'Ethambutol', cond: 'Tuberculosis', note: 'First-line intensive-phase TB drug (E); monitor visual acuity & red-green color vision.' },
+      // COVID 19 (#96-#100)
+      { num: 96, name: 'Paracetamol', cond: 'COVID 19', note: 'Symptom relief for fever and myalgias.' },
+      { num: 97, name: 'Dexamethasone', cond: 'COVID 19', note: 'Corticosteroid indicated in severe/hypoxic COVID-19 requiring oxygen/ventilation.' },
+      { num: 98, name: 'Vitamin C', cond: 'COVID 19', note: 'Listed #98 under COVID 19 in reference list.' },
+      { num: 99, name: 'Azithromycin', cond: 'COVID 19', note: 'Listed #99 under COVID 19 in reference list.' },
+      { num: 100, name: 'Remdesivir', cond: 'COVID 19', note: 'Antiviral agent used in eligible COVID-19 patients per clinical guidance.' },
+      // OBESITY (#101-#104)
+      { num: 101, name: 'Metformin', cond: 'Obesity', note: 'Improves insulin sensitivity; modest weight neutrality/loss in metabolic patients.' },
+      { num: 102, name: 'Liraglutide', cond: 'Obesity', note: 'GLP-1 receptor agonist; watch GI nausea/vomiting.' },
+      { num: 103, name: 'Semaglutide', cond: 'Obesity', note: 'GLP-1 receptor agonist; titrate slowly to minimize GI adverse effects.' },
+      { num: 104, name: 'Orlistat', cond: 'Obesity', note: 'Gastrointestinal lipase inhibitor reducing dietary fat absorption.' },
+      // ANXIETY (#105-#111)
+      { num: 105, name: 'Bupropion', cond: 'Anxiety', note: 'Norepinephrine-dopamine reuptake inhibitor (#105 in sequence).' },
+      { num: 106, name: 'Diazepam', cond: 'Anxiety', note: 'Benzodiazepine; risk of sedation, dependence, and respiratory depression.' },
+      { num: 107, name: 'Alprazolam', cond: 'Anxiety', note: 'Short/intermediate-acting benzodiazepine; watch dependence & withdrawal.' },
+      { num: 108, name: 'Clonazepam', cond: 'Anxiety', note: 'Benzodiazepine with prolonged half-life; monitor sedation and falls.' },
+      { num: 109, name: 'Escitalopram', cond: 'Anxiety', note: 'SSRI first-line pharmacotherapy option for generalized/panic anxiety.' },
+      { num: 110, name: 'Buspirone', cond: 'Anxiety', note: 'Azapirone anxiolytic (5-HT1A partial agonist); non-sedating, takes weeks.' },
+      { num: 111, name: 'Sertraline', cond: 'Anxiety', note: 'SSRI commonly used for anxiety and depressive disorders.' },
+      // HEADACHE (#112-#116)
+      { num: 112, name: 'Ibuprofen', cond: 'Headache', note: 'NSAID for acute tension/migraine headache; avoid medication overuse.' },
+      { num: 113, name: 'Aspirin', cond: 'Headache', note: 'Salicylate analgesic; watch GI bleeding and Reye syndrome risk in children.' },
+      { num: 114, name: 'Paracetamol', cond: 'Headache', note: 'Analgesic for mild-to-moderate headache.' },
+      { num: 115, name: 'Sumatriptan', cond: 'Headache', note: '5-HT1B/1D triptan for acute migraine; avoid in ischemic heart/uncontrolled HTN.' },
+      { num: 116, name: 'Naproxen', cond: 'Headache', note: 'Longer-acting NSAID for acute headache/migraine.' },
+      // COPD (#117-#121)
+      { num: 117, name: 'Salbutamol', cond: 'COPD', note: 'Short-acting beta-2 agonist bronchodilator for acute dyspnea relief.' },
+      { num: 118, name: 'Formoterol', cond: 'COPD', note: 'Long-acting beta-2 agonist (LABA) bronchodilator.' },
+      { num: 119, name: 'Tiotropium', cond: 'COPD', note: 'Long-acting muscarinic antagonist (LAMA) bronchodilator for COPD.' },
+      { num: 120, name: 'Roflumilast', cond: 'COPD', note: 'PDE-4 inhibitor used to reduce exacerbations in severe chronic bronchitis COPD.' },
+      { num: 121, name: 'Budesonide', cond: 'COPD', note: 'Inhaled corticosteroid used in combination regimens for eligible COPD patients.' },
+      // CONSTIPATION (#122-#126)
+      { num: 122, name: 'Lactulose', cond: 'Constipation', note: 'Osmotic disaccharide laxative; also used in hepatic encephalopathy.' },
+      { num: 123, name: 'Docusate', cond: 'Constipation', note: 'Surfactant stool softener.' },
+      { num: 124, name: 'Bisacodyl', cond: 'Constipation', note: 'Stimulant laxative promoting colonic peristalsis.' },
+      { num: 125, name: 'Senna', cond: 'Constipation', note: 'Anthraquinone stimulant laxative for short-term constipation relief.' },
+      { num: 126, name: 'Psyllium', cond: 'Constipation', note: 'Bulk-forming fiber laxative; take with adequate water.' },
+      // DEPRESSION (#127-#131)
+      { num: 127, name: 'Amitriptyline', cond: 'Depression', note: 'Tricyclic antidepressant (TCA); anticholinergic, sedating & cardiac conduction risks.' },
+      { num: 128, name: 'Sertraline', cond: 'Depression', note: 'SSRI antidepressant; monitor for serotonin syndrome & GI effects.' },
+      { num: 129, name: 'Escitalopram', cond: 'Depression', note: 'SSRI antidepressant; takes several weeks for full response.' },
+      { num: 130, name: 'Venlafaxine', cond: 'Depression', note: 'SNRI antidepressant; monitor blood pressure at higher doses.' },
+      { num: 131, name: 'Fluoxetine', cond: 'Depression', note: 'SSRI with long half-life; watch drug interactions and activation.' },
+      // MIGRAINE (#132-#136)
+      { num: 132, name: 'Amitriptyline', cond: 'Migraine', note: 'TCA used for migraine prophylaxis.' },
+      { num: 133, name: 'Propranolol', cond: 'Migraine', note: 'Beta blocker commonly used for migraine prevention.' },
+      { num: 134, name: 'Sumatriptan', cond: 'Migraine', note: 'Triptan for acute migraine attacks.' },
+      { num: 135, name: 'Rizatriptan', cond: 'Migraine', note: 'Fast-acting triptan for acute migraine.' },
+      { num: 136, name: 'Topiramate', cond: 'Migraine', note: 'Antiepileptic used for migraine prophylaxis; watch paresthesia, cognition & stones.' },
+      // ALLERGY (#137-#140)
+      { num: 137, name: 'Cetirizine', cond: 'Allergy', note: 'H1 antihistamine for allergic rhinitis and urticaria.' },
+      { num: 138, name: 'Loratadine', cond: 'Allergy', note: 'Second-generation H1 antihistamine for allergies.' },
+      { num: 139, name: 'Fexofenadine', cond: 'Allergy', note: 'Non-sedating H1 antihistamine.' },
+      { num: 140, name: 'Fluticasone', cond: 'Allergy', note: 'Corticosteroid (intranasal/inhaled) for allergic inflammation.' },
+      // DIARRHEA (#141-#145)
+      { num: 141, name: 'Loperamide', cond: 'Diarrhea', note: 'Antimotility opioid receptor agonist; avoid in bloody diarrhea/dysentery.' },
+      { num: 142, name: 'ORS', cond: 'Diarrhea', note: 'Low-osmolarity Oral Rehydration Salts—cornerstone to prevent/treat dehydration.' },
+      { num: 143, name: 'Probiotics', cond: 'Diarrhea', note: 'Adjunctive live microorganisms for select diarrheal illnesses.' },
+      { num: 144, name: 'Racecadotril', cond: 'Diarrhea', note: 'Enkephalinase inhibitor reducing intestinal fluid/electrolyte hypersecretion.' },
+      { num: 145, name: 'Zinc', cond: 'Diarrhea', note: 'Recommended adjunct in pediatric acute diarrhea (10 mg <6 mo; 20 mg ≥6 mo for 10–14 d).' },
+      // COMMON COLD (#146-#154)
+      { num: 146, name: 'Cetirizine', cond: 'Common Cold', note: 'Antihistamine (#146 in list).' },
+      { num: 147, name: 'Diphenhydramine', cond: 'Common Cold', note: 'First-generation sedating H1 antihistamine.' },
+      { num: 148, name: 'Chlorpheniramine', cond: 'Common Cold', note: 'First-generation H1 antihistamine.' },
+      { num: 149, name: 'Loratadine', cond: 'Common Cold', note: 'Antihistamine (#149 in list).' },
+      { num: 150, name: 'Levocetirizine', cond: 'Common Cold', note: 'Active R-enantiomer of cetirizine.' },
+      { num: 151, name: 'Prednisolone', cond: 'Common Cold', note: 'Corticosteroid (#151 in list).' },
+      { num: 152, name: 'Dextromethorphan', cond: 'Common Cold', note: 'Centrally acting cough suppressant for dry cough.' },
+      { num: 153, name: 'Dexamethasone', cond: 'Common Cold', note: 'Systemic corticosteroid (#153 in list).' },
+      { num: 154, name: 'Phenylephrine', cond: 'Common Cold', note: 'Alpha-1 adrenergic nasal decongestant; monitor blood pressure.' },
+      // HYPERTENSION (#155-#159)
+      { num: 155, name: 'Telmisart (Telmisartan)', cond: 'Hypertension', note: 'ARB (-sartan) antihypertensive; avoid in pregnancy.' },
+      { num: 156, name: 'Losartan', cond: 'Hypertension', note: 'ARB (-sartan) antihypertensive; monitor K+ and creatinine.' },
+      { num: 157, name: 'Amlodipine', cond: 'Hypertension', note: 'Dihydropyridine CCB (-dipine); watch peripheral ankle edema.' },
+      { num: 158, name: 'Atenolol', cond: 'Hypertension', note: 'Beta blocker (-olol); monitor heart rate and blood pressure.' },
+      { num: 159, name: 'Hydrochlorothiazide', cond: 'Hypertension', note: 'Thiazide diuretic; monitor electrolytes (Na+, K+), uric acid & glucose.' },
+      // GASTRITIS (#160-#164)
+      { num: 160, name: 'Omeprazole', cond: 'Gastritis', note: 'Proton pump inhibitor reducing gastric acid secretion.' },
+      { num: 161, name: 'Pantoprazole', cond: 'Gastritis', note: 'PPI for acid-related gastric mucosal irritation.' },
+      { num: 162, name: 'Sucralfate', cond: 'Gastritis', note: 'Mucosal protectant forming a barrier over ulcer/inflamed lining.' },
+      { num: 163, name: 'Rabeprazole', cond: 'Gastritis', note: 'Proton pump inhibitor for acid suppression.' },
+      { num: 164, name: 'Famotidine', cond: 'Gastritis', note: 'H2-receptor antagonist reducing histamine-stimulated acid.' },
+      // IBS (#165-#169)
+      { num: 165, name: 'Loperamide', cond: 'IBS', note: 'Helps diarrhea-predominant IBS symptoms when used appropriately.' },
+      { num: 166, name: 'Dicycloverine', cond: 'IBS', note: 'Antispasmodic / anticholinergic for abdominal cramps.' },
+      { num: 167, name: 'Mebeverine', cond: 'IBS', note: 'Direct smooth muscle antispasmodic for GI cramps/spasms.' },
+      { num: 168, name: 'Amitriptyline', cond: 'IBS', note: 'Low-dose TCA sometimes used for visceral pain/IBS symptoms.' },
+      { num: 169, name: 'Rifaximin', cond: 'IBS', note: 'Minimally absorbed rifamycin antibiotic used in select IBS/SIBO indications.' },
+      // COUGH (#170-#174)
+      { num: 170, name: 'Bromhexine', cond: 'Cough', note: 'Mucolytic agent helping thin/clear respiratory secretions.' },
+      { num: 171, name: 'Dextromethorphan', cond: 'Cough', note: 'Antitussive for non-productive/dry cough.' },
+      { num: 172, name: 'Ambroxol', cond: 'Cough', note: 'Mucolytic metabolite of bromhexine.' },
+      { num: 173, name: 'Guaifenesin', cond: 'Cough', note: 'Expectorant helping loosen phlegm in productive cough.' },
+      { num: 174, name: 'Codeine', cond: 'Cough', note: 'Opioid cough suppressant; restricted in children and causes sedation/constipation.' },
+      // DIABETES TYPE 2 (#175-#179)
+      { num: 175, name: 'Metformin', cond: 'Diabetes Type 2', note: 'First-line oral agent for T2DM; monitor renal function & GI tolerance.' },
+      { num: 176, name: 'Glimepiride', cond: 'Diabetes Type 2', note: 'Sulfonylurea insulin secretagogue; carries hypoglycemia risk.' },
+      { num: 177, name: 'Sitagliptin', cond: 'Diabetes Type 2', note: 'DPP-4 inhibitor enhancing incretin-mediated insulin release.' },
+      { num: 178, name: 'Gliclazide', cond: 'Diabetes Type 2', note: 'Sulfonylurea; watch for hypoglycemia especially in elderly/irregular meals.' },
+      { num: 179, name: 'Pioglitazone', cond: 'Diabetes Type 2', note: 'Thiazolidinedione (PPAR-gamma agonist); watch fluid retention/edema/HF.' },
+      // GERD (#180-#184)
+      { num: 180, name: 'Omeprazole', cond: 'GERD', note: 'PPI for gastroesophageal reflux symptoms and esophagitis healing.' },
+      { num: 181, name: 'Esomeprazole', cond: 'GERD', note: 'S-isomer of omeprazole; potent gastric acid suppression.' },
+      { num: 182, name: 'Domperidone', cond: 'GERD', note: 'Prokinetic antiemetic (#182 in list).' },
+      { num: 183, name: 'Pantoprazole', cond: 'GERD', note: 'PPI for reflux/acid control.' },
+      { num: 184, name: 'Itopride', cond: 'GERD', note: 'Prokinetic agent supporting GI motility.' },
+      // UTI (#185-#189)
+      { num: 185, name: 'Amoxicillin', cond: 'UTI', note: 'Use guided by culture/susceptibility due to resistance patterns.' },
+      { num: 186, name: 'Ciprofloxacin', cond: 'UTI', note: 'Fluoroquinolone used in pyelonephritis/complicated UTI when indicated.' },
+      { num: 187, name: 'Fosfomycin', cond: 'UTI', note: '3 g single-dose oral sachet for uncomplicated lower UTI (cystitis).' },
+      { num: 188, name: 'Nitrofurantoin', cond: 'UTI', note: '100 mg BD for 5 days for uncomplicated cystitis; avoid in severe renal impairment.' },
+      { num: 189, name: 'Norfloxacin', cond: 'UTI', note: 'Fluoroquinolone urinary agent (#189 in list).' },
+      // FEVER (#190-#194)
+      { num: 190, name: 'Paracetamol', cond: 'Fever', note: 'Antipyretic and analgesic for fever.' },
+      { num: 191, name: 'Diclofenac', cond: 'Fever', note: 'NSAID antipyretic/analgesic; use with GI/renal/bleeding caution.' },
+      { num: 192, name: 'Ibuprofen', cond: 'Fever', note: 'NSAID for fever and pain.' },
+      { num: 193, name: 'Aspirin', cond: 'Fever', note: 'Salicylate; avoid in children/adolescents with viral illnesses.' },
+      { num: 194, name: 'Naproxen', cond: 'Fever', note: 'NSAID analgesic/antipyretic.' },
+      // ASTHMA (#195-#199)
+      { num: 195, name: 'Salbutamol', cond: 'Asthma', note: 'Short-acting beta-2 agonist for acute bronchospasm relief.' },
+      { num: 196, name: 'Montelukast', cond: 'Asthma', note: 'Leukotriene receptor antagonist; monitor mood/behavioral changes.' },
+      { num: 197, name: 'Theophylline', cond: 'Asthma', note: 'Methylxanthine bronchodilator; narrow therapeutic window.' },
+      { num: 198, name: 'Budesonide', cond: 'Asthma', note: 'Inhaled corticosteroid controller; rinse and spit after inhalation.' },
+      { num: 199, name: 'Formoterol', cond: 'Asthma', note: 'Long-acting beta-2 agonist with fast onset; use with ICS in asthma.' },
+      // PEPTIC ULCER (#200-#204)
+      { num: 200, name: 'Omeprazole', cond: 'Peptic Ulcer', note: 'PPI core component of acid suppression and H. pylori eradication regimens.' },
+      { num: 201, name: 'Metronidazole', cond: 'Peptic Ulcer', note: 'Nitroimidazole antibiotic used in H. pylori eradication regimens.' },
+      { num: 202, name: 'Amoxicillin', cond: 'Peptic Ulcer', note: 'Antibiotic component in H. pylori eradication therapy (if not allergic).' },
+      { num: 203, name: 'Clarithromycin', cond: 'Peptic Ulcer', note: 'Macrolide used in H. pylori eradication regimens per resistance profile.' },
+      { num: 204, name: 'Bismuth', cond: 'Peptic Ulcer', note: 'Mucosal protectant / component of bismuth quadruple therapy.' },
+      // KIDNEY STONE (#205-#209)
+      { num: 205, name: 'Diclofenac', cond: 'Kidney Stone', note: 'NSAID commonly used for acute renal colic pain control.' },
+      { num: 206, name: 'Ketorolac', cond: 'Kidney Stone', note: 'Potent NSAID for acute moderate-to-severe pain; short-term use only & check renal status.' },
+      { num: 207, name: 'Allopurinol', cond: 'Kidney Stone', note: 'Reduces uric acid production in uric acid/calcium oxalate stone prevention.' },
+      { num: 208, name: 'Tamsulosin', cond: 'Kidney Stone', note: 'Alpha-1A blocker aiding ureteral smooth muscle relaxation/stone passage.' },
+      { num: 209, name: 'Potassium Citrate', cond: 'Kidney Stone', note: 'Alkalinizes urine and increases urinary citrate to inhibit stone formation.' }
+    ];
+
+    /* =========================================================================
+       COMPLETE 8 CLINICAL TREATMENT PROTOCOLS FROM USER SOURCES
+       ========================================================================= */
+    var treatmentProtocols = [
+      {
+        title: 'Appendicitis',
+        badge: 'Surgical Emergency',
+        summary: 'Inflammation of the vermiform appendix, commonly due to luminal obstruction (faecolith, lymphoid hyperplasia in children, low-fibre diet).',
+        sections: [
+          {
+            heading: 'Epidemiology & Clinical Features',
+            items: [
+              'Commonest surgical emergency; peak 10–30 years; slightly more in males; lifetime risk ~7–8%.',
+              'Typical history: Periumbilical pain → migrates to right iliac fossa within 4–24 hours, anorexia, nausea/vomiting, low-grade fever, constipation or sometimes diarrhoea.',
+              'Exam: Tenderness at McBurney’s point (1/3 from ASIS to umbilicus), rebound tenderness, guarding/rigidity, positive Rovsing’s sign, Psoas sign (retrocaecal), Obturator sign (pelvic appendix).'
+            ]
+          },
+          {
+            heading: 'Investigations & Differential Diagnosis',
+            items: [
+              'FBC (↑ WBC with neutrophilia), CRP, urinalysis (rule out UTI), pregnancy test (women of childbearing age).',
+              'Ultrasound abdomen (first-line in children & pregnant women); CT abdomen & pelvis (most accurate if available).',
+              'Differentials: Gastroenteritis, mesenteric adenitis, UTI/pyelonephritis, ovarian torsion/cyst, ectopic pregnancy, Crohn’s disease, Meckel’s diverticulitis, kidney stones, constipation.'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Form', 'Step', 'Management'],
+          rows: [
+            ['1. Uncomplicated (no perforation/abscess)', 'Pre-op & Antibiotics (before incision)', 'Nil by mouth, IV fluids, analgesia (e.g., Paracetamol, Diclofenac); Ceftriaxone 1–2 g IV stat + Metronidazole 500 mg IV stat'],
+            ['1. Uncomplicated', 'Definitive & Post-op', 'Appendectomy (laparoscopic preferred; open if not available); analgesia, early feeding as tolerated, discharge in 24–48 h if stable'],
+            ['2. Complicated (perforation, abscess, phlegmon)', 'General & Antibiotics', 'Nil by mouth, IV fluids & resuscitation, NG tube if vomiting/ileus, analgesia; Ceftriaxone 1–2 g IV 12-hourly + Metronidazole 500 mg IV 8-hourly (or Piperacillin-Tazobactam 4.5 g IV 8-hourly)'],
+            ['2. Complicated', 'Definitive & Duration', 'Drain abscess if present (US/CT guided); interval appendectomy after 6–8 weeks OR appendectomy if general condition allows. Antibiotics: 5–7 days (or until afebrile + improving)']
+          ]
+        },
+        redFlags: 'Severe abdominal pain, signs of peritonitis (rigidity, rebound tenderness), persistent vomiting/unable to keep fluids, high fever, tachycardia, hypotension, altered mental status, pregnant woman with abdominal pain, child with lethargy/refusing feeds, delayed presentation (>48–72 h) with suspected perforation.'
+      },
+      {
+        title: 'Sepsis',
+        badge: '1-Hour Sepsis Bundle',
+        summary: 'Life-threatening organ dysfunction caused by a dysregulated host response to infection.',
+        sections: [
+          {
+            heading: 'Sources, Risk Factors & Clinical Features',
+            items: [
+              'Sources: Respiratory (pneumonia), urinary tract, intra-abdominal (appendicitis, perforation), skin/soft tissue, bloodstream (catheters), obstetric/gynecologic.',
+              'Risk factors: Extremes of age, chronic diseases (DM, CKD, liver disease, COPD, HF), immunosuppression, recent surgery/hospitalization, invasive devices, malnutrition.',
+              'Features: Fever or hypothermia, tachycardia (>90/min), tachypnoea (>20/min), hypotension (SBP <90 or MAP <65 mmHg), altered mental status, cold/clammy or warm flushed skin, urine output <0.5 mL/kg/hr.'
+            ]
+          },
+          {
+            heading: 'Diagnosis, SOFA & Supportive Care',
+            items: [
+              'qSOFA (≥2 high risk): RR ≥22/min, SBP ≤100 mmHg, GCS <15.',
+              'SOFA organ dysfunction: PaO2/FiO2 <300, Platelets <100×10^9/L, Bilirubin >20 μmol/L, MAP <65 / vasopressors, GCS <15, Creatinine >177 μmol/L or urine output <0.5 mL/kg/hr.',
+              'Supportive: O2 (SpO2 ≥94%), glucose 6–10 mmol/L, DVT & stress ulcer prophylaxis, nutrition; Norepinephrine first-line vasopressor; duration usually 7–14 days (or 5–7 days with source control).'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Bundle Step / Regimen', 'Action / Dosing'],
+          rows: [
+            ['1. Recognize Sepsis Early', 'Assess ABCDE, vitals, urine output, GCS; calculate qSOFA / NEWS2'],
+            ['2. Obtain Investigations', 'Blood cultures (2 sets) before antibiotics; FBC, U&E, CRP/Procalcitonin, Lactate; source cultures'],
+            ['3. Give Antibiotics Early', 'Broad-spectrum IV antibiotics within 1 hour of recognition after cultures'],
+            ['4. Give IV Fluids', 'Crystalloid 30 mL/kg within first 3 hours for hypotension or lactate ≥4 mmol/L; target MAP ≥65 mmHg'],
+            ['5. Monitor & 6. Control Source', 'Reassess vitals/urine/lactate; drain abscess, remove infected catheter, debride wounds, surgery if needed'],
+            ['Empiric Adults', 'Community: Ceftriaxone 2 g IV 12–24 h OR Pip-Tazo 4.5 g IV 8 h. Hospital/Severe: Pip-Tazo 4.5 g IV 8 h + Vancomycin 15–20 mg/kg IV 12 h OR Meropenem 1 g IV 8 h']
+          ]
+        },
+        redFlags: 'SBP <90 or MAP <65 mmHg, RR ≥30/min or need for oxygen, altered mental status/confusion, Lactate >4 mmol/L, urine output <0.5 mL/kg/hr for >2 hours, cold/clammy extremities, SpO2 <90% despite oxygen, capillary refill >3 seconds, worsening despite initial therapy.'
+      },
+      {
+        title: 'Gastroenteritis',
+        badge: 'WHO Plan A / B / C & ORS',
+        summary: 'Inflammation of stomach and intestines causing diarrhoea, vomiting, abdominal pain, and sometimes fever due to viral, bacterial, parasitic causes or toxins.',
+        sections: [
+          {
+            heading: 'Causes, Clinical Features & WHO Dehydration',
+            items: [
+              'Causes: Viral (Rotavirus, Norovirus, Adenovirus), Bacterial (E. coli, Salmonella, Shigella, Campylobacter, Vibrio cholerae), Parasitic (Giardia lamblia, Entamoeba histolytica, Cryptosporidium), Toxins.',
+              'No Dehydration (Plan A): Alert/active, eyes normal, drinks normally, skin pinch goes back quickly.',
+              'Some Dehydration (Plan B): Restless/irritable, sunken eyes, drinks eagerly/thirsty, skin pinch goes back slowly.',
+              'Severe Dehydration (Plan C): Lethargic/unconscious, very sunken eyes, unable to drink or drinks poorly, skin pinch goes back very slowly.'
+            ]
+          },
+          {
+            heading: 'Low-Osmolarity ORS (Per 1 Litre Water) & Zinc',
+            items: [
+              'ORS composition (1 L clean water): Glucose anhydrous 13.5 g, Sodium chloride 2.6 g, Potassium chloride 1.5 g, Trisodium citrate dihydrate 2.9 g.',
+              'Zinc supplementation: <6 months = 10 mg once daily for 10–14 days; ≥6 months = 20 mg once daily for 10–14 days.',
+              'Antibiotics ONLY if dysentery (blood in stool with mucus), cholera, proven bacterial infection, or severe illness with high fever/toxic appearance. Avoid anti-motility drugs (e.g., loperamide) in young children.'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Treatment Pillar', 'Key Protocol'],
+          rows: [
+            ['ORS (Mild–Moderate)', 'Give ORS after each loose stool/vomiting; continue breastfeeding/usual diet; give Zinc'],
+            ['IV Fluids (Severe)', 'Ringer’s Lactate or Normal Saline: 100 mL/kg (Plan C timing per age/WHO protocol); 10 mL/kg after each loose stool for ongoing losses'],
+            ['Prevention', 'Safe drinking water, handwashing with soap, sanitation, safe food handling, exclusive breastfeeding for 6 months, rotavirus vaccination']
+          ]
+        },
+        redFlags: 'Blood in stool, severe dehydration, high fever (≥39°C), persistent vomiting (cannot keep fluids), lethargy/unconsciousness, convulsions, signs of shock, no improvement after 48–72 h, infant <2 months with diarrhoea.'
+      },
+      {
+        title: 'Tuberculosis (TB)',
+        badge: '2HRZE / 4HR Regimen',
+        summary: 'Contagious infection caused by Mycobacterium tuberculosis affecting lungs (pulmonary TB) or any other organ (extrapulmonary TB), spread via respiratory droplets.',
+        sections: [
+          {
+            heading: 'Clinical Features & Diagnosis',
+            items: [
+              'Pulmonary TB: Cough ≥2 weeks (dry or productive), evening low-grade fever, night sweats, weight loss, poor appetite, fatigue, chest pain, haemoptysis, breathlessness.',
+              'Extrapulmonary TB: Lymph nodes (painless swelling), pleura (chest pain/breathlessness), meninges (headache, neck stiffness, fever), bones/joints, abdomen.',
+              'Diagnosis: Sputum AFB ×2–3 samples, GeneXpert MTB/RIF (preferred), sputum culture, chest X-ray (infiltrates, cavities, fibrosis), FBC, HIV testing for all TB patients, Mantoux (supportive only).'
+            ]
+          },
+          {
+            heading: 'Special Situations, DOTS & Prevention',
+            items: [
+              'TB + HIV: Same TB regimen + start ART as per guidelines.',
+              'Pregnancy: Use H, R, Z, E (avoid streptomycin); Pyridoxine (vit B6) 25–50 mg daily.',
+              'DR-TB: Refer for drug-resistant TB management (18–24 months or longer per regimen).',
+              'General & Prevention: DOTS adherence, nutrition, treat comorbidities, cough etiquette, ventilation, BCG vaccination in children.'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Phase', 'Duration', 'Drugs (Daily)', 'Adult Dose (Weight ≥40 kg)'],
+          rows: [
+            ['Intensive Phase', '2 months', 'Isoniazid (H), Rifampicin (R), Pyrazinamide (Z), Ethambutol (E)', 'H: 5 mg/kg (max 300 mg) • R: 10 mg/kg (max 600 mg) • Z: 25 mg/kg (max 2 g) • E: 15 mg/kg (max 1.2 g) — Once daily'],
+            ['Continuation Phase', '4 months', 'Isoniazid (H), Rifampicin (R)', 'H: 5 mg/kg (max 300 mg) • R: 10 mg/kg (max 600 mg) — Once daily'],
+            ['Extrapulmonary TB', '6 months (9–12 mo CNS/bone)', 'Same regimen as pulmonary TB', 'Complete full course even if feeling better to prevent failure/resistance']
+          ]
+        },
+        redFlags: 'Coughing blood (haemoptysis), severe breathlessness, persistent high fever, chest pain with difficulty breathing, severe weight loss/wasting, altered mental status (possible TB meningitis), suspected DR-TB, HIV positive with symptoms, severe pediatric illness, drug intolerance.'
+      },
+      {
+        title: 'Typhoid / Enteric Fever',
+        badge: 'Salmonella Typhi',
+        summary: 'Systemic infection caused by Salmonella Typhi (humans only reservoir), transmitted via fecal-oral route (contaminated food or water).',
+        sections: [
+          {
+            heading: 'Clinical Features & Diagnosis',
+            items: [
+              'Insidious step-ladder fever, headache, malaise, body aches, anorexia, nausea, abdominal pain/distension.',
+              'Constipation in 1st week, diarrhoea in 2nd–3rd week; relative bradycardia (Faget sign); rose spots on trunk (2nd week); hepatosplenomegaly.',
+              'Diagnosis: Blood culture (gold standard, best in 1st week), Widal test (supportive; rising titre significant), stool culture (positive 2nd–3rd week), CBC (leucopenia, relative lymphocytosis), mild LFT elevation.'
+            ]
+          },
+          {
+            heading: 'Complications & Prevention',
+            items: [
+              'Complications: Intestinal perforation, GI haemorrhage, toxic encephalopathy, myocarditis, relapse/chronic carrier state.',
+              'Prevention: Safe drinking water, sewage disposal, handwashing, typhoid vaccination, food hygiene.'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Group / Severity', 'Regimen & Dosing'],
+          rows: [
+            ['1. Uncomplicated (Adults)', 'Ciprofloxacin 500 mg PO BD × 7–10 days OR Azithromycin 1 g stat then 500 mg OD × 6–7 days OR Ceftriaxone 2 g IV OD × 7–10 days (per local sensitivity)'],
+            ['2. Complicated / Severe (Adults)', 'Ceftriaxone 2 g IV OD × 10–14 days OR Ciprofloxacin 400 mg IV q12h × 10–14 days OR Pip-Tazo 4.5 g IV q8h (add Metronidazole if intestinal perforation suspected)'],
+            ['Pediatric Doses', 'Ciprofloxacin: 15 mg/kg/dose PO q12h (max 500 mg/dose) × 7–10 d • Azithromycin: 10 mg/kg day 1 (max 1 g) then 5 mg/kg OD • Ceftriaxone: 75–100 mg/kg IV OD (max 2 g) × 10–14 d']
+          ]
+        },
+        redFlags: 'Persistent high fever >5–7 days, severe abdominal pain/guarding, vomiting everything, bloody stools/melaena, altered mental status/confusion, shock, dehydration, suspected intestinal perforation, no improvement after 48–72 h of appropriate antibiotic.'
+      },
+      {
+        title: 'UTI / Pyelonephritis',
+        badge: 'Lower & Upper UTI',
+        summary: 'Infection anywhere in the urinary tract; pyelonephritis is infection of the kidney and renal pelvis.',
+        sections: [
+          {
+            heading: 'Types, Risk Factors & Clinical Features',
+            items: [
+              'Types: Lower UTI (cystitis — bladder), Upper UTI (pyelonephritis — kidney), Complicated UTI (structural/functional abnormality, DM, pregnancy, males, indwelling catheter).',
+              'Lower UTI: Dysuria, frequency, urgency, suprapubic discomfort, no fever, cloudy/bloody urine.',
+              'Upper UTI: Fever, chills, flank/CVA tenderness, nausea, vomiting, malaise, headache.',
+              'Diagnosis: Urinalysis (LE, nitrite, WBCs, bacteria), urine culture & sensitivity (gold standard), FBC (↑ WBC in pyelonephritis), U&E if severe/complicated, pregnancy test in childbearing age.'
+            ]
+          },
+          {
+            heading: 'Complications & Prevention',
+            items: [
+              'Complications: Renal abscess, septicaemia/urosepsis, acute kidney injury, chronic pyelonephritis, preterm labour/low birth weight in pregnancy.',
+              'Prevention: Adequate fluids, perineal hygiene, voiding after intercourse, avoid holding urine, treat constipation, manage DM/remove catheters early.'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Category', 'Antibiotic Options & Dosing'],
+          rows: [
+            ['1. Lower UTI / Cystitis (Adults)', 'Nitrofurantoin 100 mg BD × 5 d OR Fosfomycin 3 g single dose OR Co-trimoxazole 960 mg BD × 3 d (if resistance <20%) OR Amoxicillin-clavulanate 625 mg TDS × 5 d'],
+            ['2. Upper UTI / Pyelonephritis (Adults)', 'Ciprofloxacin 500 mg BD × 7–14 d OR Levofloxacin 750 mg OD × 7–14 d OR Ceftriaxone 1–2 g IV OD × 7–14 d (oral step-down when improving) OR Co-trimoxazole 960 mg BD × 14 d (if sensitive)'],
+            ['Pediatric Doses', 'Cotrimoxazole: 8–10 mg/kg (TMP) BD (3 d cystitis, 7–14 d pyelo) • Amox-clav: 20–40 mg/kg TDS × 5–7 d • Cefixime: 8 mg/kg (max 400 mg) OD × 7–10 d • Ceftriaxone (severe): 50–75 mg/kg (max 2 g) OD × 7–14 d (adjust in renal impairment)']
+          ]
+        },
+        redFlags: 'High fever with chills/rigors, flank pain with vomiting, pregnant woman with UTI symptoms, signs of sepsis (tachycardia, hypotension, confusion), unable to keep oral fluids/meds, recurrent UTI, known renal disease/obstruction, no improvement after 48–72 h.'
+      },
+      {
+        title: 'Malaria',
+        badge: 'Plasmodium spp. • ACT & IV Artesunate',
+        summary: 'Parasitic infection caused by Plasmodium spp. (P. falciparum most severe; P. vivax, P. malariae, P. ovale) transmitted by infected female Anopheles mosquito.',
+        sections: [
+          {
+            heading: 'Diagnosis, Symptoms & Complications',
+            items: [
+              'Diagnosis: RDT (Pf/Pan) first-line; thick & thin blood film (gold standard); FBC (anaemia, thrombocytopenia); U&E and LFTs if severe.',
+              'Symptoms: Fever (often high), chills, sweating, headache, body aches, malaise, nausea/vomiting/diarrhoea, pallor; severe signs include prostration, confusion, convulsions, jaundice, respiratory distress, shock, renal failure, hypoglycaemia.',
+              'Complications: Cerebral malaria, severe anaemia, hypoglycaemia, metabolic acidosis, AKI, pulmonary oedema/ARDS, shock, bleeding, jaundice, multi-organ failure.'
+            ]
+          },
+          {
+            heading: 'Prevention & Key Points',
+            items: [
+              'Insecticide-treated nets, indoor residual spraying, repellants/protective clothing, IPTp in pregnancy, chemoprophylaxis if indicated.',
+              'Test all suspected cases, start treatment early, treat severe malaria as an emergency, and complete the full course.'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Malaria Type', 'Treatment & Dosing'],
+          rows: [
+            ['1. Uncomplicated P. falciparum (ACT)', 'Artemether-Lumefantrine 20/120 mg (Coartem): Adult 4 tabs stat then 4 tabs 8-hourly × 2 more days (6 doses total); Child weight-banded (1–4 tabs) OR Dihydroartemisinin-Piperaquine 40/320 mg: Adult 3 tabs OD × 3 days'],
+            ['2. Uncomplicated Non-falciparum', 'Chloroquine (if sensitive): Adult 600 mg base stat, then 300 mg at 6 h, 24 h, 48 h + Primaquine: Adult 15 mg base daily × 14 days (Child 0.25 mg base/kg daily × 14 days, after G6PD test)'],
+            ['3. Severe / Complicated Malaria', 'Artesunate 2.4 mg/kg IV stat, then 2.4 mg/kg at 12 h, 24 h, then OD until oral therapy possible (max 5 days), followed by full ACT course + supportive care (Paracetamol, cautious IV fluids, Dextrose 10% 5 mL/kg IV for hypoglycaemia, Diazepam for seizures)']
+          ]
+        },
+        redFlags: 'Altered consciousness/prostration, convulsions, severe anaemia, respiratory distress, hypoglycaemia, jaundice/dark urine, shock, renal failure (oliguria/anuria), bleeding manifestations.'
+      },
+      {
+        title: 'Pneumonia',
+        badge: 'CAP • HAP • Aspiration • Immunocompromised',
+        summary: 'Infection of the lung parenchyma (alveoli) causing inflammation and consolidation due to bacteria, viruses, fungi, or aspiration.',
+        sections: [
+          {
+            heading: 'Risk Factors, Features & Diagnosis',
+            items: [
+              'Risk factors: Age <5 or >65 yrs, smoking, chronic lung disease, alcoholism, malnutrition, DM, HIV/AIDS, bed rest/aspiration risk, recent viral infection.',
+              'Features: Fever, chills, cough (productive/purulent/rusty sputum), pleuritic chest pain, shortness of breath/tachypnoea, malaise/fatigue, crackles.',
+              'Diagnosis: Clinical exam, chest X-ray (infiltrate/consolidation), FBC, sputum Gram stain/culture & sensitivity, pulse oximetry, blood cultures if severe, CRP/Procalcitonin.'
+            ]
+          },
+          {
+            heading: 'Adjunctive Care & Duration',
+            items: [
+              'O2 to target SpO2 ≥92%, IV fluids, Paracetamol for fever, bronchodilators if wheeze, chest physiotherapy, nutrition, stop smoking/alcohol.',
+              'Duration: Uncomplicated CAP 5–7 days; severe pneumonia 7–14 days.'
+            ]
+          }
+        ],
+        table: {
+          headers: ['Setting / Severity', 'Empiric Regimen'],
+          rows: [
+            ['1. Outpatient (mild–moderate, no comorbidity)', 'Amoxicillin 1 g PO TDS OR Doxycycline 100 mg PO BD OR Azithromycin 500 mg PO OD × 3 d then 250 mg PO OD × 2 d'],
+            ['2. Outpatient (with comorbidity)', 'Amoxicillin-Clavulanate 625 mg PO TDS OR Levofloxacin 750 mg PO OD'],
+            ['3. Inpatient (non-severe)', 'Ceftriaxone 1–2 g IV OD PLUS Azithromycin 500 mg IV/PO OD OR Levofloxacin 750 mg IV OD'],
+            ['4. Inpatient (severe / ICU)', 'Piperacillin-Tazobactam 4.5 g IV q8h PLUS Azithromycin 500 mg IV OD OR Meropenem 1 g IV q8h PLUS Levofloxacin 750 mg IV OD'],
+            ['Pediatric CAP Doses', 'Outpatient: Amoxicillin 80–90 mg/kg/day in 2 divided doses × 5–7 d OR Azithromycin 10 mg/kg day 1 then 5 mg/kg OD days 2–5. Inpatient: Ampicillin 50 mg/kg IV q6h PLUS Gentamicin 5–7.5 mg/kg IV/IM OD OR Ceftriaxone 50–100 mg/kg IV OD']
+          ]
+        },
+        redFlags: 'Severe respiratory distress, SpO2 <90% on room air, unable to drink/persistent vomiting, altered mental status/drowsiness, hypotension (SBP <90 mmHg), severe dehydration, no improvement after 48–72 h, complications (effusion, empyema, sepsis).'
+      }
+    ];
+
+    /* =========================================================================
+       COMPLETE 7 ORGAN SYSTEMS / 49 DISEASES (ONE-LINE CLINICAL SYMPTOMS)
+       ========================================================================= */
+    var symptomSystems = [
+      {
+        system: '1. Musculoskeletal and Dermatological Diseases',
+        organ: 'joint',
+        diseases: [
+          { name: 'Osteoarthritis (OA)', line: 'Joint pain that worsens with activity, brief morning stiffness and reduced range of movement.' },
+          { name: 'Rheumatoid arthritis (RA)', line: 'Symmetrical joint pain and swelling, especially in hands, with prolonged morning stiffness.' },
+          { name: 'Gout', line: 'Sudden severe pain, redness and swelling of a joint, classically the big toe.' },
+          { name: 'Ankylosing spondylitis', line: 'Chronic lower back pain and stiffness, worse in morning and improves with exercise.' },
+          { name: 'Lumbar disc herniation', line: 'Lower back pain radiating to the leg, often with tingling, numbness or weakness.' },
+          { name: 'Scabies', line: 'Intense itching, especially at night, with small papules or burrows on hands, wrists and other typical sites.' },
+          { name: 'Tinea corporis (Ringworm)', line: 'Itchy, circular, scaly skin patches with a raised border and central clearing.' }
+        ]
+      },
+      {
+        system: '2. Neurological Diseases',
+        organ: 'brain',
+        diseases: [
+          { name: 'Migraine', line: 'Recurrent, usually one-sided throbbing headache often with nausea and sensitivity to light or sound.' },
+          { name: 'Tension-type headache', line: 'Bilateral, pressing or tightening head pain, usually mild to moderate with no vomiting.' },
+          { name: 'Stroke', line: 'Sudden weakness or numbness on one side of the body, facial droop, speech difficulty, or loss of balance.' },
+          { name: 'Epileptic seizure', line: 'Transient episodes of abnormal movements, altered awareness, or unusual sensations.' },
+          { name: 'Meningitis', line: 'Fever, severe headache, neck stiffness, and sometimes vomiting or altered consciousness.' },
+          { name: 'Parkinson disease', line: 'Resting tremor, slowness of movement, muscle rigidity, and impaired balance.' },
+          { name: "Bell's palsy", line: 'Sudden weakness of muscles on one side of the face, leading to facial asymmetry and inability to close the eye.' }
+        ]
+      },
+      {
+        system: '3. Endocrine and Metabolic Diseases',
+        organ: 'thyroid',
+        diseases: [
+          { name: 'Diabetes mellitus', line: 'Excessive thirst, frequent urination, unexplained weight loss, fatigue and sometimes blurred vision.' },
+          { name: 'Hypothyroidism', line: 'Fatigue, weight gain, cold intolerance, constipation and dry skin.' },
+          { name: 'Hyperthyroidism', line: 'Weight loss despite good appetite, palpitations, heat intolerance, tremor and anxiety.' },
+          { name: "Cushing's syndrome", line: 'Weight gain (especially face and abdomen), purple stretch marks, muscle weakness and high blood pressure.' },
+          { name: "Addison's disease", line: 'Fatigue, weight loss, low blood pressure, skin hyperpigmentation and salt craving.' },
+          { name: 'Metabolic syndrome', line: 'Central obesity, high blood pressure, high blood sugar, high triglycerides and low HDL cholesterol.' },
+          { name: 'Dyslipidaemia', line: 'Usually no symptoms, sometimes chest pain or xanthomas; often detected on lipid profile screening.' }
+        ]
+      },
+      {
+        system: '4. Infectious and Febrile Diseases',
+        organ: 'vessel',
+        diseases: [
+          { name: 'Dengue', line: 'High fever, severe headache, pain behind the eyes, joint and muscle pain, and sometimes rash.' },
+          { name: 'Malaria', line: 'Fever with chills and rigors, sweating, headache, body ache and sometimes vomiting.' },
+          { name: 'Enteric fever (Typhoid)', line: 'Prolonged fever, headache, abdominal discomfort, loss of appetite, and altered bowel habits (constipation or diarrhoea).' },
+          { name: 'Chikungunya', line: 'Sudden fever with prominent joint pain, joint swelling, muscle pain and sometimes rash.' },
+          { name: 'Leptospirosis', line: 'Fever, severe muscle pain (especially calf), headache, red eyes and sometimes jaundice.' },
+          { name: 'Influenza', line: 'Sudden high fever, body aches, headache, dry cough, sore throat and fatigue.' },
+          { name: 'Urinary tract infection (UTI)', line: 'Burning urination, frequent urination, urgency and lower abdominal discomfort.' }
+        ]
+      },
+      {
+        system: '5. Gastrointestinal Diseases',
+        organ: 'gi',
+        diseases: [
+          { name: 'Gastroesophageal reflux disease (GERD)', line: 'Burning sensation behind the breastbone and sour regurgitation, often after meals or while lying down.' },
+          { name: 'Peptic ulcer disease (PUD)', line: 'Burning or gnawing upper abdominal pain, usually related to meals, with bloating or nausea.' },
+          { name: 'Acute gastroenteritis', line: 'Diarrhoea, vomiting, abdominal cramps and sometimes fever, usually due to an infection.' },
+          { name: 'Acute appendicitis', line: 'Pain that starts near the umbilicus and shifts to the right lower abdomen, with nausea and fever.' },
+          { name: 'Acute cholecystitis', line: 'Persistent right upper abdominal pain, often after fatty meals, with fever, nausea and tenderness.' },
+          { name: 'Acute pancreatitis', line: 'Severe upper abdominal pain radiating to the back, usually with vomiting.' },
+          { name: 'Hepatitis', line: 'Fatigue, loss of appetite, right upper abdominal discomfort, nausea and sometimes jaundice (yellowish eyes/skin).' }
+        ]
+      },
+      {
+        system: '6. Respiratory Diseases',
+        organ: 'lungs',
+        diseases: [
+          { name: 'Asthma', line: 'Episodic wheezing, breathlessness, chest tightness and cough, often worse at night or early morning.' },
+          { name: 'COPD', line: 'Chronic cough, sputum production and progressive breathlessness, especially in smokers.' },
+          { name: 'Pneumonia', line: 'Fever, cough with or without sputum, breathlessness and pleuritic chest pain.' },
+          { name: 'Pulmonary tuberculosis', line: 'Persistent cough, evening fever, night sweats, weight loss and sometimes blood in sputum.' },
+          { name: 'Acute bronchitis', line: 'Cough, often after a viral infection, with or without sputum and mild chest discomfort.' },
+          { name: 'Allergic rhinitis', line: 'Repeated sneezing, watery nasal discharge, nasal itching and congestion.' },
+          { name: 'Acute sinusitis', line: 'Facial pressure or pain, nasal congestion, thick nasal discharge and reduced sense of smell.' }
+        ]
+      },
+      {
+        system: '7. Cardiovascular Diseases',
+        organ: 'heart',
+        diseases: [
+          { name: 'Myocardial infarction (MI)', line: 'Chest pressure or heaviness, sweating, nausea, and pain radiating to the left arm, jaw or back.' },
+          { name: 'Angina pectoris', line: 'Chest discomfort triggered by exertion or stress, usually relieved by rest (in stable angina).' },
+          { name: 'Heart failure', line: 'Breathlessness on exertion or lying flat, leg swelling, fatigue and sometimes nocturnal breathlessness.' },
+          { name: 'Hypertensive emergency', line: 'Severely elevated blood pressure with symptoms of acute organ injury like headache, chest pain, breathlessness, confusion or neurological deficits.' },
+          { name: 'Deep vein thrombosis (DVT)', line: 'Unilateral leg swelling, pain, warmth and tenderness.' },
+          { name: 'Pulmonary embolism', line: 'Sudden breathlessness, sharp chest pain (pleuritic), rapid heart rate and sometimes coughing up blood.' },
+          { name: 'Peripheral arterial disease', line: 'Leg pain during walking (claudication) that improves with rest, with reduced peripheral pulses.' }
+        ]
+      }
+    ];
+
+    /* =========================================================================
+       COMPLETE 100 OPD DIAGNOSIS ENTRIES (#01 - #100) FROM USER SOURCES
+       ========================================================================= */
+    var opdEntries = [
+      // 01-10 Fever & Infectious Diseases
+      { num: '01', cat: 'Fever & Infectious', clues: 'Fever + chills + sweating', dx: 'Malaria' },
+      { num: '02', cat: 'Fever & Infectious', clues: 'Fever + severe body ache + retro-orbital pain', dx: 'Dengue' },
+      { num: '03', cat: 'Fever & Infectious', clues: 'Fever + cough + weight loss + night sweats', dx: 'Tuberculosis' },
+      { num: '04', cat: 'Fever & Infectious', clues: 'Fever + sore throat + tonsillar exudate', dx: 'Acute tonsillitis' },
+      { num: '05', cat: 'Fever & Infectious', clues: 'Fever + neck stiffness + severe headache', dx: 'Meningitis' },
+      { num: '06', cat: 'Fever & Infectious', clues: 'Fever + cough + pleuritic chest pain', dx: 'Pneumonia' },
+      { num: '07', cat: 'Fever & Infectious', clues: 'Fever + abdominal pain + relative bradycardia', dx: 'Enteric fever' },
+      { num: '08', cat: 'Fever & Infectious', clues: 'Fever + joint pain + rash', dx: 'Chikungunya' },
+      { num: '09', cat: 'Fever & Infectious', clues: 'Fever + jaundice + myalgia', dx: 'Leptospirosis' },
+      { num: '10', cat: 'Fever & Infectious', clues: 'Fever + painful parotid swelling', dx: 'Mumps' },
+      // 11-20 Cardio + Endocrine + Respiratory
+      { num: '11', cat: 'Cardio + Endocrine + Resp', clues: 'Sudden unilateral weakness + speech difficulty', dx: 'Stroke' },
+      { num: '12', cat: 'Cardio + Endocrine + Resp', clues: 'Chest pain + sweating + nausea', dx: 'Acute myocardial infarction' },
+      { num: '13', cat: 'Cardio + Endocrine + Resp', clues: 'Chest pain relieved by rest', dx: 'Stable angina' },
+      { num: '14', cat: 'Cardio + Endocrine + Resp', clues: 'Breathlessness + orthopnea + pedal edema', dx: 'Heart failure' },
+      { num: '15', cat: 'Cardio + Endocrine + Resp', clues: 'Palpitations + tremor + weight loss', dx: 'Hyperthyroidism' },
+      { num: '16', cat: 'Cardio + Endocrine + Resp', clues: 'Fatigue + weight gain + cold intolerance', dx: 'Hypothyroidism' },
+      { num: '17', cat: 'Cardio + Endocrine + Resp', clues: 'Polyuria + polydipsia + weight loss', dx: 'Diabetes mellitus' },
+      { num: '18', cat: 'Cardio + Endocrine + Resp', clues: 'Sweating + tremor + confusion', dx: 'Hypoglycemia' },
+      { num: '19', cat: 'Cardio + Endocrine + Resp', clues: 'Wheezing + episodic breathlessness', dx: 'Asthma' },
+      { num: '20', cat: 'Cardio + Endocrine + Resp', clues: 'Chronic cough + sputum + smoking history', dx: 'COPD' },
+      // 21-30 Respiratory & Renal
+      { num: '21', cat: 'Respiratory & Renal', clues: 'Sudden severe breathlessness + pleuritic pain', dx: 'Pulmonary embolism' },
+      { num: '22', cat: 'Respiratory & Renal', clues: 'Sudden breathlessness + unilateral absent breath sounds', dx: 'Pneumothorax' },
+      { num: '23', cat: 'Respiratory & Renal', clues: 'Hemoptysis + weight loss + chronic cough', dx: 'Pulmonary tuberculosis' },
+      { num: '24', cat: 'Respiratory & Renal', clues: 'Dry cough + exertional dyspnea', dx: 'Interstitial lung disease' },
+      { num: '25', cat: 'Respiratory & Renal', clues: 'Snoring + daytime sleepiness', dx: 'Obstructive sleep apnea' },
+      { num: '26', cat: 'Respiratory & Renal', clues: 'Burning urination + frequency', dx: 'Urinary tract infection' },
+      { num: '27', cat: 'Respiratory & Renal', clues: 'Flank pain + hematuria', dx: 'Renal stone' },
+      { num: '28', cat: 'Respiratory & Renal', clues: 'Edema + frothy urine', dx: 'Nephrotic syndrome' },
+      { num: '29', cat: 'Respiratory & Renal', clues: 'Hematuria + edema + hypertension', dx: 'Glomerulonephritis' },
+      { num: '30', cat: 'Respiratory & Renal', clues: 'Polyuria + polydipsia + hyperglycemia', dx: 'Diabetes mellitus' },
+      // 31-40 Gastrointestinal & Hepatobiliary
+      { num: '31', cat: 'GI & Hepatobiliary', clues: 'Right lower abdominal pain + vomiting', dx: 'Appendicitis' },
+      { num: '32', cat: 'GI & Hepatobiliary', clues: 'Epigastric pain radiating to back', dx: 'Acute pancreatitis' },
+      { num: '33', cat: 'GI & Hepatobiliary', clues: 'Right upper abdominal pain after fatty meal', dx: 'Cholelithiasis' },
+      { num: '34', cat: 'GI & Hepatobiliary', clues: 'Jaundice + pale stool + dark urine', dx: 'Obstructive jaundice' },
+      { num: '35', cat: 'GI & Hepatobiliary', clues: 'Heartburn + acid regurgitation', dx: 'GERD' },
+      { num: '36', cat: 'GI & Hepatobiliary', clues: 'Recurrent abdominal pain + altered bowel habits', dx: 'IBS' },
+      { num: '37', cat: 'GI & Hepatobiliary', clues: 'Chronic diarrhea + weight loss', dx: 'Malabsorption' },
+      { num: '38', cat: 'GI & Hepatobiliary', clues: 'Dysphagia + regurgitation', dx: 'Achalasia' },
+      { num: '39', cat: 'GI & Hepatobiliary', clues: 'Severe epigastric pain + history of NSAID use', dx: 'Peptic ulcer disease' },
+      { num: '40', cat: 'GI & Hepatobiliary', clues: 'Hematemesis + melena', dx: 'Upper GI bleeding' },
+      // 41-50 (Continuity / Clinical OPD Reference)
+      { num: '41', cat: 'GI & Hepatobiliary', clues: 'Persistent RUQ pain after fatty meal + fever + nausea', dx: 'Acute cholecystitis' },
+      { num: '42', cat: 'GI & Hepatobiliary', clues: 'Fatigue + anorexia + RUQ discomfort + jaundice', dx: 'Hepatitis' },
+      { num: '43', cat: 'Cardio & Vascular', clues: 'Unilateral leg swelling + pain + warmth + tenderness', dx: 'Deep vein thrombosis (DVT)' },
+      { num: '44', cat: 'Cardio & Vascular', clues: 'Leg pain on walking (claudication) relieved by rest + reduced pulses', dx: 'Peripheral arterial disease' },
+      { num: '45', cat: 'Neurological', clues: 'Resting tremor + bradykinesia + rigidity + impaired balance', dx: 'Parkinson disease' },
+      { num: '46', cat: 'Neurological', clues: 'Sudden one-sided facial weakness + inability to close eye', dx: "Bell's palsy" },
+      { num: '47', cat: 'Endocrine & Metabolic', clues: 'Central obesity + moon face/abdomen + purple striae + HTN', dx: "Cushing's syndrome" },
+      { num: '48', cat: 'Endocrine & Metabolic', clues: 'Fatigue + weight loss + hypotension + hyperpigmentation + salt craving', dx: "Addison's disease" },
+      { num: '49', cat: 'Musculoskeletal', clues: 'Sudden severe pain, redness & swelling of joint (classically big toe)', dx: 'Gout' },
+      { num: '50', cat: 'Musculoskeletal', clues: 'Symmetrical hand joint pain/swelling + prolonged morning stiffness', dx: 'Rheumatoid arthritis (RA)' },
+      // 51-60 Hematology & Thrombotic Disorders
+      { num: '51', cat: 'Hematology & Thrombotic', clues: 'Pale, fatigued, spoon-shaped nails', dx: 'Iron deficiency anemia' },
+      { num: '52', cat: 'Hematology & Thrombotic', clues: 'Glossitis + neuropathy + macrocytic anemia', dx: 'Vitamin B12 deficiency' },
+      { num: '53', cat: 'Hematology & Thrombotic', clues: 'Swollen gums + easy bruising', dx: 'Vitamin C deficiency' },
+      { num: '54', cat: 'Hematology & Thrombotic', clues: 'Bone pain + muscle weakness + low calcium', dx: 'Vitamin D deficiency' },
+      { num: '55', cat: 'Hematology & Thrombotic', clues: 'Easy bleeding + low platelet count', dx: 'Thrombocytopenia' },
+      { num: '56', cat: 'Hematology & Thrombotic', clues: 'High fever + low platelet count + hemorrhages', dx: 'Dengue' },
+      { num: '57', cat: 'Hematology & Thrombotic', clues: 'Back pain + anemia + renal dysfunction', dx: 'Multiple myeloma' },
+      { num: '58', cat: 'Hematology & Thrombotic', clues: 'Painless lymph node enlargement + weight loss + fever', dx: 'Lymphoma' },
+      { num: '59', cat: 'Hematology & Thrombotic', clues: 'Fatigue + fever + bleeding + anemia', dx: 'Leukemia' },
+      { num: '60', cat: 'Hematology & Thrombotic', clues: 'Recurrent pregnancy loss + thrombosis', dx: 'Antiphospholipid syndrome' },
+      // 61-70 Dermatology & Infections
+      { num: '61', cat: 'Dermatology & Infections', clues: 'Fever + sore throat + generalized rash', dx: 'Scarlet fever' },
+      { num: '62', cat: 'Dermatology & Infections', clues: 'Itching + burrows in webs of fingers + nocturnal symptoms', dx: 'Scabies' },
+      { num: '63', cat: 'Dermatology & Infections', clues: 'Ring-shaped lesion + central clearing + itchy', dx: 'Tinea corporis' },
+      { num: '64', cat: 'Dermatology & Infections', clues: 'Painful grouped vesicles on erythematous base', dx: 'Herpes zoster' },
+      { num: '65', cat: 'Dermatology & Infections', clues: 'Fever + chills + discolored skin + hypotension', dx: 'Sepsis' },
+      { num: '66', cat: 'Dermatology & Infections', clues: 'Fever + black eschar at bite site + lymphadenopathy', dx: 'Scrub typhus' },
+      { num: '67', cat: 'Dermatology & Infections', clues: 'Watery diarrhea + dehydration + rice water stools', dx: 'Cholera' },
+      { num: '68', cat: 'Dermatology & Infections', clues: 'Fever + relative bradycardia + abdominal pain', dx: 'Typhoid fever' },
+      { num: '69', cat: 'Dermatology & Infections', clues: 'High fever + hepatosplenomegaly + pancytopenia', dx: 'Visceral leishmaniasis' },
+      { num: '70', cat: 'Dermatology & Infections', clues: 'Fever + myalgia + retro-orbital pain + rash', dx: 'Dengue fever' },
+      // 71-80 Dermatology + Gynecology
+      { num: '71', cat: 'Dermatology & Gynecology', clues: 'Depigmented patches with sharp borders', dx: 'Vitiligo' },
+      { num: '72', cat: 'Dermatology & Gynecology', clues: 'Comedones + inflammatory papules', dx: 'Acne vulgaris' },
+      { num: '73', cat: 'Dermatology & Gynecology', clues: 'Honey-colored crusted lesions', dx: 'Impetigo' },
+      { num: '74', cat: 'Dermatology & Gynecology', clues: 'Butterfly-shaped facial rash', dx: 'SLE' },
+      { num: '75', cat: 'Dermatology & Gynecology', clues: 'Itchy plaques + silvery scales', dx: 'Psoriasis' },
+      { num: '76', cat: 'Dermatology & Gynecology', clues: 'Amenorrhea + galactorrhea', dx: 'Hyperprolactinemia' },
+      { num: '77', cat: 'Dermatology & Gynecology', clues: 'Irregular periods + hirsutism + acne', dx: 'PCOS' },
+      { num: '78', cat: 'Dermatology & Gynecology', clues: 'Amenorrhea + hot flashes', dx: 'Menopause' },
+      { num: '79', cat: 'Dermatology & Gynecology', clues: 'Heavy menstrual bleeding + pelvic pressure', dx: 'Uterine fibroid' },
+      { num: '80', cat: 'Dermatology & Gynecology', clues: 'Dysmenorrhea + infertility + pelvic pain', dx: 'Endometriosis' },
+      // 81-90 Gynecology + Obstetrics + Pediatrics
+      { num: '81', cat: 'Gyn + Obs + Pediatrics', clues: 'Vaginal discharge + itching', dx: 'Vulvovaginal candidiasis' },
+      { num: '82', cat: 'Gyn + Obs + Pediatrics', clues: 'Painless genital ulcer', dx: 'Primary syphilis' },
+      { num: '83', cat: 'Gyn + Obs + Pediatrics', clues: 'Painful genital ulcers', dx: 'Genital herpes' },
+      { num: '84', cat: 'Gyn + Obs + Pediatrics', clues: 'Vaginal discharge + cervical motion tenderness', dx: 'PID' },
+      { num: '85', cat: 'Gyn + Obs + Pediatrics', clues: 'Pregnancy + painless vaginal bleeding', dx: 'Placenta previa' },
+      { num: '86', cat: 'Gyn + Obs + Pediatrics', clues: 'Pregnancy + painful bleeding + uterine tenderness', dx: 'Placental abruption' },
+      { num: '87', cat: 'Gyn + Obs + Pediatrics', clues: 'Pregnancy + seizures + hypertension', dx: 'Eclampsia' },
+      { num: '88', cat: 'Gyn + Obs + Pediatrics', clues: 'Child + barking cough + stridor', dx: 'Croup' },
+      { num: '89', cat: 'Gyn + Obs + Pediatrics', clues: 'Child + cough + paroxysmal whoop', dx: 'Pertussis' },
+      { num: '90', cat: 'Gyn + Obs + Pediatrics', clues: 'Child + fever + strawberry tongue + rash', dx: 'Scarlet fever' },
+      // 91-100 Pediatrics + Emergency & Specialties
+      { num: '91', cat: 'Pediatrics + Emergency', clues: 'Child + fever + cough + conjunctivitis + rash', dx: 'Measles' },
+      { num: '92', cat: 'Pediatrics + Emergency', clues: 'Child + fever + strawberry tongue', dx: 'Scarlet fever' },
+      { num: '93', cat: 'Pediatrics + Emergency', clues: 'Child + barking cough + drooling + toxic appearance', dx: 'Epiglottitis' },
+      { num: '94', cat: 'Pediatrics + Emergency', clues: 'Child + recurrent wheezing + atopy', dx: 'Childhood asthma' },
+      { num: '95', cat: 'Pediatrics + Emergency', clues: 'Sudden scrotal pain + high-riding testis', dx: 'Testicular torsion' },
+      { num: '96', cat: 'Pediatrics + Emergency', clues: 'Painless testicular lump', dx: 'Testicular tumor' },
+      { num: '97', cat: 'Pediatrics + Emergency', clues: 'Calf swelling + pain + recent immobilization', dx: 'DVT' },
+      { num: '98', cat: 'Pediatrics + Emergency', clues: 'Sudden painful red eye + blurred vision', dx: 'Acute angle-closure glaucoma' },
+      { num: '99', cat: 'Pediatrics + Emergency', clues: 'Painless progressive loss of peripheral vision', dx: 'Glaucoma' },
+      { num: '100', cat: 'Pediatrics + Emergency', clues: 'Flashes + floaters + curtain-like vision loss', dx: 'Retinal detachment' }
+    ];
+
+    /* =========================================================================
+       INTERACTIVE QUIZ QUESTIONS
+       ========================================================================= */
+    var quizQuestions = [
+      {
+        q: 'Combining nitrates (such as sublingual nitroglycerin) with PDE-5 inhibitors (sildenafil or tadalafil) is dangerous because it causes:',
+        opts: ['Severe, potentially life-threatening hypotension', 'Hyperkalemia and dry cough', 'Spoon-shaped nails and glossitis'],
+        ans: 0,
+        why: 'Nitrates + PDE-5 inhibitors cause profound vasodilation and severe hypotension; they must never be combined.'
+      },
+      {
+        q: 'Which antidote reverses benzodiazepine overdose/toxicity?',
+        opts: ['Flumazenil', 'Protamine sulfate', 'N-acetylcysteine (NAC)'],
+        ans: 0,
+        why: 'Flumazenil is the benzodiazepine antagonist; Protamine sulfate reverses heparin, and NAC treats acetaminophen hepatotoxicity.'
+      },
+      {
+        q: 'What is the specific antidote for acetaminophen-induced liver injury?',
+        opts: ['N-acetylcysteine (NAC)', 'Vitamin K (Phytonadione)', 'Digoxin immune Fab'],
+        ans: 0,
+        why: 'N-acetylcysteine (NAC) replenishes glutathione and protects against acetaminophen hepatotoxicity.'
+      },
+      {
+        q: 'Which antihypertensive classes carry a major contraindication ("HUGE RED FLAG") in pregnancy?',
+        opts: ['ACE inhibitors (-pril) and ARBs (-sartan)', 'Inhaled beta-2 agonists', 'Oral rehydration salts'],
+        ans: 0,
+        why: 'ACE inhibitors and ARBs are contraindicated in pregnancy due to risk of fetal renal/developmental injury.'
+      },
+      {
+        q: 'In the 1-Hour Sepsis Bundle, what is the target timeframe for administering broad-spectrum IV antibiotics after recognition?',
+        opts: ['Within 1 hour (after obtaining cultures)', 'Only after 72 hours of observation', 'After discharge'],
+        ans: 0,
+        why: 'Early recognition and broad-spectrum IV antimicrobials within 1 hour of sepsis recognition are critical to improve survival.'
+      },
+      {
+        q: 'In uncomplicated gastroenteritis with diarrhoea, which two cornerstones prevent dehydration and support recovery?',
+        opts: ['Low-osmolarity ORS (plus Zinc in children)', 'Routine systemic aminoglycosides in every mild case', 'Stopping all fluids and feeding'],
+        ans: 0,
+        why: 'Oral Rehydration Solution (ORS) rehydrates and replaces electrolytes, while Zinc reduces duration/severity in children.'
+      },
+      {
+        q: 'A patient presents with sudden scrotal pain and a high-riding testis. Which emergency diagnosis must be ruled out immediately?',
+        opts: ['Testicular torsion', 'Allergic rhinitis', 'Osteoarthritis'],
+        ans: 0,
+        why: 'Sudden scrotal pain with a high-riding testis is a classic presentation of testicular torsion requiring urgent surgical evaluation.'
+      },
+      {
+        q: 'Which presentation matches #77 PCOS in OPD diagnosis?',
+        opts: ['Irregular periods + hirsutism + acne', 'Painful grouped vesicles on erythematous base', 'Spoon-shaped nails'],
+        ans: 0,
+        why: 'Polycystic ovary syndrome (PCOS) classically presents with irregular menstrual cycles, hirsutism, and acne.'
+      }
+    ];
+
+    /* =========================================================================
+       INTERACTIVE CLINICAL CASE STUDIES
+       ========================================================================= */
+    var caseStudies = [
+      {
+        title: 'Case 1: Chest Discomfort & Recent Sildenafil Use',
+        vignette: 'A 58-year-old man has chest tightness and took sildenafil earlier today. Sublingual nitroglycerin is being considered.',
+        prompt: 'What is the safest immediate clinical action?',
+        choices: [
+          'Do NOT administer nitroglycerin due to risk of severe hypotension with PDE-5 inhibitors',
+          'Give nitroglycerin immediately followed by a second tablet without checking BP',
+          'Substitute warfarin for acute chest discomfort'
+        ],
+        correct: 0,
+        rationale: 'Nitrates combined with PDE-5 inhibitors (sildenafil, tadalafil) can provoke severe hypotension. Always screen for PDE-5 inhibitor use before giving nitrates.'
+      },
+      {
+        title: 'Case 2: Migrating Abdominal Pain to Right Iliac Fossa',
+        vignette: 'A 19-year-old male develops pain that started around the umbilicus and shifted to the right lower quadrant over 12 hours, with nausea and tenderness at McBurney’s point.',
+        prompt: 'What is the primary diagnosis and initial pre-operative preparation?',
+        choices: [
+          'Acute appendicitis — keep nil by mouth, give IV fluids & analgesia, and administer pre-incision antibiotics (e.g., Ceftriaxone + Metronidazole)',
+          'Tension-type headache — give sumatriptan and discharge',
+          'Primary syphilis — give topical clotrimazole only'
+        ],
+        correct: 0,
+        rationale: 'Periumbilical pain migrating to the right iliac fossa with McBurney’s point tenderness is classic for acute appendicitis requiring timely surgical/pre-op care.'
+      },
+      {
+        title: 'Case 3: Fever, Hypotension & Oliguria',
+        vignette: 'A 67-year-old patient with pneumonia has fever, BP 82/48 mmHg, RR 28/min, confusion, and urine output <0.5 mL/kg/hr.',
+        prompt: 'Which condition is present and what is priority management?',
+        choices: [
+          'Sepsis / septic shock — draw blood cultures, give broad-spectrum IV antibiotics within 1 hour, crystalloid resuscitation, and monitor MAP/lactate',
+          'Allergic rhinitis — give antihistamine nasal spray only',
+          'Vitamin C deficiency — give routine outpatient follow-up in 3 months'
+        ],
+        correct: 0,
+        rationale: 'Infection with organ dysfunction (hypotension, altered mentation, oliguria) indicates sepsis requiring the 1-Hour Bundle, fluids, and targeted antibiotics.'
+      }
+    ];
+
+    /* =========================================================================
+       STATE & RENDERING FUNCTIONS
+       ========================================================================= */
+    var activeSection = 'pharmacology';
+    var activeDrugClass = 'All';
+    var activeSafetyFilter = 'ALL';
+    var opdSelfTestMode = false;
+    var opdRevealedMap = {};
+    var quizState = { index: 0, score: 0, answered: false, selected: -1 };
+    var caseAnsweredMap = {};
+
+    function loginClinician() {
+      var input = document.getElementById('clinicianNameInput');
+      var badge = document.getElementById('roleBadge');
+      var name = input && input.value.trim() ? input.value.trim() : 'Dr. Hilaac Clinician';
+      badge.textContent = 'Role: Clinician (' + name + ')';
+      badge.className = 'auth-badge clinician';
+    }
+
+    function switchToGuest() {
+      var badge = document.getElementById('roleBadge');
+      badge.textContent = 'Role: Guest Learner';
+      badge.className = 'auth-badge';
+    }
+
+    function logoutSession() {
+      var input = document.getElementById('clinicianNameInput');
+      var badge = document.getElementById('roleBadge');
+      if (input) input.value = '';
+      badge.textContent = 'Role: Logged Out (Guest View)';
+      badge.className = 'auth-badge';
+    }
+
+    function openSection(secId) {
+      activeSection = secId;
+      var ids = ['pharmacology', 'treatment', 'symptoms', 'opd', 'quiz', 'cases'];
+      for (var i = 0; i < ids.length; i++) {
+        var id = ids[i];
+        var secEl = document.getElementById('sec-' + id);
+        var tabEl = document.getElementById('nav-' + id);
+        if (secEl) secEl.className = id === secId ? 'section-view active' : 'section-view';
+        if (tabEl) tabEl.className = id === secId ? 'nav-tab active' : 'nav-tab';
+      }
+    }
+
+    function buildDrugClassPills() {
+      var container = document.getElementById('drugClassFilterPills');
+      if (!container) return;
+      var classes = ['All', 'Cardiovascular', 'Antibiotics', 'Respiratory', 'GI & Analgesics', 'CNS & Psychiatric', 'Endocrine & Metabolic', 'General Pharmacology'];
+      var html = '<span class="pill-label">Drug Class:</span>';
+      for (var i = 0; i < classes.length; i++) {
+        var c = classes[i];
+        var cls = c === activeDrugClass ? 'pill-btn active' : 'pill-btn';
+        html += '<button type="button" class="' + cls + '" onclick="setDrugClass(\'' + c.replace(/'/g, "\\'") + '\')">' + c + '</button>';
+      }
+      container.innerHTML = html;
+    }
+
+    function setDrugClass(c) {
+      activeDrugClass = c;
+      buildDrugClassPills();
+      renderPharmacology();
+    }
+
+    function setSafetyFilter(safetyKey, btnEl) {
+      activeSafetyFilter = safetyKey;
+      var buttons = document.querySelectorAll('#safetyFilterPills .pill-btn');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].className = 'pill-btn';
+      }
+      if (btnEl) btnEl.className = 'pill-btn green-active';
+      renderPharmacology();
+    }
+
+    function resetPharmacologyFilters() {
+      activeDrugClass = 'All';
+      activeSafetyFilter = 'ALL';
+      var searchEl = document.getElementById('pharmSearchInput');
+      if (searchEl) searchEl.value = '';
+      buildDrugClassPills();
+      var safetyBtns = document.querySelectorAll('#safetyFilterPills .pill-btn');
+      for (var i = 0; i < safetyBtns.length; i++) {
+        safetyBtns[i].className = i === 0 ? 'pill-btn green-active' : 'pill-btn';
+      }
+      renderPharmacology();
+    }
+
+    function renderPharmacology() {
+      var q = (document.getElementById('pharmSearchInput')?.value || '').trim().toLowerCase();
+      var visualGrid = document.getElementById('visualPharmacologyGrid');
+      var top209Grid = document.getElementById('top209Grid');
+
+      // Filter Visual Pharmacology Modules
+      var filteredVisual = [];
+      for (var i = 0; i < visualPharmacologyModules.length; i++) {
+        var m = visualPharmacologyModules[i];
+        var matchClass = (activeDrugClass === 'All') || (m.drugClass === activeDrugClass);
+        var matchSafety = (activeSafetyFilter === 'ALL') || (m.tags.indexOf(activeSafetyFilter) !== -1);
+        var blob = (m.title + ' ' + m.subtitle + ' ' + m.drugClass + ' ' + m.moaFlow + ' ' + m.examples.join(' ') + ' ' + m.effects.join(' ') + ' ' + m.monitoring.join(' ') + ' ' + m.safety.join(' ')).toLowerCase();
+        var matchQuery = !q || blob.indexOf(q) !== -1;
+        if (matchClass && matchSafety && matchQuery) filteredVisual.push(m);
+      }
+
+      document.getElementById('visualCardsCount').textContent = filteredVisual.length + ' of ' + visualPharmacologyModules.length + ' visual modules';
+
+      var vHtml = '';
+      for (var j = 0; j < filteredVisual.length; j++) {
+        var item = filteredVisual[j];
+        vHtml += '<article class="pharm-card">';
+        vHtml += '<div class="pharm-card-header">';
+        vHtml += '<h3 class="pharm-card-title">' + item.title + '</h3>';
+        vHtml += '<div class="pharm-card-subtitle">' + item.subtitle + ' • ' + item.drugClass + '</div>';
+        vHtml += '<div class="heart-divider"><span class="heart-line"></span><span style="color:#EF4444;font-size:13px;">♥</span><span class="heart-line"></span></div>';
+        vHtml += '</div>';
+
+        vHtml += '<div class="pharm-visual-strip">';
+        vHtml += '<div class="visual-box">' + svgMedVisual(item.medSvg) + '<span class="visual-caption">Medication</span></div>';
+        vHtml += '<div style="font-size:14px;font-weight:900;color:var(--green);">➔</div>';
+        vHtml += '<div class="visual-box">' + svgOrganVisual(item.organSvg) + '<span class="visual-caption">' + item.organLabel + '</span></div>';
+        vHtml += '</div>';
+
+        vHtml += '<div class="moa-flow"><strong>Mechanism / Flow:</strong> ' + item.moaFlow + '</div>';
+
+        vHtml += '<div class="pharm-body">';
+        vHtml += '<div class="band-box band-purple"><span class="band-title">Examples / Agents</span><ul>';
+        for (var a = 0; a < item.examples.length; a++) vHtml += '<li>' + item.examples[a] + '</li>';
+        vHtml += '</ul></div>';
+
+        vHtml += '<div class="band-box band-green"><span class="band-title">Clinical Action / Effects</span><ul>';
+        for (var b = 0; b < item.effects.length; b++) vHtml += '<li>' + item.effects[b] + '</li>';
+        vHtml += '</ul></div>';
+
+        vHtml += '<div class="band-box band-blue"><span class="band-title">Monitoring &amp; Counseling</span><ul>';
+        for (var c = 0; c < item.monitoring.length; c++) vHtml += '<li>' + item.monitoring[c] + '</li>';
+        vHtml += '</ul></div>';
+
+        vHtml += '<div class="band-box band-red"><span class="band-title">Safety / Risks / Antidote</span><ul>';
+        for (var d = 0; d < item.safety.length; d++) vHtml += '<li>' + item.safety[d] + '</li>';
+        vHtml += '</ul></div>';
+        vHtml += '</div>';
+        vHtml += '</article>';
+      }
+      visualGrid.innerHTML = vHtml || '<p style="color:var(--muted);">No visual pharmacology modules match your filter.</p>';
+
+      // Filter Top 209 Medications (#1 - #209)
+      var filtered209 = [];
+      for (var k = 0; k < top209Medications.length; k++) {
+        var med = top209Medications[k];
+        var mappedClass = mapConditionToDrugClass(med.cond);
+        var mClassOk = (activeDrugClass === 'All') || (mappedClass === activeDrugClass);
+        var mSafetyOk = true;
+        if (activeSafetyFilter === 'ANTIDOTE') {
+          mSafetyOk = med.note.toLowerCase().indexOf('antidote') !== -1;
+        } else if (activeSafetyFilter === 'HIGH_ALERT') {
+          mSafetyOk = /pregnancy|teratogen|hypoglycemia|bleeding|hepatotox|lactic|qt|tendon|ototox|nephro|serotonin|box|fatal|severe/i.test(med.note);
+        } else if (activeSafetyFilter === 'MONITORING') {
+          mSafetyOk = /monitor|check|watch|renal|liver|lft|cbc|g6pd|eye|retinal|glucose|bp|heart rate|electrolyte/i.test(med.note);
+        }
+        var mText = ('#' + med.num + ' ' + med.name + ' ' + med.cond + ' ' + med.note).toLowerCase();
+        var mQOk = !q || mText.indexOf(q) !== -1;
+        if (mClassOk && mSafetyOk && mQOk) filtered209.push(med);
+      }
+
+      document.getElementById('top209Count').textContent = filtered209.length + ' of ' + top209Medications.length + ' medications (#1–#209)';
+
+      var mHtml = '';
+      for (var x = 0; x < filtered209.length; x++) {
+        var item209 = filtered209[x];
+        mHtml += '<div class="med-item">';
+        mHtml += '<div class="med-num">#' + item209.num + '</div>';
+        mHtml += '<div class="med-name">' + item209.name + '</div>';
+        mHtml += '<span class="med-cond">' + item209.cond + '</span>';
+        mHtml += '<p class="med-note">' + item209.note + '</p>';
+        mHtml += '</div>';
+      }
+      top209Grid.innerHTML = mHtml || '<p style="color:var(--muted);">No medications (#1–#209) match your filter.</p>';
+    }
+
+    function mapConditionToDrugClass(cond) {
+      if (cond === 'Hypertension') return 'Cardiovascular';
+      if (cond === 'Bacterial Inf' || cond === 'Typhoid' || cond === 'Tuberculosis' || cond === 'UTI') return 'Antibiotics';
+      if (cond === 'Asthma' || cond === 'COPD' || cond === 'Cough' || cond === 'Common Cold') return 'Respiratory';
+      if (/Anemia|Hypothyroid|Hyperthyroid|Diabetes|Obesity|Vitamin D/i.test(cond)) return 'Endocrine & Metabolic';
+      if (/Epilepsy|Parkinson|Anxiety|Depression|Migraine|Headache|Muscle Spasm/i.test(cond)) return 'CNS & Psychiatric';
+      return 'GI & Analgesics';
+    }
+
+    function renderTreatment() {
+      var container = document.getElementById('treatmentProtocolsContainer');
+      if (!container) return;
+      var html = '';
+      for (var i = 0; i < treatmentProtocols.length; i++) {
+        var p = treatmentProtocols[i];
+        html += '<article class="protocol-card">';
+        html += '<div class="protocol-top">';
+        html += '<h3 class="protocol-title">' + (i + 1) + '. ' + p.title + '</h3>';
+        html += '<span class="med-cond" style="margin:0;">' + p.badge + '</span>';
+        html += '</div>';
+        html += '<p style="font-size:13px;margin:0 0 12px;">' + p.summary + '</p>';
+
+        html += '<div class="protocol-grid">';
+        for (var s = 0; s < p.sections.length; s++) {
+          var sec = p.sections[s];
+          html += '<div class="band-box band-blue"><span class="band-title">' + sec.heading + '</span><ul>';
+          for (var li = 0; li < sec.items.length; li++) {
+            html += '<li>' + sec.items[li] + '</li>';
+          }
+          html += '</ul></div>';
+        }
+        html += '</div>';
+
+        html += '<table class="data-table"><thead><tr>';
+        for (var h = 0; h < p.table.headers.length; h++) {
+          html += '<th>' + p.table.headers[h] + '</th>';
+        }
+        html += '</tr></thead><tbody>';
+        for (var r = 0; r < p.table.rows.length; r++) {
+          html += '<tr>';
+          for (var c = 0; c < p.table.rows[r].length; c++) {
+            html += '<td>' + p.table.rows[r][c] + '</td>';
+          }
+          html += '</tr>';
+        }
+        html += '</tbody></table>';
+
+        html += '<div class="red-flag-box"><strong>RED FLAGS – REFER / ESCALATE URGENTLY:</strong> ' + p.redFlags + '</div>';
+        html += '</article>';
+      }
+      container.innerHTML = html;
+    }
+
+    function renderSymptoms() {
+      var container = document.getElementById('symptomsSystemsContainer');
+      if (!container) return;
+      var html = '';
+      for (var i = 0; i < symptomSystems.length; i++) {
+        var sys = symptomSystems[i];
+        html += '<div class="system-block">';
+        html += '<div class="system-header">' + svgOrganVisual(sys.organ) + '<h3 class="system-title">' + sys.system + '</h3></div>';
+        html += '<div class="symptom-list">';
+        for (var d = 0; d < sys.diseases.length; d++) {
+          var dis = sys.diseases[d];
+          html += '<div class="symptom-row">';
+          html += '<div class="symptom-disease">' + (d + 1) + '. ' + dis.name + '</div>';
+          html += '<div class="symptom-line">' + dis.line + '</div>';
+          html += '</div>';
+        }
+        html += '</div></div>';
+      }
+      container.innerHTML = html;
+    }
+
+    function toggleOPDSelfTest() {
+      opdSelfTestMode = !opdSelfTestMode;
+      var btn = document.getElementById('opdSelfTestBtn');
+      if (btn) {
+        btn.textContent = opdSelfTestMode ? 'Self-Test Mode: ON' : 'Self-Test Mode: OFF';
+        btn.className = opdSelfTestMode ? 'btn btn-green' : 'btn btn-navy';
+      }
+      renderOPD();
+    }
+
+    function revealAllOPD() {
+      for (var i = 0; i < opdEntries.length; i++) {
+        opdRevealedMap[opdEntries[i].num] = true;
+      }
+      renderOPD();
+    }
+
+    function revealSingleOPD(num) {
+      opdRevealedMap[num] = !opdRevealedMap[num];
+      renderOPD();
+    }
+
+    function renderOPD() {
+      var container = document.getElementById('opdGuideGrid');
+      if (!container) return;
+      var q = (document.getElementById('opdSearchInput')?.value || '').trim().toLowerCase();
+      var html = '';
+      for (var i = 0; i < opdEntries.length; i++) {
+        var e = opdEntries[i];
+        var txt = (e.num + ' ' + e.cat + ' ' + e.clues + ' ' + e.dx).toLowerCase();
+        if (q && txt.indexOf(q) === -1) continue;
+
+        var isShown = !opdSelfTestMode || !!opdRevealedMap[e.num];
+        html += '<div class="opd-card">';
+        html += '<div class="opd-head"><span class="opd-num">#' + e.num + '</span><span class="opd-cat">' + e.cat + '</span></div>';
+        html += '<div class="opd-clues">' + e.clues + '</div>';
+        if (isShown) {
+          html += '<div class="opd-answer">➔ ' + e.dx + '</div>';
+          if (opdSelfTestMode) {
+            html += '<button type="button" class="btn" style="margin-top:6px;padding:4px 8px;font-size:11px;" onclick="revealSingleOPD(\'' + e.num + '\')">Hide Answer</button>';
+          }
+        } else {
+          html += '<div class="opd-answer masked">Diagnosis Hidden (Self-Test)</div>';
+          html += '<button type="button" class="btn btn-navy" style="margin-top:6px;padding:4px 9px;font-size:11px;" onclick="revealSingleOPD(\'' + e.num + '\')">Show Answer</button>';
+        }
+        html += '</div>';
+      }
+      container.innerHTML = html || '<p style="color:var(--muted);">No OPD entries match your search.</p>';
+    }
+
+    function renderQuiz() {
+      var container = document.getElementById('quizContainer');
+      if (!container) return;
+
+      if (quizState.index >= quizQuestions.length) {
+        container.innerHTML =
+          '<div class="quiz-box">' +
+          '<h3 class="protocol-title">Quiz Complete!</h3>' +
+          '<p style="font-size:14px;">Your Score: <strong>' + quizState.score + ' / ' + quizQuestions.length + '</strong></p>' +
+          '<button type="button" class="btn btn-green" onclick="restartQuiz()">Restart Quiz</button>' +
+          '</div>';
+        return;
+      }
+
+      var item = quizQuestions[quizState.index];
+      var html = '<div class="quiz-box">';
+      html += '<div style="font-size:12px;font-weight:800;color:var(--green-dark);margin-bottom:6px;">Question ' + (quizState.index + 1) + ' of ' + quizQuestions.length + ' • Score: ' + quizState.score + '</div>';
+      html += '<h3 class="protocol-title" style="font-size:16px;margin-bottom:12px;">' + item.q + '</h3>';
+
+      for (var i = 0; i < item.opts.length; i++) {
+        var btnCls = 'choice-btn';
+        if (quizState.answered) {
+          if (i === item.ans) btnCls += ' correct';
+          else if (i === quizState.selected) btnCls += ' wrong';
+        }
+        html += '<button type="button" class="' + btnCls + '" onclick="selectQuizAnswer(' + i + ')">' + item.opts[i] + '</button>';
+      }
+
+      if (quizState.answered) {
+        var ok = quizState.selected === item.ans;
+        html += '<div class="feedback-banner">';
+        html += '<strong>' + (ok ? 'Correct!' : 'Review Explanation:') + '</strong> ' + item.why;
+        html += '<div style="margin-top:10px;"><button type="button" class="btn btn-navy" onclick="nextQuizItem()">Next Question ➔</button></div>';
+        html += '</div>';
+      }
+
+      html += '</div>';
+      container.innerHTML = html;
+    }
+
+    function selectQuizAnswer(idx) {
+      if (quizState.answered) return;
+      quizState.answered = true;
+      quizState.selected = idx;
+      if (idx === quizQuestions[quizState.index].ans) {
+        quizState.score += 1;
+      }
+      renderQuiz();
+    }
+
+    function nextQuizItem() {
+      quizState.index += 1;
+      quizState.answered = false;
+      quizState.selected = -1;
+      renderQuiz();
+    }
+
+    function restartQuiz() {
+      quizState = { index: 0, score: 0, answered: false, selected: -1 };
+      renderQuiz();
+    }
+
+    function renderCases() {
+      var container = document.getElementById('casesContainer');
+      if (!container) return;
+      var html = '';
+      for (var i = 0; i < caseStudies.length; i++) {
+        var cs = caseStudies[i];
+        var chosen = caseAnsweredMap[i];
+        html += '<article class="case-box">';
+        html += '<h3 class="protocol-title" style="font-size:16px;margin-bottom:6px;">' + cs.title + '</h3>';
+        html += '<p style="font-size:13px;margin:0 0 8px;"><strong>Presentation:</strong> ' + cs.vignette + '</p>';
+        html += '<p style="font-size:13px;font-weight:700;color:var(--navy);margin:0 0 10px;">' + cs.prompt + '</p>';
+
+        for (var c = 0; c < cs.choices.length; c++) {
+          var cls = 'choice-btn';
+          if (chosen !== undefined) {
+            if (c === cs.correct) cls += ' correct';
+            else if (c === chosen) cls += ' wrong';
+          }
+          html += '<button type="button" class="' + cls + '" onclick="answerCase(' + i + ',' + c + ')">' + cs.choices[c] + '</button>';
+        }
+
+        if (chosen !== undefined) {
+          html += '<div class="feedback-banner"><strong>Clinical Rationale:</strong> ' + cs.rationale + '</div>';
+        }
+        html += '</article>';
+      }
+      container.innerHTML = html;
+    }
+
+    function answerCase(caseIdx, choiceIdx) {
+      caseAnsweredMap[caseIdx] = choiceIdx;
+      renderCases();
+    }
+
+    // Initial render on load
+    buildDrugClassPills();
+    renderPharmacology();
+    renderTreatment();
+    renderSymptoms();
+    renderOPD();
+    renderQuiz();
+    renderCases();
+  </script>
+</body>
+</html>
