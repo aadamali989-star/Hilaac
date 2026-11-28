@@ -76,13 +76,30 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       ? `Previous context:\n${conversationContext}\n\nCurrent question:\n${message}`
       : message;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-4-hydrogen',
-      contents: fullPrompt,
-      config: {
-        systemInstruction,
-      },
-    });
+    const modelsToTry = [process.env.GEMINI_MODEL || 'gemini-flash-latest', 'gemini-4-hydrogen'];
+    let response: Awaited<ReturnType<typeof ai.models.generateContent>> | null = null;
+    let lastModelError: unknown = null;
+
+    for (const model of modelsToTry) {
+      try {
+        response = await ai.models.generateContent({
+          model,
+          contents: fullPrompt,
+          config: {
+            systemInstruction,
+          },
+        });
+        break;
+      } catch (err) {
+        lastModelError = err;
+      }
+    }
+
+    if (!response) {
+      throw lastModelError instanceof Error
+        ? lastModelError
+        : new Error('Unable to reach Gemini model.');
+    }
 
     const reply = response.text?.trim();
     if (!reply) {

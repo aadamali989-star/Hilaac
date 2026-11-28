@@ -16,6 +16,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { academicModulesData } from '../data/academicData';
+import { DeveloperSection } from './DeveloperSection';
 import { PWAInstallButton } from './PWAInstallButton';
 import type {
   AcademicSubject,
@@ -1202,6 +1203,8 @@ export const DashboardAndTasksView: React.FC<DashboardAndTasksViewProps> = ({
           ))}
         </div>
       </SectionCard>
+
+      <DeveloperSection language={language} />
     </div>
   );
 };

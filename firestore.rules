@@ -219,7 +219,7 @@ service cloud.firestore {
       data.authorUid == request.auth.uid &&
       data.title is string && data.title.size() >= 1 && data.title.size() <= 160 &&
       data.author is string && data.author.size() >= 1 && data.author.size() <= 120 &&
-      data.subject in ['Pharmacology', 'Anatomy & Physiology', 'Microbiology', 'Biochemistry', 'Clinical OPD'] &&
+      data.subject is string && data.subject.size() >= 1 && data.subject.size() <= 80 &&
       data.edition is string && data.edition.size() >= 1 && data.edition.size() <= 60 &&
       data.readMinutes is int && data.readMinutes >= 1 && data.readMinutes <= 1000 &&
       data.summary is string && data.summary.size() >= 1 && data.summary.size() <= 500 &&

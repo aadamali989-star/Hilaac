@@ -177,7 +177,7 @@
         "authorUid": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
         "title": { "type": "string", "minLength": 1, "maxLength": 160 },
         "author": { "type": "string", "minLength": 1, "maxLength": 120 },
-        "subject": { "type": "string", "enum": ["Pharmacology", "Anatomy & Physiology", "Microbiology", "Biochemistry", "Clinical OPD"] },
+        "subject": { "type": "string", "minLength": 1, "maxLength": 80 },
         "edition": { "type": "string", "minLength": 1, "maxLength": 60 },
         "readMinutes": { "type": "integer" },
         "summary": { "type": "string", "minLength": 1, "maxLength": 500 },

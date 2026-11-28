@@ -192,7 +192,12 @@ function loadLocalRegistrationAlerts(): RegistrationAlert[] {
     const raw = localStorage.getItem(LOCAL_REG_ALERTS_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw) as RegistrationAlert[];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((a, idx) => ({
+      ...a,
+      id: a.id || `reg_local_${idx}`,
+      userUid: a.userUid || `local_uid_${idx}`,
+    }));
   } catch {
     return [];
   }
@@ -212,8 +217,9 @@ function loadDeviceBooks(): HealthBook[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw) as HealthBook[];
     if (!Array.isArray(parsed)) return [];
-    return parsed.map((b) => ({
+    return parsed.map((b, idx) => ({
       ...b,
+      id: b.id || `book_local_${idx}`,
       pdfUrl: b.pdfUrl && !b.pdfUrl.startsWith('blob:') ? b.pdfUrl : undefined,
     }));
   } catch {
@@ -696,13 +702,14 @@ export default function App() {
     });
 
     const localAccounts = getLocalAccounts();
-    Object.values(localAccounts).forEach((acc) => {
+    Object.values(localAccounts).forEach((acc, idx) => {
+      const safeUid = acc.uid || `local_acc_${idx}`;
       const fallbackRole: UserRole = acc.role === 'teacher' ? 'teacher' : 'student';
       let snapProfile: UserProfile | null = null;
       let snapTasks: TaskItem[] = [];
       let snapLogs: StudyLog[] = [];
       try {
-        const raw = localStorage.getItem(`${OFFLINE_USER_PREFIX}${acc.uid}`);
+        const raw = localStorage.getItem(`${OFFLINE_USER_PREFIX}${safeUid}`);
         if (raw) {
           const parsed = JSON.parse(raw) as Partial<OfflineSnapshot>;
           snapProfile = parsed.profile || null;
@@ -712,15 +719,15 @@ export default function App() {
       } catch {
         // ignore corrupt local snapshot
       }
-      const isCurrent = Boolean(profile && !profile.isCloudSynced && profile.uid === acc.uid);
+      const isCurrent = Boolean(profile && !profile.isCloudSynced && profile.uid === safeUid);
       const effectiveTasks = isCurrent ? tasks : snapTasks;
       const effectiveLogs = isCurrent ? studyLogs : snapLogs;
       const effectiveProfile = isCurrent ? profile : snapProfile;
       const safeRole: UserRole =
         effectiveProfile?.role === 'teacher' || fallbackRole === 'teacher' ? 'teacher' : 'student';
 
-      byUid.set(acc.uid, {
-        uid: acc.uid,
+      byUid.set(safeUid, {
+        uid: safeUid,
         displayName: effectiveProfile?.displayName || acc.displayName,
         email: effectiveProfile?.email || `@${acc.username}`,
         role: safeRole,
@@ -1102,7 +1109,7 @@ export default function App() {
           const list: Announcement[] = snap.docs.map((docSnap) => {
             const d = docSnap.data();
             return {
-              id: String(d.id),
+              id: String(d.id || docSnap.id),
               authorUid: String(d.authorUid),
               authorName: String(d.authorName),
               title: String(d.title),
@@ -1127,11 +1134,11 @@ export default function App() {
             const d = docSnap.data();
             const rawChapters = Array.isArray(d.chapters) ? d.chapters : [];
             return {
-              id: String(d.id),
+              id: String(d.id || docSnap.id),
               authorUid: String(d.authorUid || ''),
               title: String(d.title),
               author: String(d.author),
-              subject: d.subject as AcademicSubject,
+              subject: String(d.subject || 'Clinical OPD'),
               edition: String(d.edition || '1st Edition'),
               readMinutes: Number(d.readMinutes || 20),
               summary: String(d.summary || ''),
@@ -1170,7 +1177,7 @@ export default function App() {
                 ? 'teacher'
                 : 'student';
               return {
-                uid: String(d.uid),
+                uid: String(d.uid || docSnap.id),
                 displayName: String(d.displayName),
                 email,
                 role: safeRole,
@@ -1199,7 +1206,7 @@ export default function App() {
               const safeRole: UserRole =
                 rawRole === 'admin' || rawRole === 'teacher' ? rawRole : 'student';
               return {
-                id: String(d.id),
+                id: String(d.id || docSnap.id),
                 userUid: String(d.userUid),
                 displayName: String(d.displayName),
                 email: String(d.email),
@@ -2259,7 +2266,7 @@ export default function App() {
   async function handleAddBook(input: {
     title: string;
     author: string;
-    subject: AcademicSubject;
+    subject: string;
     edition: string;
     readMinutes: number;
     summary: string;
@@ -2289,7 +2296,7 @@ export default function App() {
       authorUid: profile.uid,
       title: input.title.slice(0, 160),
       author: input.author.slice(0, 120),
-      subject: input.subject,
+      subject: input.subject.trim().slice(0, 80) || 'Clinical OPD',
       edition: input.edition.slice(0, 60),
       readMinutes: Math.max(1, Math.min(1000, Math.round(input.readMinutes))),
       summary: input.summary.slice(0, 500),

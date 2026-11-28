@@ -61,7 +61,7 @@ interface AdminTeacherPanelViewProps {
   onAddBook: (book: {
     title: string;
     author: string;
-    subject: AcademicSubject;
+    subject: string;
     edition: string;
     readMinutes: number;
     summary: string;
@@ -113,7 +113,8 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
 
   const [bookTitle, setBookTitle] = useState('');
   const [bookAuthor, setBookAuthor] = useState('');
-  const [bookSubject, setBookSubject] = useState<AcademicSubject>('Pharmacology');
+  const [bookSubject, setBookSubject] = useState<string>('Pharmacology');
+  const [customBookSubject, setCustomBookSubject] = useState('');
   const [bookEdition, setBookEdition] = useState('1st Edition');
   const [bookMinutes, setBookMinutes] = useState(25);
   const [bookCoverColor, setBookCoverColor] = useState<BookCoverColor>('navy');
@@ -331,13 +332,23 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
 
   async function handleCreateBook(e: React.FormEvent) {
     e.preventDefault();
+    const resolvedSubject =
+      bookSubject === '__custom__' ? customBookSubject.trim().slice(0, 80) : bookSubject;
+    if (!resolvedSubject) {
+      setNotice(
+        isSo
+          ? 'Fadlan qor magaca cusub ee buugga ama maadada.'
+          : 'Please enter a custom subject or category name.'
+      );
+      return;
+    }
     if (!bookTitle.trim() || !bookAuthor.trim() || !bookSummary.trim() || (!chapterContent.trim() && !bookPdfUrl && !bookPdfBytes)) {
       return;
     }
     await onAddBook({
       title: bookTitle.trim(),
       author: bookAuthor.trim(),
-      subject: bookSubject,
+      subject: resolvedSubject,
       edition: bookEdition.trim() || '1st Edition',
       readMinutes: Math.max(1, Math.min(1000, Number(bookMinutes) || 20)),
       summary: bookSummary.trim(),
@@ -350,6 +361,8 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
     });
     setBookTitle('');
     setBookAuthor('');
+    setCustomBookSubject('');
+    setBookSubject('Pharmacology');
     setBookSummary('');
     setChapterContent('');
     setBookCoverImage(undefined);
@@ -636,9 +649,9 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
           />
         ) : (
           <div className="space-y-2">
-            {registrationAlerts.map((alert) => (
+            {registrationAlerts.map((alert, idx) => (
               <div
-                key={alert.id}
+                key={`${alert.id || 'alert'}_${idx}`}
                 className={`py-2.5 px-3.5 rounded-[10px] border flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   !alert.read
                     ? 'border-[#F59E0B]/45 bg-[#FFFBEB]/70 dark:bg-amber-950/20'
@@ -898,7 +911,7 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <select
                   value={bookSubject}
-                  onChange={(e) => setBookSubject(e.target.value as AcademicSubject)}
+                  onChange={(e) => setBookSubject(e.target.value)}
                   aria-label={isSo ? 'Maadada buugga' : 'Book subject'}
                   className="rounded-[9px] border border-[#E2E8F0] dark:border-[#1E2E4D] bg-[#F8FAFC] dark:bg-[#13203C] px-3 py-2 text-xs font-semibold text-[#10234B] dark:text-white"
                 >
@@ -907,6 +920,9 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
                   <option value="Microbiology">Microbiology</option>
                   <option value="Biochemistry">Biochemistry</option>
                   <option value="Clinical OPD">Clinical OPD</option>
+                  <option value="__custom__">
+                    {isSo ? '+ Ku qor magac / maaddo cusub...' : '+ Add new custom name...'}
+                  </option>
                 </select>
                 <input
                   type="text"
@@ -918,6 +934,27 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
                   className="rounded-[9px] border border-[#E2E8F0] dark:border-[#1E2E4D] bg-[#F8FAFC] dark:bg-[#13203C] px-3 py-2 text-xs text-[#10234B] dark:text-white"
                 />
               </div>
+
+              {bookSubject === '__custom__' && (
+                <div>
+                  <label className="block text-[11px] font-bold text-[#10234B] dark:text-slate-200 mb-1">
+                    {isSo ? 'Magaca Cusub ee Maadada / Qaybta Buugga' : 'New Custom Book Category / Subject'}
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={80}
+                    value={customBookSubject}
+                    onChange={(e) => setCustomBookSubject(e.target.value)}
+                    placeholder={
+                      isSo
+                        ? 'Qor magaca cusub (tusaale: Pediatrics, Surgery, Nursing...)'
+                        : 'Type custom subject or category (e.g., Pediatrics, Surgery, Nursing...)'
+                    }
+                    className="w-full rounded-[9px] border border-[#079B62] bg-[#F8FAFC] dark:bg-[#13203C] px-3 py-2 text-xs text-[#10234B] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#079B62]"
+                  />
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-2.5 items-center">
                 <div>
@@ -1002,9 +1039,9 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
                 <div className="text-xs font-bold text-[#10234B] dark:text-slate-300">
                   {isSo ? 'Buugaagta La Kordhiyay' : 'Added Books'} ({customBooks.length})
                 </div>
-                {customBooks.map((b) => (
+                {customBooks.map((b, idx) => (
                   <div
-                    key={b.id}
+                    key={`${b.id || 'book'}_${idx}`}
                     className="flex items-center justify-between gap-2 text-xs border-b border-[#E2E8F0]/70 dark:border-[#1E2E4D] pb-2 last:border-b-0"
                   >
                     <div className="min-w-0">
@@ -1099,9 +1136,9 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
               <div className="text-xs font-bold text-[#10234B] dark:text-slate-300">
                 {isSo ? 'Ogeysiisyadii Ugu Dambeeyay' : 'Recent Notices'} ({announcements.length})
               </div>
-              {announcements.map((a) => (
+              {announcements.map((a, idx) => (
                 <div
-                  key={a.id}
+                  key={`${a.id || 'ann'}_${idx}`}
                   className="text-xs border-b border-[#E2E8F0]/70 dark:border-[#1E2E4D] pb-2 last:border-b-0"
                 >
                   <div className="font-bold text-[#10234B] dark:text-white">{a.title}</div>
@@ -1244,11 +1281,11 @@ export const AdminTeacherPanelView: React.FC<AdminTeacherPanelViewProps> = ({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#E2E8F0]/70 dark:divide-[#1E2E4D]">
-                    {filteredTrackedUsers.map((u) => {
+                    {filteredTrackedUsers.map((u, idx) => {
                       const isSingleOwnerRow =
                         u.email.toLowerCase() === SINGLE_ADMIN_EMAIL || u.role === 'admin';
                       return (
-                        <tr key={u.uid}>
+                        <tr key={`${u.uid || 'user'}_${idx}`}>
                           <td className="py-2.5 pr-3">
                             <div className="font-bold text-[#10234B] dark:text-white">
                               {u.displayName}

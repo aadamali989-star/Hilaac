@@ -21,7 +21,7 @@ export interface HealthBook {
   id: string;
   title: string;
   author: string;
-  subject: AcademicSubject;
+  subject: string;
   edition: string;
   readMinutes: number;
   summary: string;

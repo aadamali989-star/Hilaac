@@ -37,14 +37,31 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
       typeof body.subject === 'string' ? body.subject.trim().slice(0, 80) : 'Medical Sciences';
 
     const ai = getGeminiClient();
-    const response = await ai.models.generateContent({
-      model: 'gemini-4-hydrogen',
-      contents: `Subject: ${subject}\nCard front: ${front}\nCard answer: ${back}\nProvide a short 1-2 sentence memorable clinical mnemonic or memory hook without repeating the full answer verbatim.`,
-      config: {
-        systemInstruction:
-          'You provide concise medical memory hooks and active recall hints under 60 words.',
-      },
-    });
+    const modelsToTry = [process.env.GEMINI_MODEL || 'gemini-flash-latest', 'gemini-4-hydrogen'];
+    let response: Awaited<ReturnType<typeof ai.models.generateContent>> | null = null;
+    let lastModelError: unknown = null;
+
+    for (const model of modelsToTry) {
+      try {
+        response = await ai.models.generateContent({
+          model,
+          contents: `Subject: ${subject}\nCard front: ${front}\nCard answer: ${back}\nProvide a short 1-2 sentence memorable clinical mnemonic or memory hook without repeating the full answer verbatim.`,
+          config: {
+            systemInstruction:
+              'You provide concise medical memory hooks and active recall hints under 60 words.',
+          },
+        });
+        break;
+      } catch (err) {
+        lastModelError = err;
+      }
+    }
+
+    if (!response) {
+      throw lastModelError instanceof Error
+        ? lastModelError
+        : new Error('Unable to reach Gemini model.');
+    }
 
     res.status(200).json({
       hint: response.text?.trim() || 'Focus on the primary receptor or pathway involved.',

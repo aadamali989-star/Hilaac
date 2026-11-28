@@ -41,7 +41,7 @@ import thumbBooks from '../assets/images/thumb_medical_books_1795767006210.jpg';
 interface DeviceBookPayload {
   title: string;
   author: string;
-  subject: AcademicSubject;
+  subject: string;
   edition: string;
   readMinutes: number;
   summary: string;
@@ -96,14 +96,24 @@ const COVER_THEME_CLASSES: Record<BookCoverColor, string> = {
   teal: 'bg-[#079B62]',
 };
 
-const SUBJECT_FILTERS: ('All' | 'Favorites' | AcademicSubject)[] = [
-  'All',
-  'Favorites',
+const BASE_ACADEMIC_SUBJECTS: AcademicSubject[] = [
   'Pharmacology',
   'Anatomy & Physiology',
   'Microbiology',
   'Biochemistry',
   'Clinical OPD',
+];
+
+function toStudyAcademicSubject(subject: string): AcademicSubject {
+  return (BASE_ACADEMIC_SUBJECTS as string[]).includes(subject)
+    ? (subject as AcademicSubject)
+    : 'Clinical OPD';
+}
+
+const SUBJECT_FILTERS: string[] = [
+  'All',
+  'Favorites',
+  ...BASE_ACADEMIC_SUBJECTS,
 ];
 
 const BookCoverVisual: React.FC<{
@@ -268,7 +278,7 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
   const isSo = language === 'so';
   const [selectedBookId, setSelectedBookId] = useState(books[0]?.id ?? '');
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
-  const [filterCategory, setFilterCategory] = useState<'All' | 'Favorites' | AcademicSubject>('All');
+  const [filterCategory, setFilterCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [previewBookId, setPreviewBookId] = useState<string | null>(null);
 
@@ -291,7 +301,8 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
   const [chooseTab, setChooseTab] = useState<'file' | 'compose'>('file');
   const [devTitle, setDevTitle] = useState('');
   const [devAuthor, setDevAuthor] = useState(profile.displayName || 'Personal Device Library');
-  const [devSubject, setDevSubject] = useState<AcademicSubject>('Pharmacology');
+  const [devSubject, setDevSubject] = useState<string>('Pharmacology');
+  const [devCustomSubject, setDevCustomSubject] = useState('');
   const [devEdition, setDevEdition] = useState('Device Copy');
   const [devMinutes, setDevMinutes] = useState(25);
   const [devCoverColor, setDevCoverColor] = useState<BookCoverColor>('navy');
@@ -565,21 +576,32 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
       return;
     }
 
+    const resolvedSubject =
+      devSubject === '__custom__' ? devCustomSubject.trim().slice(0, 80) : devSubject;
+    if (!resolvedSubject) {
+      setDevError(
+        isSo
+          ? 'Fadlan qor magaca cusub ee buugga ama maadada.'
+          : 'Please enter a custom subject or category name.'
+      );
+      return;
+    }
+
     const finalPdfUrl = chooseTab === 'file' ? devPdfUrl : trimmedLink || undefined;
     const finalPdfBytes = chooseTab === 'file' ? devPdfBytes : undefined;
 
     const newBookId = await onAddDeviceBook({
       title: devTitle.trim(),
       author: devAuthor.trim() || profile.displayName || 'Device Textbook',
-      subject: devSubject,
+      subject: resolvedSubject,
       edition: devEdition.trim() || (chooseTab === 'compose' ? 'Study Notes' : 'Device Copy'),
       readMinutes: Math.max(1, Math.min(1000, Number(devMinutes) || 20)),
       summary:
         devSummary.trim() ||
         (chooseTab === 'compose'
           ? trimmedLink
-            ? `Linked PDF resource for ${devSubject}.`
-            : `Custom ${devSubject} study chapter.`
+            ? `Linked PDF resource for ${resolvedSubject}.`
+            : `Custom ${resolvedSubject} study chapter.`
           : `Imported from device (${devFileName || 'Local Book'}).`),
       coverColor: devCoverColor,
       coverImage: devCoverImage,
@@ -597,6 +619,8 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
     setShowDeviceModal(false);
     setChooseTab('file');
     setDevTitle('');
+    setDevCustomSubject('');
+    setDevSubject('Pharmacology');
     setDevFileName('');
     setDevSummary('');
     setDevChapterContent('');
@@ -677,7 +701,10 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
                   type="button"
                   onClick={() => {
                     if (activeBook && activeChapter) {
-                      onStartStudySession(activeBook.subject, `${activeBook.title}: ${activeChapter.title}`);
+                      onStartStudySession(
+                        toStudyAcademicSubject(activeBook.subject),
+                        `${activeBook.title}: ${activeChapter.title}`
+                      );
                     } else {
                       onStartStudySession('Pharmacology', isSo ? 'Akhriska Buugaagta' : 'Medical Book Reading');
                     }
@@ -771,7 +798,7 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
       <SectionCard className="p-4 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 md:pb-0">
-            {SUBJECT_FILTERS.map((cat) => {
+            {Array.from(new Set([...SUBJECT_FILTERS, ...books.map((b) => b.subject).filter(Boolean)])).map((cat) => {
               const active = filterCategory === cat;
               const label =
                 cat === 'All'
@@ -1656,7 +1683,7 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
                 />
                 <select
                   value={devSubject}
-                  onChange={(e) => setDevSubject(e.target.value as AcademicSubject)}
+                  onChange={(e) => setDevSubject(e.target.value)}
                   aria-label={isSo ? 'Maadada buugga' : 'Device book subject'}
                   className="rounded-[9px] border border-[#E2E8F0] dark:border-[#1E2E4D] bg-[#F8FAFC] dark:bg-[#13203C] px-3 py-2 text-xs font-semibold text-[#10234B] dark:text-white"
                 >
@@ -1665,8 +1692,32 @@ export const ReaderAndBooksView: React.FC<ReaderAndBooksViewProps> = ({
                   <option value="Microbiology">Microbiology</option>
                   <option value="Biochemistry">Biochemistry</option>
                   <option value="Clinical OPD">Clinical OPD</option>
+                  <option value="__custom__">
+                    {isSo ? '+ Ku qor magac / maaddo cusub...' : '+ Add new custom name...'}
+                  </option>
                 </select>
               </div>
+
+              {devSubject === '__custom__' && (
+                <div>
+                  <label className="block text-[11px] font-bold text-[#10234B] dark:text-slate-200 mb-1">
+                    {isSo ? 'Magaca Cusub ee Maadada / Qaybta Buugga' : 'New Custom Book Category / Subject'}
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    maxLength={80}
+                    value={devCustomSubject}
+                    onChange={(e) => setDevCustomSubject(e.target.value)}
+                    placeholder={
+                      isSo
+                        ? 'Qor magaca cusub (tusaale: Pediatrics, Surgery, Nursing...)'
+                        : 'Type custom subject or category (e.g., Pediatrics, Surgery, Nursing...)'
+                    }
+                    className="w-full rounded-[9px] border border-[#079B62] bg-[#F8FAFC] dark:bg-[#13203C] px-3 py-2 text-xs text-[#10234B] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#079B62]"
+                  />
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-2.5 items-center">
                 <input

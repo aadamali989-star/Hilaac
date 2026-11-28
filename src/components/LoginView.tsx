@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import type { AppLanguage, UserRole } from '../types';
 import { HilaacLogo } from './ClinicalSvgs';
+import { DeveloperSection } from './DeveloperSection';
 import { PWAInstallButton } from './PWAInstallButton';
 import welcomeHeroImg from '../assets/images/welcome_health_hero_1795714670970.jpg';
 import thumbStudy from '../assets/images/thumb_clinical_study_1795767004787.jpg';
@@ -176,7 +177,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center p-3 sm:p-6">
+      <main className="flex-1 flex flex-col items-center justify-center gap-4 p-3 sm:p-6">
         <div className="w-full max-w-5xl rounded-[18px] border border-[#E2E8F0] dark:border-[#1E2E4D] bg-white dark:bg-[#0D172B] shadow-[0_8px_30px_rgba(16,35,75,0.07)] overflow-hidden grid grid-cols-1 lg:grid-cols-12">
           {/* Welcome Medical Hero Panel */}
           <section className="lg:col-span-6 bg-[#10234B] text-white p-5 sm:p-7 flex flex-col justify-between gap-5 border-b lg:border-b-0 lg:border-r border-[#1E2E4D]">
@@ -539,6 +540,10 @@ export const LoginView: React.FC<LoginViewProps> = ({
               </>
             )}
           </section>
+        </div>
+
+        <div className="w-full max-w-5xl">
+          <DeveloperSection language={language} compact />
         </div>
       </main>
 
