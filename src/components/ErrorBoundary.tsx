@@ -18,6 +18,23 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
     };
   }
 
+  handleResetCacheAndReload = async () => {
+    try {
+      if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map((r) => r.unregister()));
+      }
+      if (typeof caches !== 'undefined') {
+        const keys = await caches.keys();
+        await Promise.all(keys.map((k) => caches.delete(k)));
+      }
+    } catch {
+      // ignore cleanup errors
+    } finally {
+      window.location.reload();
+    }
+  };
+
   render() {
     if (this.state.hasError) {
       let friendlyMessage = this.state.message;
@@ -40,13 +57,22 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
             <p className="mt-2 text-sm text-[#475569] dark:text-slate-300 break-words leading-relaxed">
               {friendlyMessage}
             </p>
-            <button
-              type="button"
-              onClick={() => window.location.reload()}
-              className="mt-5 px-4 py-2.5 rounded-[10px] bg-[#079B62] hover:bg-[#058152] text-white text-sm font-bold transition-colors"
-            >
-              Reload Application
-            </button>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="px-4 py-2.5 rounded-[10px] bg-[#079B62] hover:bg-[#058152] text-white text-sm font-bold transition-colors"
+              >
+                Reload Application
+              </button>
+              <button
+                type="button"
+                onClick={this.handleResetCacheAndReload}
+                className="px-4 py-2.5 rounded-[10px] border border-[#E2E8F0] dark:border-[#1E2E4D] text-[#10234B] dark:text-slate-200 hover:border-[#079B62] text-sm font-bold transition-colors"
+              >
+                Clear Cache &amp; Reload
+              </button>
+            </div>
           </div>
         </div>
       );

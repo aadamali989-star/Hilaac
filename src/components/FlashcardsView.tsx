@@ -80,7 +80,13 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
           back: currentCard.back,
         }),
       });
-      const data = (await resp.json()) as { hint?: string; error?: string };
+      const rawText = await resp.text();
+      let data: { hint?: string; error?: string } = {};
+      try {
+        data = JSON.parse(rawText) as { hint?: string; error?: string };
+      } catch {
+        data = {};
+      }
       if (!resp.ok) throw new Error(data.error || 'Hint unavailable');
       setAiHint(data.hint || null);
     } catch {

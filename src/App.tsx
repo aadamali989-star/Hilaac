@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth';
+import {
+  getRedirectResult,
+  onAuthStateChanged,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut,
+  type User,
+} from 'firebase/auth';
 import {
   collection,
   deleteDoc,
@@ -802,116 +809,138 @@ export default function App() {
   // Listen to Firebase Auth state
   useEffect(() => {
     testFirestoreConnection().catch(() => {});
+    getRedirectResult(auth).catch((err) => {
+      const code = (err as { code?: string })?.code || '';
+      if (code === 'auth/unauthorized-domain') {
+        const host = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
+        setAuthError(
+          language === 'so'
+            ? `Google Sign-In waxay u baahan tahay in domain-ka (${host}) lagu daro Firebase Console → Authentication → Settings → Authorized domains. Ama isticmaal Username & Password.`
+            : `Google Sign-In requires adding "${host}" in Firebase Console → Authentication → Settings → Authorized domains. You can also sign in using Username & Password above.`
+        );
+      } else if (err instanceof Error && err.message) {
+        setAuthError(err.message);
+      }
+    });
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setFirebaseUser(user);
-      if (user) {
-        try {
-          const userRef = doc(db, 'users', user.uid);
-          const snap = await getDoc(userRef);
-          const pending = pendingRoleChoiceRef.current;
+      try {
+        setFirebaseUser(user);
+        if (user) {
+          try {
+            const userRef = doc(db, 'users', user.uid);
+            const snap = await getDoc(userRef);
+            const pending = pendingRoleChoiceRef.current;
 
-          if (!snap.exists()) {
-            const isOwnerAdmin = user.email?.toLowerCase() === ADMIN_EMAIL;
-            const chosenRole: UserRole = isOwnerAdmin
-              ? 'admin'
-              : pending?.role === 'teacher'
-              ? 'teacher'
-              : 'student';
-
-            const displayName = (pending?.displayName || user.displayName || 'Hilaac Learner').slice(0, 100);
-            const email = (user.email || 'learner@hilaac.edu').slice(0, 160);
-
-            const payload: Record<string, unknown> = {
-              uid: user.uid,
-              displayName,
-              email,
-              role: chosenRole,
-              xp: 50,
-              streakDays: 1,
-              studyMinutes: 0,
-              participationScore: 10,
-              downloadedModules: [],
-              favoriteBooks: [],
-              createdAt: serverTimestamp(),
-              updatedAt: serverTimestamp(),
-            };
-
-            await setDoc(userRef, payload);
-
-            // Notify admin of every newly registered Google Cloud account
-            const alertId = makeSafeId('reg');
-            await setDoc(doc(db, 'registrationAlerts', alertId), {
-              id: alertId,
-              userUid: user.uid,
-              displayName,
-              email,
-              role: chosenRole,
-              source: 'google',
-              read: false,
-              createdAt: serverTimestamp(),
-            });
-
-            await setDoc(doc(db, 'leaderboard', user.uid), {
-              uid: user.uid,
-              displayName,
-              role: chosenRole,
-              xp: 50,
-              studyMinutes: 0,
-              streakDays: 1,
-              updatedAt: serverTimestamp(),
-            });
-
-            // Seed starter flashcards for new cloud user
-            for (const card of defaultFlashcards) {
-              await setDoc(doc(db, 'users', user.uid, 'flashcards', card.id), {
-                id: card.id,
-                userId: user.uid,
-                subject: card.subject,
-                front: card.front,
-                back: card.back,
-                intervalDays: card.intervalDays,
-                easeFactor: card.easeFactor,
-                repetitions: card.repetitions,
-                nextReviewAt: card.nextReviewAt,
-                updatedAt: serverTimestamp(),
-              });
-            }
-          } else {
-            const data = snap.data();
-            const isOwnerAdmin = user.email?.toLowerCase() === ADMIN_EMAIL;
-            const currentRole = String(data.role || 'student');
-            const desiredRole: UserRole = isOwnerAdmin
-              ? 'admin'
-              : pending
-              ? pending.role === 'teacher'
+            if (!snap.exists()) {
+              const isOwnerAdmin = user.email?.toLowerCase() === ADMIN_EMAIL;
+              const chosenRole: UserRole = isOwnerAdmin
+                ? 'admin'
+                : pending?.role === 'teacher'
                 ? 'teacher'
-                : 'student'
-              : currentRole === 'admin'
-              ? 'teacher'
-              : currentRole === 'teacher'
-              ? 'teacher'
-              : 'student';
+                : 'student';
 
-            const needsRoleUpdate = desiredRole !== currentRole;
-            const needsNameUpdate = Boolean(pending?.displayName);
-            if (needsRoleUpdate || needsNameUpdate) {
-              const updatePayload: Record<string, unknown> = {
-                role: desiredRole,
+              const displayName = (pending?.displayName || user.displayName || 'Hilaac Learner').slice(0, 100);
+              const email = (user.email || 'learner@hilaac.edu').slice(0, 160);
+
+              const payload: Record<string, unknown> = {
+                uid: user.uid,
+                displayName,
+                email,
+                role: chosenRole,
+                xp: 50,
+                streakDays: 1,
+                studyMinutes: 0,
+                participationScore: 10,
+                downloadedModules: [],
+                favoriteBooks: [],
+                createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp(),
               };
-              if (pending?.displayName) {
-                updatePayload.displayName = pending.displayName.slice(0, 100);
+
+              await setDoc(userRef, payload);
+
+              // Notify admin of every newly registered Google Cloud account
+              const alertId = makeSafeId('reg');
+              await setDoc(doc(db, 'registrationAlerts', alertId), {
+                id: alertId,
+                userUid: user.uid,
+                displayName,
+                email,
+                role: chosenRole,
+                source: 'google',
+                read: false,
+                createdAt: serverTimestamp(),
+              });
+
+              await setDoc(doc(db, 'leaderboard', user.uid), {
+                uid: user.uid,
+                displayName,
+                role: chosenRole,
+                xp: 50,
+                studyMinutes: 0,
+                streakDays: 1,
+                updatedAt: serverTimestamp(),
+              });
+
+              // Seed starter flashcards for new cloud user
+              for (const card of defaultFlashcards) {
+                await setDoc(doc(db, 'users', user.uid, 'flashcards', card.id), {
+                  id: card.id,
+                  userId: user.uid,
+                  subject: card.subject,
+                  front: card.front,
+                  back: card.back,
+                  intervalDays: card.intervalDays,
+                  easeFactor: card.easeFactor,
+                  repetitions: card.repetitions,
+                  nextReviewAt: card.nextReviewAt,
+                  updatedAt: serverTimestamp(),
+                });
               }
-              await updateDoc(userRef, updatePayload);
+            } else {
+              const data = snap.data();
+              const isOwnerAdmin = user.email?.toLowerCase() === ADMIN_EMAIL;
+              const currentRole = String(data.role || 'student');
+              const desiredRole: UserRole = isOwnerAdmin
+                ? 'admin'
+                : pending
+                ? pending.role === 'teacher'
+                  ? 'teacher'
+                  : 'student'
+                : currentRole === 'admin'
+                ? 'teacher'
+                : currentRole === 'teacher'
+                ? 'teacher'
+                : 'student';
+
+              const needsRoleUpdate = desiredRole !== currentRole;
+              const needsNameUpdate = Boolean(pending?.displayName);
+              if (needsRoleUpdate || needsNameUpdate) {
+                const updatePayload: Record<string, unknown> = {
+                  role: desiredRole,
+                  updatedAt: serverTimestamp(),
+                };
+                if (pending?.displayName) {
+                  updatePayload.displayName = pending.displayName.slice(0, 100);
+                }
+                await updateDoc(userRef, updatePayload);
+              }
             }
+            pendingRoleChoiceRef.current = null;
+          } catch (err) {
+            console.error('Auth profile sync error:', err);
+            const rawMsg = err instanceof Error ? err.message : String(err);
+            setAuthError(
+              language === 'so'
+                ? `Xogta cloud-ka lama soo dejin karin hadda (${rawMsg}). Fadlan mar kale isku day ama isticmaal akoonka maxalliga ah.`
+                : `Unable to sync cloud profile right now (${rawMsg}). Please try again or use Username & Password.`
+            );
           }
-          pendingRoleChoiceRef.current = null;
-        } catch (err) {
-          handleFirestoreError(err, OperationType.WRITE, `users/${user.uid}`);
         }
+      } finally {
+        setAuthReady(true);
       }
-      setAuthReady(true);
     });
 
     return () => unsubscribe();
@@ -1409,9 +1438,52 @@ export default function App() {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (err) {
+      const code = (err as { code?: string })?.code || '';
+      const isInIframe = typeof window !== 'undefined' && window.self !== window.top;
+
+      if (code === 'auth/popup-blocked' && !isInIframe) {
+        try {
+          await signInWithRedirect(auth, googleProvider);
+          return;
+        } catch (redirErr) {
+          pendingRoleChoiceRef.current = null;
+          setAuthError(
+            redirErr instanceof Error ? redirErr.message : 'Unable to sign in with Google.'
+          );
+          return;
+        }
+      }
+
       pendingRoleChoiceRef.current = null;
-      const msg = err instanceof Error ? err.message : 'Unable to sign in with Google.';
-      setAuthError(msg);
+      if (code === 'auth/unauthorized-domain') {
+        const host = typeof window !== 'undefined' ? window.location.hostname : 'this domain';
+        setAuthError(
+          language === 'so'
+            ? `Google Sign-In waxay u baahan tahay in domain-ka "${host}" lagu daro Firebase Console → Authentication → Settings → Authorized domains. Inta ka horraysa, waxaad ku soo geli kartaa Username & Password.`
+            : `Google Sign-In requires adding "${host}" in Firebase Console → Authentication → Settings → Authorized domains. Meanwhile, you can sign in using Username & Password above.`
+        );
+      } else if (code === 'auth/popup-blocked') {
+        setAuthError(
+          language === 'so'
+            ? 'Chrome wuxuu xannibay daaqadda Google Sign-In (popup). Fadlan u oggolow popups boggan ama isticmaal Username & Password.'
+            : 'Browser blocked the Google sign-in popup. Please allow popups for this site or sign in with Username & Password.'
+        );
+      } else if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        setAuthError(
+          language === 'so'
+            ? 'Soo gelitaanka Google waa la joojiyay ka hor intaan la dhammaystirin.'
+            : 'Google sign-in window was closed before completing.'
+        );
+      } else if (code === 'auth/network-request-failed') {
+        setAuthError(
+          language === 'so'
+            ? 'Internet-ka ayaan xiriir fiican lahayn. Fadlan hubi khadkaaga.'
+            : 'Network error while reaching Google Sign-In. Please check your connection.'
+        );
+      } else {
+        const msg = err instanceof Error ? err.message : 'Unable to sign in with Google.';
+        setAuthError(msg);
+      }
     } finally {
       setIsSigningIn(false);
     }

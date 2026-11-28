@@ -1,7 +1,4 @@
-import * as pdfjsLib from 'pdfjs-dist';
-import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+import { loadPdfJs } from './pdfLoader';
 
 export interface ParsedDeviceBookFile {
   suggestedTitle: string;
@@ -36,6 +33,7 @@ async function extractPdfPreview(bytes: Uint8Array): Promise<{
   extractedText: string;
 }> {
   try {
+    const pdfjsLib = await loadPdfJs();
     const loadingTask = pdfjsLib.getDocument({ data: bytes.slice(0) });
     const pdf = await loadingTask.promise;
     const pageCount = pdf.numPages || 1;

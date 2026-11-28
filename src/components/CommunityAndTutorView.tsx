@@ -404,8 +404,21 @@ export const CommunityAndTutorView: React.FC<CommunityAndTutorViewProps> = ({
           history: nextMessages.slice(-6).map((m) => ({ sender: m.sender, text: m.text })),
         }),
       });
-      const data = (await resp.json()) as { reply?: string; error?: string };
+      const rawText = await resp.text();
+      let data: { reply?: string; error?: string } = {};
+      try {
+        data = JSON.parse(rawText) as { reply?: string; error?: string };
+      } catch {
+        data = {};
+      }
       if (!resp.ok || !data.reply) {
+        if (data.error && data.error.includes('GEMINI_API_KEY')) {
+          throw new Error(
+            isSo
+              ? 'Macallinka AI weli looma dhigin GEMINI_API_KEY gudaha Vercel (Settings → Environment Variables).'
+              : 'AI Tutor needs GEMINI_API_KEY added in Vercel (Settings → Environment Variables) and redeployed.'
+          );
+        }
         throw new Error(
           data.error ||
             (isSo

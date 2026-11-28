@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as pdfjsLib from 'pdfjs-dist';
-import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import {
   ChevronLeft,
   ChevronRight,
@@ -12,9 +10,8 @@ import {
   ZoomOut,
 } from 'lucide-react';
 import type { AppLanguage, HealthBook } from '../types';
+import { loadPdfJs, type PdfDocumentProxy, type PdfRenderTask } from '../utils/pdfLoader';
 import { loadPdfBinary } from '../utils/pdfStorage';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
 interface InAppPdfViewerProps {
   book: HealthBook;
@@ -46,7 +43,7 @@ export const InAppPdfViewer: React.FC<InAppPdfViewerProps> = ({
   onSendTextToHighlight,
 }) => {
   const isSo = language === 'so';
-  const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
+  const [pdfDoc, setPdfDoc] = useState<PdfDocumentProxy | null>(null);
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [scale, setScale] = useState(1.15);
@@ -61,7 +58,7 @@ export const InAppPdfViewer: React.FC<InAppPdfViewerProps> = ({
 
   useEffect(() => {
     let cancelled = false;
-    let loadedDoc: pdfjsLib.PDFDocumentProxy | null = null;
+    let loadedDoc: PdfDocumentProxy | null = null;
 
     async function loadDocument() {
       setLoadingDoc(true);
@@ -96,6 +93,7 @@ export const InAppPdfViewer: React.FC<InAppPdfViewerProps> = ({
           );
         }
 
+        const pdfjsLib = await loadPdfJs();
         const task = pdfjsLib.getDocument(docSource);
         const doc = await task.promise;
         if (cancelled) {
@@ -134,7 +132,7 @@ export const InAppPdfViewer: React.FC<InAppPdfViewerProps> = ({
 
   useEffect(() => {
     let cancelled = false;
-    let activeRenderTask: pdfjsLib.RenderTask | null = null;
+    let activeRenderTask: PdfRenderTask | null = null;
 
     async function renderCurrentPage() {
       if (!pdfDoc || !canvasRef.current) return;
